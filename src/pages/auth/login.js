@@ -113,7 +113,7 @@ const Page = () => {
               <Typography variant="h4">
                 Se connecter
               </Typography>
-              <Typography
+              {/* <Typography
                 color="text.secondary"
                 variant="body2"
               >
@@ -127,7 +127,7 @@ const Page = () => {
                 >
                   Créer un compte
                 </Link>
-              </Typography>
+              </Typography> */}
             </Stack>
             <form
                 noValidate

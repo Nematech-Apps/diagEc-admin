@@ -29,10 +29,12 @@ import {
 
 import PencilIcon from '@heroicons/react/24/solid/PencilIcon';
 import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
+import DocumentIcon from '@heroicons/react/24/solid/DocumentIcon';
 
 import { SvgIcon } from '@mui/material';
 
 import { EditDefis } from './edit-defis';
+import { DisplayFicheReflexe } from './display-fiche-reflexe';
 import { deleteDefis } from 'src/firebase/firebaseServices';
 import ToastComponent from '../../components/toast';
 
@@ -59,10 +61,19 @@ export const DefisTable = (props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalData, setModalData] = useState(null);
 
+    const [isDisplayFileModalOpen, setIsDisplayFileModalOpen] = useState(false);
+    const [displayFileModalData, setDisplayFileModalData] = useState(null);
+
+
     const handleEditClick = (event, defis) => {
         setModalData(defis);
         setIsModalOpen(true);
     };
+
+    const handleShowFiche = (event, defis) => {
+        setDisplayFileModalData(defis.ficheReflexe);
+        setIsDisplayFileModalOpen(true);
+    }
 
     const handleDeleteClick = (event, defis) => {
         deleteDefis(defis.id)
@@ -98,7 +109,11 @@ export const DefisTable = (props) => {
                         </TableCell>
 
                         <TableCell>
+                            Fiche réflexe
+                        </TableCell>
 
+                        <TableCell>
+                            Actions
                         </TableCell>
 
                     </TableRow>
@@ -139,6 +154,24 @@ export const DefisTable = (props) => {
                                             <Typography variant="subtitle2">
                                                 {defis.libelle}
                                             </Typography>
+                                           
+                                        </Stack>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Stack
+                                            alignItems="center"
+                                            direction="row"
+                                            spacing={2}
+                                        >
+                                            <Typography variant="subtitle2">
+                                                <SvgIcon fontSize="small">
+                                                {
+                                                    defis.ficheReflexe && 
+                                                    <DocumentIcon onClick={(event) => handleShowFiche(event, defis)}/>
+                                                }
+                                                
+                                                </SvgIcon>
+                                            </Typography>
                                         </Stack>
                                     </TableCell>
                                     <TableCell>
@@ -167,6 +200,7 @@ export const DefisTable = (props) => {
                                         {createdAt}
                                     </TableCell> */}
                                     {isModalOpen && modalData && <EditDefis data={modalData} isOpen={isModalOpen} handleClose={() => setIsModalOpen(false)} />}
+                                    {isDisplayFileModalOpen && displayFileModalData && <DisplayFicheReflexe fileUrl={displayFileModalData} isOpen={isDisplayFileModalOpen} handleClose={() => setIsDisplayFileModalOpen(false)} />}
                                 </TableRow>
                             );
                         }) :

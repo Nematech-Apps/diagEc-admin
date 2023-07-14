@@ -1,4 +1,4 @@
-import { db, Collection, AddDoc, Doc, SetDoc, GetDoc, GetDocs, OnSnapshot, UpdateDoc, DeleteDoc, auth, signin, signupUser, signout }
+import { db, storage, Ref, UploadBytes, UploadBytesResumable, GetDownloadURL, Collection, AddDoc, Doc, SetDoc, GetDoc, GetDocs, OnSnapshot, UpdateDoc, DeleteDoc, auth, signin, signupUser, signout }
     from './firebaseConfig';
 
 export const authenticate = (email, password) => {
@@ -307,7 +307,57 @@ export const updateDefis = async (data, docId) => {
     return UpdateDoc(collectionRef, docData)
 }
 
-export const deleteDefis= (docId) => {
+export const uploadFicheReflexe = async (fiche, docId) => {
+    const storageRef = Ref(storage, `fiches_reflexes/defi/${docId}`);
+    const uploadTask = UploadBytesResumable(storageRef, fiche);
+
+    return new Promise((resolve, reject) => {
+        uploadTask.on(
+            'state_changed',
+            (snapshot) => {
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log('Upload is ' + progress + '% done');
+                switch (snapshot.state) {
+                    case 'paused':
+                        console.log('Upload is paused');
+                        break;
+                    case 'running':
+                        console.log('Upload is running');
+                        break;
+                }
+            },
+            (error) => {
+                switch (error.code) {
+                    case 'storage/unauthorized':
+                        // User doesn't have permission to access the object
+                        reject(error);
+                        break;
+                    case 'storage/canceled':
+                        // User canceled the upload
+                        reject(error);
+                        break;
+                    case 'storage/unknown':
+                        // Unknown error occurred, inspect error.serverResponse
+                        reject(error);
+                        break;
+                }
+            },
+            async () => {
+                try {
+                    const downloadURL = await GetDownloadURL(uploadTask.snapshot.ref);
+                    console.log(downloadURL);
+                    resolve(downloadURL);
+                } catch (error) {
+                    reject(error);
+                }
+            }
+        );
+    });
+};
+
+
+
+export const deleteDefis = (docId) => {
     const collectionRef = Doc(db, 'defis', docId);
     return DeleteDoc(collectionRef);
 }

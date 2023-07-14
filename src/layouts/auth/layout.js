@@ -49,7 +49,7 @@ export const Layout = (props) => {
                 width: 32
               }}
             >
-              <Logo />
+              {/* <Logo /> */}
             </Box>
           </Box>
           {children}
@@ -59,7 +59,7 @@ export const Layout = (props) => {
           lg={6}
           sx={{
             alignItems: 'center',
-            backgroundColor: '#1cb4c3',
+            backgroundColor: '#68a943',
             color: 'white',
             display: 'flex',
             justifyContent: 'center',
