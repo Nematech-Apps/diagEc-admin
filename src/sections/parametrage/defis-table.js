@@ -35,7 +35,7 @@ import { SvgIcon } from '@mui/material';
 
 import { EditDefis } from './edit-defis';
 import { DisplayFicheReflexe } from './display-fiche-reflexe';
-import { deleteDefis } from 'src/firebase/firebaseServices';
+import { deleteDefis, deleteFicheReflexeInStorage } from 'src/firebase/firebaseServices';
 import ToastComponent from '../../components/toast';
 
 
@@ -78,7 +78,13 @@ export const DefisTable = (props) => {
     const handleDeleteClick = (event, defis) => {
         deleteDefis(defis.id)
             .then(() => {
-                return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                deleteFicheReflexeInStorage(defis.id)
+                .then(() => {
+                    return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                })
+                .catch((err) => {
+                    return ToastComponent({ message: err.message, type: 'error' });
+                })
             })
             .catch((err) => {
                 return ToastComponent({ message: err.message, type: 'error' });

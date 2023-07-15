@@ -19,7 +19,7 @@ import FilePicker from 'src/components/file-picker';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 ;
-import { addDefis, uploadFicheReflexe } from 'src/firebase/firebaseServices';
+import { addDefis, uploadFicheReflexe, updateFicheReflexionCollection } from 'src/firebase/firebaseServices';
 import { db, GetDoc, Doc, UpdateDoc } from 'src/firebase/firebaseConfig';
 import ToastComponent from '../../components/toast';
 
@@ -37,32 +37,68 @@ export const CreateDefis = () => {
                 .required("Le libellé est requis"),
         }),
         onSubmit: async (values, helpers) => {
-            if(selectedFile != null){
+            if (selectedFile != null) {
                 addDefis(values)
-                .then(async (doc) => {
-                    const collectionRef = Doc(db, 'defis', doc.id);
-                    const snapshot = await GetDoc(collectionRef);
-                    
+                    .then(async (doc) => {
+                        const collectionRef = Doc(db, 'defis', doc.id);
+                        const snapshot = await GetDoc(collectionRef);
 
-                    uploadFicheReflexe(selectedFile, doc.id)
-                    .then((url) => {
-                        const docData = {
-                            ...snapshot.data(),
-                            id: doc.id,
-                            ficheReflexe : url
-                        };
-                        UpdateDoc(collectionRef, docData)
-                        .then(() => {
-                            helpers.resetForm();
-                            setSelectedFile(null);
-                            return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
-                        })
-                        .catch((err) => {
-                            helpers.setStatus({ success: false });
-                            helpers.setErrors({ submit: err.message });
-                            helpers.setSubmitting(false);
-                            return ToastComponent({ message: err.message, type: 'error' });
-                        })
+
+                        uploadFicheReflexe(selectedFile, doc.id)
+                            .then((url) => {
+                                const docData = {
+                                    ...snapshot.data(),
+                                    id: doc.id,
+                                    ficheReflexe: url
+                                };
+                                UpdateDoc(collectionRef, docData)
+                                    .then(() => {
+                                        updateFicheReflexionCollection(url)
+                                            .then(async (doc) => {
+                                                const collectionRef = Doc(db, 'ficheReflexes', doc.id);
+                                                const snapshot = await GetDoc(collectionRef);
+
+                                                const docData = {
+                                                    ...snapshot.data(),
+                                                    id: doc.id,
+                                                };
+
+                                                UpdateDoc(collectionRef, docData)
+                                                    .then(() => {
+                                                        helpers.resetForm();
+                                                        setSelectedFile(null);
+                                                        return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                                                    })
+                                                    .catch((err) => {
+                                                        helpers.setStatus({ success: false });
+                                                        helpers.setErrors({ submit: err.message });
+                                                        helpers.setSubmitting(false);
+                                                        return ToastComponent({ message: err.message, type: 'error' });
+                                                    })
+                                            })
+                                            .catch((err) => {
+                                                helpers.setStatus({ success: false });
+                                                helpers.setErrors({ submit: err.message });
+                                                helpers.setSubmitting(false);
+                                                return ToastComponent({ message: err.message, type: 'error' });
+                                            })
+
+                                    })
+                                    .catch((err) => {
+                                        helpers.setStatus({ success: false });
+                                        helpers.setErrors({ submit: err.message });
+                                        helpers.setSubmitting(false);
+                                        return ToastComponent({ message: err.message, type: 'error' });
+                                    })
+                            })
+                            .catch((err) => {
+                                helpers.setStatus({ success: false });
+                                helpers.setErrors({ submit: err.message });
+                                helpers.setSubmitting(false);
+                                return ToastComponent({ message: err.message, type: 'error' });
+                            })
+
+
                     })
                     .catch((err) => {
                         helpers.setStatus({ success: false });
@@ -70,15 +106,6 @@ export const CreateDefis = () => {
                         helpers.setSubmitting(false);
                         return ToastComponent({ message: err.message, type: 'error' });
                     })
-
-
-                })
-                .catch((err) => {
-                    helpers.setStatus({ success: false });
-                    helpers.setErrors({ submit: err.message });
-                    helpers.setSubmitting(false);
-                    return ToastComponent({ message: err.message, type: 'error' });
-                })
             }
 
         }
@@ -132,7 +159,7 @@ export const CreateDefis = () => {
                             />
                             <label htmlFor="file-input">
                                 <Button variant="outlined" startIcon={<DocumentIcon />} component="span">
-                                    Choisir un fichier
+                                    Choisir la fiche réflexe
                                 </Button>
                             </label>
                             <label>

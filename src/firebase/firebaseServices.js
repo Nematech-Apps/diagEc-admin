@@ -1,4 +1,4 @@
-import { db, storage, Ref, UploadBytes, UploadBytesResumable, GetDownloadURL, Collection, AddDoc, Doc, SetDoc, GetDoc, GetDocs, OnSnapshot, UpdateDoc, DeleteDoc, auth, signin, signupUser, signout }
+import { db, storage, Ref, UploadBytes, UploadBytesResumable, GetDownloadURL, DeleteObject, Collection, AddDoc, Doc, SetDoc, GetDoc, GetDocs, OnSnapshot, UpdateDoc, DeleteDoc, auth, signin, signupUser, signout }
     from './firebaseConfig';
 
 export const authenticate = (email, password) => {
@@ -355,11 +355,26 @@ export const uploadFicheReflexe = async (fiche, docId) => {
     });
 };
 
+export const updateFicheReflexionCollection = async (url) => {
+    const collectionRef = Collection(db, 'ficheReflexes');
+
+    const docData = {
+        ficheUrl: url
+    }
+
+    return AddDoc(collectionRef, docData);
+}
+
 
 
 export const deleteDefis = (docId) => {
     const collectionRef = Doc(db, 'defis', docId);
     return DeleteDoc(collectionRef);
+}
+
+export const deleteFicheReflexeInStorage = async (docId) => {
+    const storageRef = Ref(storage, `fiches_reflexes/defi/${docId}`);
+    return DeleteObject(storageRef);
 }
 
 export const getDefisList = () => {

@@ -43,7 +43,7 @@ export const CompanyCard = (props) => {
           }}
         >
           <Avatar
-            src={'/assets/logos/logo-squarespace.png'}
+            src={company.logo}
             variant="square"
           />
         </Box>

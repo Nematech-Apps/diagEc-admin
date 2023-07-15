@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, getDocs, addDoc, doc, setDoc, getDoc, updateDoc, deleteDoc, onSnapshot } from 'firebase/firestore';
-import { getStorage, ref, uploadBytes, uploadBytesResumable, getDownloadURL} from 'firebase/storage';
+import { getStorage, ref, uploadBytes, uploadBytesResumable, getDownloadURL, deleteObject} from 'firebase/storage';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 
 // Initialize Firebase
@@ -22,6 +22,7 @@ export const Ref = ref;
 export const UploadBytes = uploadBytes;
 export const UploadBytesResumable = uploadBytesResumable;
 export const GetDownloadURL = getDownloadURL;
+export const DeleteObject = deleteObject;
 export const Collection = collection;
 export const AddDoc = addDoc;
 export const Doc = doc;

@@ -31,11 +31,9 @@ export const CreatePilier = () => {
         validationSchema: Yup.object({
             libelle: Yup
                 .string()
-                .max(255)
                 .required("Le libellé est requis"),
             definition: Yup
                 .string()
-                .max(255)
                 .required("La definition est requise"),
         }),
         onSubmit: async (values, helpers) => {
