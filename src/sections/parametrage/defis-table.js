@@ -171,13 +171,17 @@ export const DefisTable = (props) => {
                                         >
                                             {
                                                 defis.ficheReflexe &&
-                                                <Button variant="outlined" onClick={(event) => handleShowFiche(event, defis)}>Voir fiche</Button>
+                                                <Button variant="outlined"
+onClick={(event) => handleShowFiche(event, defis)}>Voir fiche</Button>
                                             }
                                         </Stack>
                                     </TableCell>
                                     <TableCell>
-                                        <Stack direction={'row'} spacing={2}>
-                                            <Fab size="small" color="secondary" aria-label="edit"
+                                        <Stack direction={'row'}
+spacing={2}>
+                                            <Fab size="small"
+color="secondary"
+aria-label="edit"
                                                 onClick={(event) => handleEditClick(event, defis)}>
                                                 <SvgIcon fontSize="small">
                                                     <PencilIcon />
@@ -200,8 +204,12 @@ export const DefisTable = (props) => {
                                     <TableCell>
                                         {createdAt}
                                     </TableCell> */}
-                                    {isModalOpen && modalData && <EditDefis data={modalData} isOpen={isModalOpen} handleClose={() => setIsModalOpen(false)} />}
-                                    {isDisplayFileModalOpen && displayFileModalData && <DisplayFicheReflexe fileUrl={displayFileModalData} isOpen={isDisplayFileModalOpen} handleClose={() => setIsDisplayFileModalOpen(false)} />}
+                                    {isModalOpen && modalData && <EditDefis data={modalData}
+isOpen={isModalOpen}
+handleClose={() => setIsModalOpen(false)} />}
+                                    {isDisplayFileModalOpen && displayFileModalData && <DisplayFicheReflexe fileUrl={displayFileModalData}
+isOpen={isDisplayFileModalOpen}
+handleClose={() => setIsDisplayFileModalOpen(false)} />}
                                 </TableRow>
                             );
                         }) :

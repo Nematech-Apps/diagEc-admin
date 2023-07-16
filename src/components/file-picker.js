@@ -20,7 +20,8 @@ const FilePicker = () => {
 
   return (
     <div>
-      <Stack direction={'row'} spacing={3}>
+      <Stack direction={'row'}
+spacing={3}>
         <Input
           accept="application/pdf"
           id="file-input"
@@ -29,7 +30,9 @@ const FilePicker = () => {
           style={{ display: 'none' }}
         />
         <label htmlFor="file-input">
-          <Button variant="outlined" startIcon={<DocumentIcon />} component="span">
+          <Button variant="outlined"
+startIcon={<DocumentIcon />}
+component="span">
             Choisir un fichier
           </Button>
         </label>

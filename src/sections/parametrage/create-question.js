@@ -257,7 +257,8 @@ export const CreateQuestion = () => {
                             spacing={3}
                             sx={{ maxWidth: 1500 }}
                         >
-                            <FormControl variant="standard" sx={{ m: 1, width: 500 }}>
+                            <FormControl variant="standard"
+sx={{ m: 1, width: 500 }}>
                                 <InputLabel id="pilier">Pilier</InputLabel>
                                 <Select
                                     labelId="pilier"
@@ -274,18 +275,21 @@ export const CreateQuestion = () => {
                                         <em>Aucune sélection</em>
                                     </MenuItem>
                                     {piliers.map((pilier, index) => {
-                                        return (<MenuItem value={JSON.stringify(pilier)} key={index}>{pilier.libelle}</MenuItem>)
+                                        return (<MenuItem value={JSON.stringify(pilier)}
+key={index}>{pilier.libelle}</MenuItem>)
                                     })}
 
                                 </Select>
                                 {formik.touched.pilier && formik.errors.pilier && (
-                                    <Typography color="error" variant="caption">
+                                    <Typography color="error"
+variant="caption">
                                         {formik.errors.pilier}
                                     </Typography>
                                 )}
                             </FormControl>
 
-                            <FormControl variant="standard" sx={{ width: 500 }}>
+                            <FormControl variant="standard"
+sx={{ width: 500 }}>
                                 <InputLabel id="defi">Défis</InputLabel>
                                 <Select
                                     labelId="defi"
@@ -302,12 +306,14 @@ export const CreateQuestion = () => {
                                         <em>Aucune sélection</em>
                                     </MenuItem>
                                     {defis.map((defi, index) => {
-                                        return (<MenuItem value={JSON.stringify(defi)} key={index}>{defi.libelle}</MenuItem>)
+                                        return (<MenuItem value={JSON.stringify(defi)}
+key={index}>{defi.libelle}</MenuItem>)
                                     })}
 
                                 </Select>
                                 {formik.touched.defi && formik.errors.defi && (
-                                    <Typography color="error" variant="caption">
+                                    <Typography color="error"
+variant="caption">
                                         {formik.errors.defi}
                                     </Typography>
                                 )}
@@ -348,20 +354,23 @@ export const CreateQuestion = () => {
                                     MenuProps={MenuProps}
                                 >
                                     {answers.map((answer, index) => (
-                                        <MenuItem key={index} value={answer.libelle}>
+                                        <MenuItem key={index}
+value={answer.libelle}>
                                             <Checkbox checked={answerLibelle.indexOf(answer.libelle) > -1} />
                                             <ListItemText primary={answer.libelle} />
                                         </MenuItem>
                                     ))}
                                 </Select>
                                 {answerLibelle.length != answers.length && (
-                                    <Typography color="error" variant="caption">
+                                    <Typography color="error"
+variant="caption">
                                         Toutes les réponses doivent être sélectionnées
                                     </Typography>
                                 )}
                             </FormControl>
 
-                            <FormControl variant="standard" sx={{ m: 1, width: 300 }}>
+                            <FormControl variant="standard"
+sx={{ m: 1, width: 300 }}>
                                 <InputLabel id="demo-simple-select-standard-label">Catégorie</InputLabel>
                                 <Select
                                     labelId="demo-simple-select-standard-label"
@@ -377,19 +386,23 @@ export const CreateQuestion = () => {
                                         <em>Aucune sélection</em>
                                     </MenuItem>
                                     {categories.map((categorie, index) => {
-                                        return (<MenuItem value={JSON.stringify(categorie)} key={index}>{categorie.libelle}</MenuItem>)
+                                        return (<MenuItem value={JSON.stringify(categorie)}
+key={index}>{categorie.libelle}</MenuItem>)
                                     })}
 
                                 </Select>
                                 {formik.touched.categorie && formik.errors.categorie && (
-                                    <Typography color="error" variant="caption">
+                                    <Typography color="error"
+variant="caption">
                                         {formik.errors.categorie}
                                     </Typography>
                                 )}
                             </FormControl>
 
-                            <FormControl variant="standard" sx={{ m: 1, width: 300 }}>
-                                <Stack direction={'column'} spacing={4}>
+                            <FormControl variant="standard"
+sx={{ m: 1, width: 300 }}>
+                                <Stack direction={'column'}
+spacing={4}>
                                     <InputLabel >Poids</InputLabel>
                                     <Slider
                                         aria-label="Poids"
@@ -408,7 +421,8 @@ export const CreateQuestion = () => {
 
                                 </Stack>
                                 {formik.touched.poids && formik.errors.poids && (
-                                    <Typography color="error" variant="caption">
+                                    <Typography color="error"
+variant="caption">
                                         {formik.errors.poids}
                                     </Typography>
                                 )}
@@ -435,7 +449,8 @@ export const CreateQuestion = () => {
                 </CardContent>
                 <Divider />
                 <CardActions sx={{ justifyContent: 'flex-end' }}>
-                    <Button variant="contained" type='submit'>
+                    <Button variant="contained"
+type='submit'>
                         Créer
                     </Button>
                 </CardActions>

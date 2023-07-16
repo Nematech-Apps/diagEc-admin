@@ -177,12 +177,14 @@ export const EditCategorie = ({ handleClose, isOpen, data }) => {
                                                 <em>Aucune sélection</em>
                                             </MenuItem>
                                             {secteurs.map((secteur, index) => {
-                                                return (<MenuItem value={JSON.stringify(secteur)} key={index}>{secteur.libelle}</MenuItem>)
+                                                return (<MenuItem value={JSON.stringify(secteur)}
+key={index}>{secteur.libelle}</MenuItem>)
                                             })}
 
                                         </Select>
                                         {formik.touched.secteurAppartenance && formik.errors.secteurAppartenance && (
-                                            <Typography color="error" variant="caption">
+                                            <Typography color="error"
+variant="caption">
                                                 {formik.errors.secteurAppartenance}
                                             </Typography>
                                         )}
@@ -205,11 +207,13 @@ export const EditCategorie = ({ handleClose, isOpen, data }) => {
                                                 <em>Aucune sélection</em>
                                             </MenuItem>
                                             {niveaux.map((niveau, index) => {
-                                                return (<MenuItem value={JSON.stringify(niveau)} key={index}>{niveau.libelle}</MenuItem>)
+                                                return (<MenuItem value={JSON.stringify(niveau)}
+key={index}>{niveau.libelle}</MenuItem>)
                                             })}
                                         </Select>
                                         {formik.touched.niveauAppartenance && formik.errors.niveauAppartenance && (
-                                            <Typography color="error" variant="caption">
+                                            <Typography color="error"
+variant="caption">
                                                 {formik.errors.niveauAppartenance}
                                             </Typography>
                                         )}
@@ -229,7 +233,8 @@ export const EditCategorie = ({ handleClose, isOpen, data }) => {
                             </CardContent>
                             <Divider />
                             <CardActions sx={{ justifyContent: 'flex-end' }}>
-                                <Button variant="contained" type='submit'>
+                                <Button variant="contained"
+type='submit'>
                                     Mettre à jour
                                 </Button>
                             </CardActions>

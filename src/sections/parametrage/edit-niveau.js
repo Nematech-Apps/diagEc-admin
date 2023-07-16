@@ -128,7 +128,8 @@ export const EditNiveau = ({ handleClose, isOpen, data }) => {
                             </CardContent>
                             <Divider />
                             <CardActions sx={{ justifyContent: 'flex-end' }}>
-                                <Button variant="contained" type='submit'>
+                                <Button variant="contained"
+type='submit'>
                                     Mettre à jour
                                 </Button>
                             </CardActions>

@@ -122,13 +122,17 @@ export const AddMotCle = ({ handleClose, isOpen, data }) => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <form noValidate onSubmit={formik.handleSubmit}>
+                    <form noValidate
+onSubmit={formik.handleSubmit}>
                         <Card>
                             <CardHeader title="Ajouter des mots clés" />
                             <Divider />
                             <CardContent>
-                                <Stack direction={'column'} spacing={3} sx={{ maxWidth: 600 }}>
-                                    <Stack direction={'row'} spacing={3}>
+                                <Stack direction={'column'}
+spacing={3}
+sx={{ maxWidth: 600 }}>
+                                    <Stack direction={'row'}
+spacing={3}>
                                         <TextField
                                             error={!!(listMotCle.length == 0 && formik.errors.libelle)}
                                             helperText={listMotCle.length == 0 ? formik.errors.libelle : ''}
@@ -140,7 +144,10 @@ export const AddMotCle = ({ handleClose, isOpen, data }) => {
                                             value={formik.values.libelle}
                                         />
 
-                                        <Fab size="small" color="secondary" aria-label="add" onClick={handleAddMotCle}>
+                                        <Fab size="small"
+color="secondary"
+aria-label="add"
+onClick={handleAddMotCle}>
                                             <SvgIcon fontSize="small">
                                                 <PlusIcon />
                                             </SvgIcon>
@@ -161,7 +168,8 @@ export const AddMotCle = ({ handleClose, isOpen, data }) => {
                                         {listMotCle.length !== 0 ? (
                                             listMotCle.map((item, index) => (
                                                 <CustomListItem key={index}>
-                                                    <Chip label={item} onDelete={() => handleDelete(item)} />
+                                                    <Chip label={item}
+onDelete={() => handleDelete(item)} />
                                                 </CustomListItem>
                                             ))
                                         ) : (
@@ -173,20 +181,25 @@ export const AddMotCle = ({ handleClose, isOpen, data }) => {
                                 </Stack>
 
                                 {formik.errors.submit && listMotCle.length == 0 && (
-                                    <Typography color="error" sx={{ mt: 3 }} variant="body2">
+                                    <Typography color="error"
+sx={{ mt: 3 }}
+variant="body2">
                                         {formik.errors.submit}
                                     </Typography>
                                 )}
 
                                 {listMotCle.length === 0 && (
-                                    <Typography color="error" sx={{ mt: 3 }} variant="body2">
+                                    <Typography color="error"
+sx={{ mt: 3 }}
+variant="body2">
                                         Vous devez ajouter au moins un mot clé
                                     </Typography>
                                 )}
                             </CardContent>
                             <Divider />
                             <CardActions sx={{ justifyContent: 'flex-end' }}>
-                                <Button variant="contained" type="submit">
+                                <Button variant="contained"
+type="submit">
                                     Ajouter
                                 </Button>
                             </CardActions>

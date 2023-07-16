@@ -104,7 +104,8 @@ export const CategorieTable = (props) => {
 
 
     return (
-        <Card sx={sx} elevation={20}>
+        <Card sx={sx}
+elevation={20}>
             <CardHeader title="Catégories" />
             <List>
                 {getPaginatedItems().map((categorie, index) => {
@@ -161,7 +162,10 @@ export const CategorieTable = (props) => {
                                 //secondary={`Updated ${ago} ago`}
                                 secondaryTypographyProps={{ variant: 'body2' }}
                             />
-                            <Fab size="small" color="secondary" aria-label="edit" sx={{ marginRight: 1 }}
+                            <Fab size="small"
+color="secondary"
+aria-label="edit"
+sx={{ marginRight: 1 }}
                                 onClick={(event) => handleEditClick(event, categorie)} >
                                 <SvgIcon fontSize="small" >
                                     <PencilIcon />
@@ -259,7 +263,9 @@ export const CategorieTable = (props) => {
                                 </MenuItem>
                             </Menu> */}
 
-                            {isModalOpen && modalData && <EditCategorie data={modalData} isOpen={isModalOpen} handleClose={() => setIsModalOpen(false)} />}
+                            {isModalOpen && modalData && <EditCategorie data={modalData}
+isOpen={isModalOpen}
+handleClose={() => setIsModalOpen(false)} />}
                         </ListItem>
 
                     );
@@ -268,7 +274,8 @@ export const CategorieTable = (props) => {
             </List>
             <Divider />
             <CardActions sx={{ justifyContent: 'flex-end', alignItems: 'center' }}>
-                <Stack direction={'row'} spacing={3} >
+                <Stack direction={'row'}
+spacing={3} >
                     <Button
                         color="inherit"
                         endIcon={(

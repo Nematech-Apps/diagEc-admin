@@ -9,7 +9,8 @@ export const Logo = () => {
 
   return (
     <>
-    <img src='/assets/logos/logo_app.png' style={{objectFit : 'cover', width: '300%', height: '300%'}}/>
+    <img src='/assets/logos/logo_app.png'
+style={{objectFit : 'cover', width: '300%', height: '300%'}}/>
     </>
     // <svg
     //   fill="none"

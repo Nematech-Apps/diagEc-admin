@@ -45,7 +45,8 @@ const ImagePicker = () => {
 
     return (
         <div>
-            <Stack direction={'row'} spacing={3}>
+            <Stack direction={'row'}
+spacing={3}>
                 <Input
                     accept="image/*"
                     id="image-input"
@@ -54,7 +55,9 @@ const ImagePicker = () => {
                     style={{ display: 'none' }}
                 />
                 <label htmlFor="image-input">
-                    <Button variant="outlined" startIcon={<DocumentIcon />} component="span">
+                    <Button variant="outlined"
+startIcon={<DocumentIcon />}
+component="span">
                         Choisir une image
                     </Button>
                 </label>
@@ -62,7 +65,8 @@ const ImagePicker = () => {
                     <div>
                         {resizedImage && (
                             <div>
-                                <img src={URL.createObjectURL(resizedImage)} alt="Resized" />
+                                <img src={URL.createObjectURL(resizedImage)}
+alt="Resized" />
                             </div>
                         )}
                     </div>

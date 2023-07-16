@@ -195,9 +195,13 @@ export const PilierTable = (props) => {
                                         </Stack>
                                     </TableCell>
                                     <TableCell>
-                                        <Stack direction={'row'} spacing={2}>
-                                            <Stack direction={'column'} spacing={2}>
-                                                <Button variant="outlined" size="small" color='success'
+                                        <Stack direction={'row'}
+spacing={2}>
+                                            <Stack direction={'column'}
+spacing={2}>
+                                                <Button variant="outlined"
+size="small"
+color='success'
                                                     onClick={(event) => handleAddMotcleClick(event, pilier)}>
                                                     Ajouter mot-clés
                                                 </Button>
@@ -207,8 +211,11 @@ export const PilierTable = (props) => {
                                                 </Button> */}
                                             </Stack>
 
-                                            <Stack direction={'column'} spacing={2}>
-                                                <Fab size="small" color="secondary" aria-label="edit"
+                                            <Stack direction={'column'}
+spacing={2}>
+                                                <Fab size="small"
+color="secondary"
+aria-label="edit"
                                                     onClick={(event) => handleEditClick(event, pilier)}>
                                                     <SvgIcon fontSize="small">
                                                         <PencilIcon />
@@ -225,8 +232,12 @@ export const PilierTable = (props) => {
                                         </Stack>
                                     </TableCell>
 
-                                    {isModalOpen && modalData && <EditPilier data={modalData} isOpen={isModalOpen} handleClose={() => setIsModalOpen(false)} />}
-                                    {isAddMotCleOpen && addMotCleData && <AddMotCle data={addMotCleData} isOpen={isAddMotCleOpen} handleClose={() => setIsAddMotCleOpen(false)} />}
+                                    {isModalOpen && modalData && <EditPilier data={modalData}
+isOpen={isModalOpen}
+handleClose={() => setIsModalOpen(false)} />}
+                                    {isAddMotCleOpen && addMotCleData && <AddMotCle data={addMotCleData}
+isOpen={isAddMotCleOpen}
+handleClose={() => setIsAddMotCleOpen(false)} />}
                                 </TableRow>
                             );
                         }) :

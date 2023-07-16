@@ -149,7 +149,8 @@ export const CreateDefis = () => {
                             value={formik.values.libelle}
                         />
 
-                        <Stack direction={'row'} spacing={3}>
+                        <Stack direction={'row'}
+spacing={3}>
                             <Input
                                 accept="application/pdf"
                                 id="file-input"
@@ -158,7 +159,9 @@ export const CreateDefis = () => {
                                 style={{ display: 'none' }}
                             />
                             <label htmlFor="file-input">
-                                <Button variant="outlined" startIcon={<DocumentIcon />} component="span">
+                                <Button variant="outlined"
+startIcon={<DocumentIcon />}
+component="span">
                                     Choisir la fiche réflexe
                                 </Button>
                             </label>
@@ -192,7 +195,8 @@ export const CreateDefis = () => {
                 </CardContent>
                 <Divider />
                 <CardActions sx={{ justifyContent: 'flex-end' }}>
-                    <Button variant="contained" type='submit'>
+                    <Button variant="contained"
+type='submit'>
                         Créer
                     </Button>
                 </CardActions>

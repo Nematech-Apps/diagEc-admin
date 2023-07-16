@@ -142,8 +142,11 @@ export const NiveauTable = (props) => {
                                         </Stack>
                                     </TableCell>
                                     <TableCell>
-                                        <Stack direction={'row'} spacing={2}>
-                                            <Fab size="small" color="secondary" aria-label="edit"
+                                        <Stack direction={'row'}
+spacing={2}>
+                                            <Fab size="small"
+color="secondary"
+aria-label="edit"
                                                 onClick={(event) => handleEditClick(event, niveau)}>
                                                 <SvgIcon fontSize="small">
                                                     <PencilIcon />
@@ -166,7 +169,9 @@ export const NiveauTable = (props) => {
                                     <TableCell>
                                         {createdAt}
                                     </TableCell> */}
-                                    {isModalOpen && modalData && <EditNiveau data={modalData} isOpen={isModalOpen} handleClose={() => setIsModalOpen(false)} />}
+                                    {isModalOpen && modalData && <EditNiveau data={modalData}
+isOpen={isModalOpen}
+handleClose={() => setIsModalOpen(false)} />}
                                 </TableRow>
                             );
                         }) :

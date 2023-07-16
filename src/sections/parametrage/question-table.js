@@ -160,7 +160,8 @@ export const QuestionTable = (props) => {
                                         </Stack>
                                     </TableCell>
                                     <TableCell>
-                                        <Stack direction={'row'} spacing={2}>
+                                        <Stack direction={'row'}
+spacing={2}>
                                             {/* <Fab size="small" color="secondary" aria-label="edit"
                                                 onClick={(event) => handleEditClick(event, question)}>
                                                 <SvgIcon fontSize="small">
@@ -184,7 +185,9 @@ export const QuestionTable = (props) => {
                                     <TableCell>
                                         {createdAt}
                                     </TableCell> */}
-                                    {isModalOpen && modalData && <EditAnswer data={modalData} isOpen={isModalOpen} handleClose={() => setIsModalOpen(false)} />}
+                                    {isModalOpen && modalData && <EditAnswer data={modalData}
+isOpen={isModalOpen}
+handleClose={() => setIsModalOpen(false)} />}
                                 </TableRow>
                             );
                         }) :

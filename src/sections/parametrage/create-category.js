@@ -169,12 +169,14 @@ export const CreateCategory = () => {
                   <em>Aucune sélection</em>
                 </MenuItem>
                 {secteurs.map((secteur, index) => {
-                  return (<MenuItem value={JSON.stringify(secteur)} key={index}>{secteur.libelle}</MenuItem>)
+                  return (<MenuItem value={JSON.stringify(secteur)}
+key={index}>{secteur.libelle}</MenuItem>)
                 })}
 
               </Select>
               {formik.touched.secteurAppartenance && formik.errors.secteurAppartenance && (
-                <Typography color="error" variant="caption">
+                <Typography color="error"
+variant="caption">
                   {formik.errors.secteurAppartenance}
                 </Typography>
               )}
@@ -197,11 +199,13 @@ export const CreateCategory = () => {
                   <em>Aucune sélection</em>
                 </MenuItem>
                 {niveaux.map((niveau, index) => {
-                  return (<MenuItem value={JSON.stringify(niveau)} key={index}>{niveau.libelle}</MenuItem>)
+                  return (<MenuItem value={JSON.stringify(niveau)}
+key={index}>{niveau.libelle}</MenuItem>)
                 })}
               </Select>
               {formik.touched.niveauAppartenance && formik.errors.niveauAppartenance && (
-                <Typography color="error" variant="caption">
+                <Typography color="error"
+variant="caption">
                   {formik.errors.niveauAppartenance}
                 </Typography>
               )}
@@ -221,7 +225,8 @@ export const CreateCategory = () => {
         </CardContent>
         <Divider />
         <CardActions sx={{ justifyContent: 'flex-end' }}>
-          <Button variant="contained" type='submit'>
+          <Button variant="contained"
+type='submit'>
             Créer
           </Button>
         </CardActions>

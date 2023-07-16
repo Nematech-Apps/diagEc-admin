@@ -145,8 +145,11 @@ export const SecteurTable = (props) => {
                                         </Stack>
                                     </TableCell>
                                     <TableCell>
-                                        <Stack direction={'row'} spacing={2}>
-                                            <Fab size="small" color="secondary" aria-label="edit"
+                                        <Stack direction={'row'}
+spacing={2}>
+                                            <Fab size="small"
+color="secondary"
+aria-label="edit"
                                                 onClick={(event) => handleEditClick(event, secteur)}>
                                                 <SvgIcon fontSize="small">
                                                     <PencilIcon />
@@ -169,7 +172,9 @@ export const SecteurTable = (props) => {
                                     <TableCell>
                                         {createdAt}
                                     </TableCell> */}
-                                    {isModalOpen && modalData && <EditSecteur data={modalData} isOpen={isModalOpen} handleClose={() => setIsModalOpen(false)} />}
+                                    {isModalOpen && modalData && <EditSecteur data={modalData}
+isOpen={isModalOpen}
+handleClose={() => setIsModalOpen(false)} />}
                                 </TableRow>
                             );
                         }) : (
