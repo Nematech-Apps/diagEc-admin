@@ -84,7 +84,7 @@ export const PilierTable = (props) => {
     };
 
     return (
-        <Card >
+        <Card elevation={20}>
             <CardHeader title="Piliers" />
             <Table>
                 <TableHead>
@@ -214,12 +214,12 @@ export const PilierTable = (props) => {
                                                         <PencilIcon />
                                                     </SvgIcon>
                                                 </Fab>
-                                                <Fab size="small" color="error" aria-label="delete"
+                                                {/* <Fab size="small" color="error" aria-label="delete"
                                                     onClick={(event) => handleDeleteClick(event, pilier)}>
                                                     <SvgIcon fontSize="small">
                                                         <TrashIcon />
                                                     </SvgIcon>
-                                                </Fab>
+                                                </Fab> */}
                                             </Stack>
 
                                         </Stack>

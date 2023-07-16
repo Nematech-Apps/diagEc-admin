@@ -75,7 +75,7 @@ export const QuestionTable = (props) => {
     };
 
     return (
-        <Card >
+        <Card elevation={20}>
             <CardHeader title="Questions" />
             <Table>
                 <TableHead>
@@ -101,9 +101,9 @@ export const QuestionTable = (props) => {
                             Pilier
                         </TableCell>
 
-                        <TableCell>
+                        {/* <TableCell>
                             Actions
-                        </TableCell>
+                        </TableCell> */}
 
                     </TableRow>
                 </TableHead>
@@ -161,18 +161,18 @@ export const QuestionTable = (props) => {
                                     </TableCell>
                                     <TableCell>
                                         <Stack direction={'row'} spacing={2}>
-                                            <Fab size="small" color="secondary" aria-label="edit"
+                                            {/* <Fab size="small" color="secondary" aria-label="edit"
                                                 onClick={(event) => handleEditClick(event, question)}>
                                                 <SvgIcon fontSize="small">
                                                     <PencilIcon />
                                                 </SvgIcon>
-                                            </Fab>
-                                            <Fab size="small" color="error" aria-label="delete"
+                                            </Fab> */}
+                                            {/* <Fab size="small" color="error" aria-label="delete"
                                                 onClick={(event) => handleDeleteClick(event, question)}>
                                                 <SvgIcon fontSize="small">
                                                     <TrashIcon />
                                                 </SvgIcon>
-                                            </Fab>
+                                            </Fab> */}
                                         </Stack>
                                     </TableCell>
                                     {/* <TableCell>

@@ -62,7 +62,10 @@ export const AccountPopover = (props) => {
           px: 2
         }}
       >
-        <Typography variant="overline" onClick={handleAccount} style={{ cursor: 'pointer' }}>
+        {/* <Typography variant="overline" onClick={handleAccount} style={{ cursor: 'pointer' }}>
+          Mon compte
+        </Typography> */}
+        <Typography variant="overline" >
           Mon compte
         </Typography>
         <Typography

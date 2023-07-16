@@ -17,7 +17,7 @@ const Page = () => (
   <>
     <Head>
       <title>
-        Overview | Devias Kit
+        admin | DiagEc
       </title>
     </Head>
     <Box
@@ -41,7 +41,7 @@ const Page = () => (
               difference={12}
               positive
               sx={{ height: '100%' }}
-              value="$24k"
+              value="100"
             />
           </Grid>
           <Grid
@@ -53,7 +53,7 @@ const Page = () => (
               difference={16}
               positive={false}
               sx={{ height: '100%' }}
-              value="1.6k"
+              value="200"
             />
           </Grid>
           <Grid
@@ -73,14 +73,14 @@ const Page = () => (
           >
             <OverviewTotalProfit
               sx={{ height: '100%' }}
-              value="$15k"
+              value="55%"
             />
           </Grid>
           <Grid
             xs={12}
             lg={8}
           >
-            <OverviewSales
+            {/* <OverviewSales
               chartSeries={[
                 {
                   name: 'This year',
@@ -92,18 +92,18 @@ const Page = () => (
                 }
               ]}
               sx={{ height: '100%' }}
-            />
+            /> */}
           </Grid>
           <Grid
             xs={12}
             md={6}
             lg={4}
           >
-            <OverviewTraffic
+            {/* <OverviewTraffic
               chartSeries={[63, 15, 22]}
               labels={['Desktop', 'Tablet', 'Phone']}
               sx={{ height: '100%' }}
-            />
+            /> */}
           </Grid>
           
           <Grid
@@ -111,7 +111,7 @@ const Page = () => (
             md={12}
             lg={8}
           >
-            <OverviewLatestOrders
+            {/* <OverviewLatestOrders
               orders={[
                 {
                   id: 'f69f88012978187a6c12897f',
@@ -175,7 +175,7 @@ const Page = () => (
                 }
               ]}
               sx={{ height: '100%' }}
-            />
+            /> */}
           </Grid>
 
           <Grid
@@ -183,7 +183,7 @@ const Page = () => (
             md={6}
             lg={4}
           >
-            <OverviewLatestProducts
+            {/* <OverviewLatestProducts
               products={[
                 {
                   id: '5ece2c077e39da27658aa8a9',
@@ -217,7 +217,7 @@ const Page = () => (
                 }
               ]}
               sx={{ height: '100%' }}
-            />
+            /> */}
           </Grid>
         </Grid>
       </Container>

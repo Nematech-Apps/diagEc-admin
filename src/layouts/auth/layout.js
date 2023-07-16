@@ -49,7 +49,7 @@ export const Layout = (props) => {
                 width: 32
               }}
             >
-              {/* <Logo /> */}
+              <Logo />
             </Box>
           </Box>
           {children}
@@ -59,7 +59,7 @@ export const Layout = (props) => {
           lg={6}
           sx={{
             alignItems: 'center',
-            backgroundColor: '#68a943',
+            backgroundColor: '#077c93',
             color: 'white',
             display: 'flex',
             justifyContent: 'center',
@@ -79,7 +79,7 @@ export const Layout = (props) => {
               }}
               variant="h1"
             >
-              Bienvenue
+              Bienvenue 
               <Box
                 component="a"
                 sx={{ color: '#15B79E' }}
@@ -93,7 +93,7 @@ export const Layout = (props) => {
               sx={{ mb: 3 }}
               variant="subtitle1"
             >
-              
+              sur la plateforme admin de DiagEc
             </Typography>
             {/* <img
               alt=""

@@ -18,6 +18,7 @@ import {
     ListItemAvatar,
     ListItemText,
     Table,
+    TableContainer,
     TableBody,
     TableCell,
     TableHead,
@@ -77,9 +78,9 @@ export const SecteurTable = (props) => {
     };
 
     return (
-        <Card >
+        <Card elevation={20}>
             <CardHeader title="Secteurs" />
-            <Table>
+            <Table >
                 <TableHead>
                     <TableRow>
                         {/* <TableCell padding="checkbox">
@@ -100,7 +101,7 @@ export const SecteurTable = (props) => {
                         </TableCell>
 
                         <TableCell>
-
+                            Actions
                         </TableCell>
 
                     </TableRow>
@@ -151,12 +152,12 @@ export const SecteurTable = (props) => {
                                                     <PencilIcon />
                                                 </SvgIcon>
                                             </Fab>
-                                            <Fab size="small" color="error" aria-label="delete"
+                                            {/* <Fab size="small" color="error" aria-label="delete"
                                                 onClick={(event) => handleDeleteClick(event, secteur)}>
                                                 <SvgIcon fontSize="small">
                                                     <TrashIcon />
                                                 </SvgIcon>
-                                            </Fab>
+                                            </Fab> */}
                                         </Stack>
                                     </TableCell>
                                     {/* <TableCell>

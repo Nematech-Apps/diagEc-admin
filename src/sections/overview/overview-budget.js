@@ -21,7 +21,7 @@ export const OverviewBudget = (props) => {
               color="text.secondary"
               variant="overline"
             >
-              Budget
+              Questionnaire
             </Typography>
             <Typography variant="h4">
               {value}
@@ -51,7 +51,7 @@ export const OverviewBudget = (props) => {
               direction="row"
               spacing={0.5}
             >
-              <SvgIcon
+              {/* <SvgIcon
                 color={positive ? 'success' : 'error'}
                 fontSize="small"
               >
@@ -62,14 +62,14 @@ export const OverviewBudget = (props) => {
                 variant="body2"
               >
                 {difference}%
-              </Typography>
+              </Typography> */}
             </Stack>
-            <Typography
+            {/* <Typography
               color="text.secondary"
               variant="caption"
             >
               Since last month
-            </Typography>
+            </Typography> */}
           </Stack>
         )}
       </CardContent>

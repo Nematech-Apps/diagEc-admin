@@ -73,7 +73,7 @@ const Page = () => (
   <>
     <Head>
       <title>
-        Companies | Devias Kit
+        Entreprises | DiagEc
       </title>
     </Head>
     <Box
@@ -94,7 +94,7 @@ const Page = () => (
               <Typography variant="h4">
                 Entreprises
               </Typography>
-              <Stack
+              {/* <Stack
                 alignItems="center"
                 direction="row"
                 spacing={1}
@@ -119,7 +119,7 @@ const Page = () => (
                 >
                   Export
                 </Button>
-              </Stack>
+              </Stack> */}
             </Stack>
             <div>
               {/* <Button
@@ -134,7 +134,7 @@ const Page = () => (
               </Button> */}
             </div>
           </Stack>
-          <CompaniesSearch />
+          {/* <CompaniesSearch /> */}
           
           <DisplayCompanyListCard/>
         </Stack>

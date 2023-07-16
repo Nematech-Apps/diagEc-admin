@@ -75,7 +75,7 @@ export const NiveauTable = (props) => {
     };
 
     return (
-        <Card >
+        <Card elevation={20}>
             <CardHeader title="Niveaux" />
             <Table>
                 <TableHead>
@@ -98,7 +98,7 @@ export const NiveauTable = (props) => {
                         </TableCell>
 
                         <TableCell>
-
+                            Actions
                         </TableCell>
 
                     </TableRow>
@@ -149,12 +149,12 @@ export const NiveauTable = (props) => {
                                                     <PencilIcon />
                                                 </SvgIcon>
                                             </Fab>
-                                            <Fab size="small" color="error" aria-label="delete"
+                                            {/* <Fab size="small" color="error" aria-label="delete"
                                                 onClick={(event) => handleDeleteClick(event, niveau)}>
                                                 <SvgIcon fontSize="small">
                                                     <TrashIcon />
                                                 </SvgIcon>
-                                            </Fab>
+                                            </Fab> */}
                                         </Stack>
                                     </TableCell>
                                     {/* <TableCell>

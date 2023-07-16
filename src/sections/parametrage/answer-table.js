@@ -75,7 +75,7 @@ export const AnswerTable = (props) => {
     };
 
     return (
-        <Card >
+        <Card elevation={20}>
             <CardHeader title="Réponses" />
             <Table>
                 <TableHead>
@@ -98,7 +98,7 @@ export const AnswerTable = (props) => {
                         </TableCell>
 
                         <TableCell>
-
+                            Actions
                         </TableCell>
 
                     </TableRow>
@@ -149,12 +149,12 @@ export const AnswerTable = (props) => {
                                                     <PencilIcon />
                                                 </SvgIcon>
                                             </Fab>
-                                            <Fab size="small" color="error" aria-label="delete"
+                                            {/* <Fab size="small" color="error" aria-label="delete"
                                                 onClick={(event) => handleDeleteClick(event, answer)}>
                                                 <SvgIcon fontSize="small">
                                                     <TrashIcon />
                                                 </SvgIcon>
-                                            </Fab>
+                                            </Fab> */}
                                         </Stack>
                                     </TableCell>
                                     {/* <TableCell>

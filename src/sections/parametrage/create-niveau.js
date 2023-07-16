@@ -79,7 +79,7 @@ export const CreateNiveau = () => {
         <CardContent>
           <Stack
             spacing={3}
-            sx={{ maxWidth: 400 }}
+            sx={{ maxWidth: 800 }}
           >
             <TextField
               error={!!(formik.touched.libelle && formik.errors.libelle)}

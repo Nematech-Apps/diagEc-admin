@@ -1,5 +1,8 @@
 import PropTypes from 'prop-types';
 import CurrencyDollarIcon from '@heroicons/react/24/solid/CurrencyDollarIcon';
+import LifebuoyIcon from '@heroicons/react/24/solid/LifebuoyIcon';
+import PaperClipIcon from '@heroicons/react/24/solid/PaperClipIcon';
+import BanknotesIcon from '@heroicons/react/24/solid/BanknotesIcon';
 import { Avatar, Card, CardContent, Stack, SvgIcon, Typography } from '@mui/material';
 
 export const OverviewTotalProfit = (props) => {
@@ -19,7 +22,7 @@ export const OverviewTotalProfit = (props) => {
               color="text.secondary"
               variant="overline"
             >
-              Total Profit
+              Défis
             </Typography>
             <Typography variant="h4">
               {value}
@@ -33,7 +36,7 @@ export const OverviewTotalProfit = (props) => {
             }}
           >
             <SvgIcon>
-              <CurrencyDollarIcon />
+              <BanknotesIcon />
             </SvgIcon>
           </Avatar>
         </Stack>

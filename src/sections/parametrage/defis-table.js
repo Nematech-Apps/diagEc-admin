@@ -79,12 +79,12 @@ export const DefisTable = (props) => {
         deleteDefis(defis.id)
             .then(() => {
                 deleteFicheReflexeInStorage(defis.id)
-                .then(() => {
-                    return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
-                })
-                .catch((err) => {
-                    return ToastComponent({ message: err.message, type: 'error' });
-                })
+                    .then(() => {
+                        return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                    })
+                    .catch((err) => {
+                        return ToastComponent({ message: err.message, type: 'error' });
+                    })
             })
             .catch((err) => {
                 return ToastComponent({ message: err.message, type: 'error' });
@@ -92,7 +92,7 @@ export const DefisTable = (props) => {
     };
 
     return (
-        <Card >
+        <Card elevation={20}>
             <CardHeader title="Défis" />
             <Table>
                 <TableHead>
@@ -160,7 +160,7 @@ export const DefisTable = (props) => {
                                             <Typography variant="subtitle2">
                                                 {defis.libelle}
                                             </Typography>
-                                           
+
                                         </Stack>
                                     </TableCell>
                                     <TableCell>
@@ -169,15 +169,10 @@ export const DefisTable = (props) => {
                                             direction="row"
                                             spacing={2}
                                         >
-                                            <Typography variant="subtitle2">
-                                                <SvgIcon fontSize="small">
-                                                {
-                                                    defis.ficheReflexe && 
-                                                    <DocumentIcon onClick={(event) => handleShowFiche(event, defis)}/>
-                                                }
-                                                
-                                                </SvgIcon>
-                                            </Typography>
+                                            {
+                                                defis.ficheReflexe &&
+                                                <Button variant="outlined" onClick={(event) => handleShowFiche(event, defis)}>Voir fiche</Button>
+                                            }
                                         </Stack>
                                     </TableCell>
                                     <TableCell>
@@ -188,12 +183,12 @@ export const DefisTable = (props) => {
                                                     <PencilIcon />
                                                 </SvgIcon>
                                             </Fab>
-                                            <Fab size="small" color="error" aria-label="delete"
+                                            {/* <Fab size="small" color="error" aria-label="delete"
                                                 onClick={(event) => handleDeleteClick(event, defis)}>
                                                 <SvgIcon fontSize="small">
                                                     <TrashIcon />
                                                 </SvgIcon>
-                                            </Fab>
+                                            </Fab> */}
                                         </Stack>
                                     </TableCell>
                                     {/* <TableCell>

@@ -7,6 +7,15 @@ import UserPlusIcon from '@heroicons/react/24/solid/UserPlusIcon';
 import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
 import XCircleIcon from '@heroicons/react/24/solid/XCircleIcon';
 import BuildingOfficeIcon from '@heroicons/react/24/solid/BuildingOfficeIcon';
+import LifebuoyIcon from '@heroicons/react/24/solid/LifebuoyIcon';
+import PaperClipIcon from '@heroicons/react/24/solid/PaperClipIcon';
+import BanknotesIcon from '@heroicons/react/24/solid/BanknotesIcon';
+import BookmarkSquareIcon from '@heroicons/react/24/solid/BookmarkSquareIcon';
+import TicketIcon from '@heroicons/react/24/solid/TicketIcon';
+import SunIcon from '@heroicons/react/24/solid/SunIcon';
+import FolderOpenIcon from '@heroicons/react/24/solid/FolderOpenIcon';
+
+
 import { SvgIcon } from '@mui/material';
 
 export const items = [
@@ -19,12 +28,75 @@ export const items = [
       </SvgIcon>
     )
   },
+  // {
+  //   title: 'Paramétrage',
+  //   path: '/parametrage',
+  //   icon: (
+  //     <SvgIcon fontSize="small">
+  //       <CogIcon />
+  //     </SvgIcon>
+  //   )
+  // },
   {
-    title: 'Paramétrage',
-    path: '/parametrage',
+    title: "Secteurs",
+    path: '/secteurs',
     icon: (
       <SvgIcon fontSize="small">
-        <CogIcon />
+        <LifebuoyIcon />
+      </SvgIcon>
+    )
+  },
+  {
+    title: "Niveaux",
+    path: '/niveaux',
+    icon: (
+      <SvgIcon fontSize="small">
+        <BanknotesIcon />
+      </SvgIcon>
+    )
+  },
+  {
+    title: "Catégories",
+    path: '/categories',
+    icon: (
+      <SvgIcon fontSize="small">
+        <PaperClipIcon />
+      </SvgIcon>
+    )
+  },
+  {
+    title: "Réponses",
+    path: '/reponses',
+    icon: (
+      <SvgIcon fontSize="small">
+        <BookmarkSquareIcon />
+      </SvgIcon>
+    )
+  },
+  {
+    title: "Piliers",
+    path: '/piliers',
+    icon: (
+      <SvgIcon fontSize="small">
+        <TicketIcon />
+      </SvgIcon>
+    )
+  },
+  {
+    title: "Defis",
+    path: '/defis',
+    icon: (
+      <SvgIcon fontSize="small">
+        <SunIcon />
+      </SvgIcon>
+    )
+  },
+  {
+    title: "Questions",
+    path: '/questions',
+    icon: (
+      <SvgIcon fontSize="small">
+        <FolderOpenIcon />
       </SvgIcon>
     )
   },
@@ -55,15 +127,15 @@ export const items = [
       </SvgIcon>
     )
   },
-  {
-    title: 'Settings',
-    path: '/settings',
-    icon: (
-      <SvgIcon fontSize="small">
-        <CogIcon />
-      </SvgIcon>
-    )
-  },
+  // {
+  //   title: 'Settings',
+  //   path: '/settings',
+  //   icon: (
+  //     <SvgIcon fontSize="small">
+  //       <CogIcon />
+  //     </SvgIcon>
+  //   )
+  // },
   {
     title: 'Login',
     path: '/auth/login',

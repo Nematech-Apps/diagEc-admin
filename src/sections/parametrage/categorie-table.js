@@ -104,7 +104,7 @@ export const CategorieTable = (props) => {
 
 
     return (
-        <Card sx={sx}>
+        <Card sx={sx} elevation={20}>
             <CardHeader title="Catégories" />
             <List>
                 {getPaginatedItems().map((categorie, index) => {
@@ -168,18 +168,18 @@ export const CategorieTable = (props) => {
                                 </SvgIcon>
                             </Fab>
 
-                            <Fab size="small" color="error" aria-label="delete" sx={{ marginRight: 1 }}
+                            {/* <Fab size="small" color="error" aria-label="delete" sx={{ marginRight: 1 }}
                                 onClick={(event) => handleDeleteClick(event, categorie)}>
                                 <SvgIcon fontSize="small">
                                     <TrashIcon />
                                 </SvgIcon>
-                            </Fab>
+                            </Fab> */}
 
-                            <Fab size="small" color="neutral" aria-label="load" sx={{ marginRight: 1 }}>
+                            {/* <Fab size="small" color="neutral" aria-label="load" sx={{ marginRight: 1 }}>
                                 <SvgIcon fontSize="small">
                                     <FolderIcon />
                                 </SvgIcon>
-                            </Fab>
+                            </Fab> */}
 
                             {/* <IconButton
                                 edge="end"
@@ -282,7 +282,7 @@ export const CategorieTable = (props) => {
                         disabled={!isFirstPage}
                     >
                     </Button>
-                    <Typography>{`${currentPage}/${totalPage} of ${products.length} items`}</Typography>
+                    <Typography>{`${currentPage}/${totalPage} de ${products.length} éléments`}</Typography>
                     <Button
                         color="inherit"
                         endIcon={(

@@ -137,7 +137,7 @@ export const CreateCategory = () => {
           <Stack
             direction={'column'}
             spacing={3}
-            sx={{ maxWidth: 400 }}
+            sx={{ maxWidth: 800 }}
           >
             {/* <ImagePicker /> */}
 
