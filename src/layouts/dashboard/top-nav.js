@@ -13,6 +13,8 @@ import {
   Tooltip,
   useMediaQuery
 } from '@mui/material';
+
+import { LogoTopNav } from 'src/components/logo_top_nav';
 import { alpha } from '@mui/material/styles';
 import { usePopover } from 'src/hooks/use-popover';
 import { AccountPopover } from './account-popover';
@@ -31,7 +33,7 @@ export const TopNav = (props) => {
         component="header"
         sx={{
           backdropFilter: 'blur(6px)',
-          backgroundColor: (theme) => alpha(theme.palette.background.default, 0.8),
+          backgroundColor: (theme) => alpha(theme.palette.grey[100], 0.8),
           position: 'sticky',
           left: {
             lg: `${SIDE_NAV_WIDTH}px`
@@ -65,26 +67,16 @@ export const TopNav = (props) => {
                 </SvgIcon>
               </IconButton>
             )}
-            {/* <Tooltip title="Search">
-              <IconButton>
-                <SvgIcon fontSize="small">
-                  <MagnifyingGlassIcon />
-                </SvgIcon>
-              </IconButton>
-            </Tooltip> */}
+
+<LogoTopNav />
+            
           </Stack>
           <Stack
             alignItems="center"
             direction="row"
             spacing={2}
           >
-            {/* <Tooltip title="Contacts">
-              <IconButton>
-                <SvgIcon fontSize="small">
-                  <UsersIcon />
-                </SvgIcon>
-              </IconButton>
-            </Tooltip> */}
+            
             <Tooltip title="Notifications">
               <IconButton>
                 <Badge
