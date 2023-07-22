@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ComputerDesktopIcon from '@heroicons/react/24/solid/ComputerDesktopIcon';
 import DeviceTabletIcon from '@heroicons/react/24/solid/DeviceTabletIcon';
@@ -10,12 +11,16 @@ import {
   Stack,
   SvgIcon,
   Typography,
+  Skeleton,
   useTheme
 } from '@mui/material';
 import { Chart } from 'src/components/chart';
 
-const useChartOptions = (labels) => {
-  const theme = useTheme();
+import { getCompanyListByNiveau } from 'src/firebase/firebaseServices';
+import { OnSnapshot, Query } from 'src/firebase/firebaseConfig';
+
+const useChartOptions = (labels,theme) => {
+  //const theme = useTheme();
 
   return {
     chart: {
@@ -27,11 +32,11 @@ const useChartOptions = (labels) => {
       theme.palette.warning.main
     ],
     dataLabels: {
-      enabled: false
+      enabled: true
     },
     labels,
     legend: {
-      show: false
+      show: true
     },
     plotOptions: {
       pie: {
@@ -81,12 +86,53 @@ const iconMap = {
 };
 
 export const OverviewTraffic = (props) => {
-  const { chartSeries, labels, sx } = props;
-  const chartOptions = useChartOptions(labels);
+  const { labels, sx } = props;
+  //var chartOptions = useChartOptions(labels);
+
+  const theme = useTheme();
+
+  const [chartOptions, setChartOptions] = useState({});
+  const [chartSeries, setChartSeries] = useState([]);
+
+  const [data, setData] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const groupedData = await getCompanyListByNiveau();
+        const keysArray = Object.keys(groupedData);
+        const options = useChartOptions(keysArray,theme);
+        setChartOptions(options)
+        const valuesArray = Object.values(groupedData);
+        const arr = [];
+        valuesArray.forEach((elt) => {
+          arr.push(elt.length)
+        });
+        setChartSeries(arr);
+        setData(groupedData);
+        setIsLoading(false);
+      } catch (error) {
+        console.log('Error fetching data:', error);
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+
+  if (isLoading) {
+    return (
+      <Box sx={{ width: 200 }}>
+        <Skeleton variant="rectangular" width={210} height={118} />
+      </Box>
+    );
+  }
 
   return (
     <Card sx={sx}>
-      <CardHeader title="Traffic Source" />
+      <CardHeader title="Pourcentage d'entreprises par niveau" />
       <CardContent>
         <Chart
           height={300}
@@ -102,7 +148,7 @@ export const OverviewTraffic = (props) => {
           spacing={2}
           sx={{ mt: 2 }}
         >
-          {chartSeries.map((item, index) => {
+          {/* {chartSeries.map((item, index) => {
             const label = labels[index];
 
             return (
@@ -129,7 +175,7 @@ export const OverviewTraffic = (props) => {
                 </Typography>
               </Box>
             );
-          })}
+          })} */}
         </Stack>
       </CardContent>
     </Card>
@@ -137,7 +183,7 @@ export const OverviewTraffic = (props) => {
 };
 
 OverviewTraffic.propTypes = {
-  chartSeries: PropTypes.array.isRequired,
-  labels: PropTypes.array.isRequired,
+  chartSeries: PropTypes.array,
+  labels: PropTypes.array,
   sx: PropTypes.object
 };

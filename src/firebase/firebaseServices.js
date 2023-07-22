@@ -1,4 +1,4 @@
-import { db, storage, Ref, UploadBytes, UploadBytesResumable, GetDownloadURL, DeleteObject, Collection, AddDoc, Doc, SetDoc, GetDoc, GetDocs, OnSnapshot, UpdateDoc, DeleteDoc, auth, signin, signupUser, signout }
+import { db, storage, Ref, UploadBytes, UploadBytesResumable, GetDownloadURL, DeleteObject, Collection, AddDoc, Doc, SetDoc, GetDoc, GetDocs, OnSnapshot, UpdateDoc, DeleteDoc, Query, auth, signin, signupUser, signout }
     from './firebaseConfig';
 
 export const authenticate = (email, password) => {
@@ -389,3 +389,121 @@ export const getCompanyList = () => {
 
     return collectionRef;
 }
+
+
+export const getCompanyListByNiveau = async () => {
+    const collectionRef = Collection(db, 'companies');
+
+    try {
+        const querySnapshot = await GetDocs(collectionRef);
+
+        const groupedData = {};
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            const groupField = data.niveauAppartenance.libelle;
+            if (!groupedData[groupField]) {
+                groupedData[groupField] = [data];
+            } else {
+                groupedData[groupField].push(data);
+            }
+        });
+
+
+        return groupedData;
+    } catch (error) {
+        console.error('Error getting company list:', error);
+        return null;
+    }
+}
+
+
+export const getCompanyListBySecteur = async () => {
+    const collectionRef = Collection(db, 'companies');
+
+    try {
+        const querySnapshot = await GetDocs(collectionRef);
+
+        const groupedData = {};
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            const groupField = data.secteurAppartenance.libelle;
+            if (!groupedData[groupField]) {
+                groupedData[groupField] = [data];
+            } else {
+                groupedData[groupField].push(data);
+            }
+        });
+
+
+        return groupedData;
+    } catch (error) {
+        console.error('Error getting company list:', error);
+        return null;
+    }
+}
+
+
+function timeStampToDateString(timestamp) {
+    // Convert the timestamp (in seconds) to milliseconds since JavaScript Date works with milliseconds.
+    const timestampInMilliseconds = timestamp * 1000;
+    
+    // Create a new Date object using the timestamp in milliseconds.
+    const date = new Date(timestampInMilliseconds);
+    
+    // Get the components of the date (year, month, day, hours, minutes, seconds).
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed, so we add 1 and pad with '0'.
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    
+    // Create the formatted date string in the desired format.
+    const dateString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    
+    return dateString;
+  }
+  
+  function getMonthFromDate(dateString) {
+    // Extract the day and month parts from the date string.
+    const [day, monthName, yearTime] = dateString.split(' ');
+    
+    // Return the month name.
+    return monthName;
+  }
+  
+  export const getCompanyListByMonth = async () => {
+    const collectionRef = Collection(db, 'companies');
+  
+    try {
+      const querySnapshot = await GetDocs(collectionRef);
+  
+      const groupedData = {};
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        console.log(`createdAt: ${data.createdAt}`);
+        
+        // Convert the timestamp (in seconds) to a JavaScript Date object.
+        const date = new Date(data.createdAt.seconds * 1000);
+        
+        // Get the month name from the Date object.
+        const monthName = date.toLocaleString('default', { month: 'long' });
+        
+        // Use the month name as the key for grouping the data.
+        const groupField = monthName;
+        
+        if (!groupedData[groupField]) {
+          groupedData[groupField] = [data];
+        } else {
+          groupedData[groupField].push(data);
+        }
+      });
+  
+      return groupedData;
+    } catch (error) {
+      console.error('Error getting company list:', error);
+      return null;
+    }
+  }
+  
+  

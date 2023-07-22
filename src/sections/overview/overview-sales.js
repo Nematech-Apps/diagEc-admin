@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
 import ArrowRightIcon from '@heroicons/react/24/solid/ArrowRightIcon';
@@ -8,13 +9,18 @@ import {
   CardContent,
   CardHeader,
   Divider,
-  SvgIcon
+  SvgIcon,
+  Skeleton,
+  Box
 } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
 import { Chart } from 'src/components/chart';
 
-const useChartOptions = () => {
-  const theme = useTheme();
+import { getCompanyListByMonth } from 'src/firebase/firebaseServices';
+import { OnSnapshot, Query } from 'src/firebase/firebaseConfig';
+
+const useChartOptions = (theme) => {
+  //const theme = useTheme();
 
   return {
     chart: {
@@ -106,7 +112,50 @@ const useChartOptions = () => {
 
 export const OverviewSales = (props) => {
   const { chartSeries, sx } = props;
-  const chartOptions = useChartOptions();
+  const theme = useTheme();
+
+  const chartOptions = useChartOptions(theme);
+
+  
+  //const [chartOptions, setChartOptions] = useState({});
+  //const [chartSeries, setChartSeries] = useState([]);
+
+  const [data, setData] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const groupedData = await getCompanyListByMonth();
+        console.log(groupedData);
+        const keysArray = Object.keys(groupedData);
+        const options = useChartOptions(keysArray,theme);
+        //setChartOptions(options)
+        // const valuesArray = Object.values(groupedData);
+        // const arr = [];
+        // valuesArray.forEach((elt) => {
+        //   arr.push(elt.length)
+        // });
+        // setChartSeries(arr);
+        setData(groupedData);
+        setIsLoading(false);
+      } catch (error) {
+        console.log('Error fetching data:', error);
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+
+  if (isLoading) {
+    return (
+      <Box sx={{ width: 200 }}>
+        <Skeleton variant="rectangular" width={210} height={118} />
+      </Box>
+    );
+  }
 
   return (
     <Card sx={sx}>
@@ -121,10 +170,10 @@ export const OverviewSales = (props) => {
               </SvgIcon>
             )}
           >
-            Sync
+            Recharger
           </Button>
         )}
-        title="Sales"
+        title="Entreprises évaluées"
       />
       <CardContent>
         <Chart
@@ -137,7 +186,7 @@ export const OverviewSales = (props) => {
       </CardContent>
       <Divider />
       <CardActions sx={{ justifyContent: 'flex-end' }}>
-        <Button
+        {/* <Button
           color="inherit"
           endIcon={(
             <SvgIcon fontSize="small">
@@ -147,7 +196,7 @@ export const OverviewSales = (props) => {
           size="small"
         >
           Overview
-        </Button>
+        </Button> */}
       </CardActions>
     </Card>
   );

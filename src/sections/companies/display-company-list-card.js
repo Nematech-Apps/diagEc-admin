@@ -53,7 +53,7 @@ export const DisplayCompanyListCard = () => {
     if (isLoading) {
         return (
             <Stack sx={{ width: '100%', color: 'grey.500' }}
-spacing={2}>
+                spacing={2}>
                 <LinearProgress color="secondary" />
                 <LinearProgress color="success" />
                 <LinearProgress color="inherit" />
@@ -82,20 +82,20 @@ spacing={2}>
     return (
         <>
             <Grid container
-spacing={3}>
+                spacing={3}>
                 {getPaginatedItems().map((company) => (
                     <Grid xs={12}
-md={6}
-lg={4}
-key={company.id}>
+                        md={6}
+                        lg={4}
+                        key={company.id}>
                         <CompanyCard company={company} />
                     </Grid>
                 ))}
             </Grid>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Pagination count={pageCount}
-size="small"
-onChange={handlePagechange}/>
+                    size="small"
+                    onChange={handlePagechange} />
             </Box>
         </>
     );

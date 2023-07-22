@@ -1,5 +1,7 @@
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ListBulletIcon from '@heroicons/react/24/solid/ListBulletIcon';
+import TicketIcon from '@heroicons/react/24/solid/TicketIcon';
 import {
   Avatar,
   Box,
@@ -8,11 +10,50 @@ import {
   LinearProgress,
   Stack,
   SvgIcon,
-  Typography
+  Typography,
+  Skeleton
 } from '@mui/material';
+
+import { getPilierList } from 'src/firebase/firebaseServices';
+import { OnSnapshot } from 'src/firebase/firebaseConfig';
 
 export const OverviewTasksProgress = (props) => {
   const { value, sx } = props;
+
+  const [data, setData] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const unsubscribe = OnSnapshot(
+            getPilierList(),
+            (snapshot) => {
+                const fetchedData = snapshot.docs.map((doc) => ({
+                    ...doc.data(),
+                    id: doc.id
+                }));
+                setData(fetchedData);
+                setIsLoading(false);
+            },
+            (error) => {
+                console.log('Error fetching data:', error);
+                setIsLoading(false);
+            }
+        );
+
+        return () => {
+            // Clean up the listener when the component unmounts
+            unsubscribe();
+        };
+    }, []);
+
+    if (isLoading) {
+      return (
+        <Box sx={{ width: 200 }}>
+          <Skeleton variant="rectangular" width={210} height={118} />
+        </Box>
+      );
+    }
+
 
   return (
     <Card sx={sx}>
@@ -29,10 +70,10 @@ export const OverviewTasksProgress = (props) => {
               gutterBottom
               variant="overline"
             >
-              Evaluation des entreprises
+              Piliers
             </Typography>
             <Typography variant="h4">
-              {value}%
+            {data.length}
             </Typography>
           </Stack>
           <Avatar
@@ -43,16 +84,16 @@ export const OverviewTasksProgress = (props) => {
             }}
           >
             <SvgIcon>
-              <ListBulletIcon />
+              <TicketIcon />
             </SvgIcon>
           </Avatar>
         </Stack>
-        <Box sx={{ mt: 3 }}>
+        {/* <Box sx={{ mt: 3 }}>
           <LinearProgress
             value={value}
             variant="determinate"
           />
-        </Box>
+        </Box> */}
       </CardContent>
     </Card>
   );
