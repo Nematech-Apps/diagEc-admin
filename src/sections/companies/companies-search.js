@@ -1,23 +1,31 @@
+import React, { useState } from 'react';
 import MagnifyingGlassIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
 import { Card, InputAdornment, OutlinedInput, SvgIcon } from '@mui/material';
 
-export const CompaniesSearch = () => (
-  <Card sx={{ p: 2 }}>
-    <OutlinedInput
-      defaultValue=""
-      fullWidth
-      placeholder="Search company"
-      startAdornment={(
-        <InputAdornment position="start">
-          <SvgIcon
-            color="action"
-            fontSize="small"
-          >
-            <MagnifyingGlassIcon />
-          </SvgIcon>
-        </InputAdornment>
-      )}
-      sx={{ maxWidth: 500 }}
-    />
-  </Card>
-);
+export const CompaniesSearch = ({ onSearch }) => {
+  const [searchInput, setSearchInput] = useState('');
+
+  const handleInputChange = (event) => {
+    const searchTerm = event.target.value;
+    setSearchInput(searchTerm);
+    onSearch(searchTerm); 
+  };
+
+  return (
+    <Card sx={{ p: 2, width: '100%' }}>
+      <OutlinedInput
+        value={searchInput}
+        onChange={handleInputChange}
+        fullWidth
+        placeholder="Rechercher une entreprise(raison sociale, niveau, secteur, adresse)"
+        startAdornment={(
+          <InputAdornment position="start">
+            <SvgIcon color="action" fontSize="small">
+              <MagnifyingGlassIcon />
+            </SvgIcon>
+          </InputAdornment>
+        )}
+      />
+    </Card>
+  );
+};

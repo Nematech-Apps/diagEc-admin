@@ -1,4 +1,7 @@
-import { db, storage, Ref, UploadBytes, UploadBytesResumable, GetDownloadURL, DeleteObject, Collection, AddDoc, Doc, SetDoc, GetDoc, GetDocs, OnSnapshot, UpdateDoc, DeleteDoc, Query, auth, signin, signupUser, signout }
+import {
+    db, storage, Ref, UploadBytes, UploadBytesResumable, GetDownloadURL, DeleteObject, Collection, AddDoc, Doc, SetDoc, GetDoc, GetDocs, OnSnapshot, UpdateDoc, DeleteDoc, Query, Where, auth, signin, signupUser, signout
+    , SendPasswordResetEmail
+}
     from './firebaseConfig';
 
 export const authenticate = (email, password) => {
@@ -14,6 +17,9 @@ export const logout = () => {
     signout(auth);
 }
 
+export const resetPassword = (email) => {
+    return SendPasswordResetEmail(auth, email);
+}
 
 export const addUserToCollection = async (docId, data) => {
     const collectionRef = Doc(db, 'users', docId)
@@ -51,7 +57,9 @@ export const addSecteur = (data) => {
     const collectionRef = Collection(db, 'secteurs');
 
     const docData = {
-        libelle: data.libelle
+        libelleFr: data.libelleFr,
+        libelleEn: data.libelleEn,
+        libelleIt: data.libelleIt
     }
 
     return AddDoc(collectionRef, docData);
@@ -63,14 +71,59 @@ export const updateSecteur = async (data, docId) => {
 
     const docData = {
         ...snapshot.data(),
-        libelle: data.libelle
+        libelleFr: data.libelleFr,
+        libelleEn: data.libelleEn,
+        libelleIt: data.libelleIt
     };
 
     return UpdateDoc(collectionRef, docData)
 }
 
-export const deleteSecteur = (docId) => {
+export const checkCategoriesInSecteur = async (secteurId) => {
+    const collectionRef = Collection(db, 'categories');
+    const q = Query(collectionRef, Where('secteurAppartenance.id', '==', secteurId));
+    const querySnapshot = await GetDocs(q);
+    return !querySnapshot.empty;
+
+    // try {
+    //     const querySnapshot = await GetDocs(q);
+    //     const categories = [];
+
+    //     querySnapshot.forEach((doc) => {
+    //         categories.push({ id: doc.id, ...doc.data() });
+    //     });
+
+    //     return categories;
+    // } catch (error) {
+    //     console.error('Error checking categories in sector:', error);
+    //     throw error;
+    // }
+}
+
+export const checkCompaniesInSecteur = async (secteurId) => {
+    const collectionRef = Collection(db, 'companies');
+    const q = Query(collectionRef, Where('secteurAppartenance.id', '==', secteurId));
+    const querySnapshot = await GetDocs(q);
+    return !querySnapshot.empty;
+
+    // try {
+    //     const querySnapshot = await GetDocs(q);
+    //     const categories = [];
+
+    //     querySnapshot.forEach((doc) => {
+    //         categories.push({ id: doc.id, ...doc.data() });
+    //     });
+
+    //     return categories;
+    // } catch (error) {
+    //     console.error('Error checking categories in sector:', error);
+    //     throw error;
+    // }
+}
+
+export const deleteSecteur = async(docId) => {
     const collectionRef = Doc(db, 'secteurs', docId);
+
     return DeleteDoc(collectionRef);
 }
 
@@ -87,7 +140,9 @@ export const addNiveau = async (data) => {
     const collectionRef = Collection(db, 'niveaux');
 
     const docData = {
-        libelle: data.libelle
+        libelleFr: data.libelleFr,
+        libelleEn: data.libelleEn,
+        libelleIt: data.libelleIt
     }
 
     return AddDoc(collectionRef, docData);
@@ -99,10 +154,27 @@ export const updateNiveau = async (data, docId) => {
 
     const docData = {
         ...snapshot.data(),
-        libelle: data.libelle
+        libelleFr: data.libelleFr,
+        libelleEn: data.libelleEn,
+        libelleIt: data.libelleIt
     };
 
     return UpdateDoc(collectionRef, docData)
+}
+
+
+export const checkCategoriesInNiveau = async (niveauId) => {
+    const collectionRef = Collection(db, 'niveaux');
+    const q = Query(collectionRef, Where('niveauAppartenance.id', '==', niveauId));
+    const querySnapshot = await GetDocs(q);
+    return !querySnapshot.empty;
+}
+
+export const checkCompaniesInNiveau = async (niveauId) => {
+    const collectionRef = Collection(db, 'companies');
+    const q = Query(collectionRef, Where('niveauAppartenance.id', '==', niveauId));
+    const querySnapshot = await GetDocs(q);
+    return !querySnapshot.empty;
 }
 
 export const deleteNiveau = (docId) => {
@@ -143,6 +215,13 @@ export const updateCategorie = async (data, docId) => {
     return UpdateDoc(collectionRef, docData)
 }
 
+export const checkQuestionsInCategorie = async (categorieId) => {
+    const collectionRef = Collection(db, 'questions');
+    const q = Query(collectionRef, Where('categorie.id', '==', categorieId));
+    const querySnapshot = await GetDocs(q);
+    return !querySnapshot.empty;
+}
+
 export const deleteCategorie = (docId) => {
     const collectionRef = Doc(db, 'categories', docId);
     return DeleteDoc(collectionRef);
@@ -160,8 +239,9 @@ export const addAnswer = async (data) => {
     const collectionRef = Collection(db, 'answers');
 
     const docData = {
-        libelle: data.libelle,
-        point: data.point
+        libelleFr: data.libelleFr,
+        libelleEn: data.libelleEn,
+        libelleIt: data.libelleIt
     }
 
     return AddDoc(collectionRef, docData);
@@ -173,12 +253,14 @@ export const updateAnswer = async (data, docId) => {
 
     const docData = {
         ...snapshot.data(),
-        libelle: data.libelle,
-        point: data.point
+        libelleFr: data.libelleFr,
+        libelleEn: data.libelleEn,
+        libelleIt: data.libelleIt,
     };
 
     return UpdateDoc(collectionRef, docData)
 }
+
 
 export const deleteAnswer = (docId) => {
     const collectionRef = Doc(db, 'answers', docId);
@@ -197,7 +279,9 @@ export const addQuestion = async (data) => {
     const collectionRef = Collection(db, 'questions');
 
     const docData = {
-        libelle: data.libelle,
+        libelleFr: data.libelleFr,
+        libelleEn: data.libelleEn,
+        libelleIt: data.libelleIt,
         answers: data.answers,
         categorie: JSON.parse(data.categorie),
         poids: data.poids,
@@ -214,7 +298,9 @@ export const updateQuestion = async (data, docId) => {
 
     const docData = {
         ...snapshot.data(),
-        libelle: data.libelle,
+        libelleFr: data.libelleFr,
+        libelleEn: data.libelleEn,
+        libelleIt: data.libelleIt,
         answers: data.answers,
         categorie: JSON.parse(data.categorie),
         poids: data.poids,
@@ -242,8 +328,12 @@ export const addPilier = async (data) => {
     const collectionRef = Collection(db, 'piliers');
 
     const docData = {
-        libelle: data.libelle,
-        definition: data.definition
+        libelleFr: data.libelleFr,
+        libelleEn: data.libelleEn,
+        libelleIt: data.libelleIt,
+        definitionFr: data.definitionFr,
+        definitionEn: data.definitionEn,
+        definitionIt: data.definitionIt
     }
 
     return AddDoc(collectionRef, docData);
@@ -255,8 +345,12 @@ export const updatePilier = async (data, docId) => {
 
     const docData = {
         ...snapshot.data(),
-        libelle: data.libelle,
-        definition: data.definition
+        libelleFr: data.libelleFr,
+        libelleEn: data.libelleEn,
+        libelleIt: data.libelleIt,
+        definitionFr: data.definitionFr,
+        definitionEn: data.definitionEn,
+        definitionIt: data.definitionIt
     };
 
     return UpdateDoc(collectionRef, docData)
@@ -271,6 +365,13 @@ export const addMotCleToPilier = async (data, docId) => {
     };
 
     return UpdateDoc(collectionRef, docData)
+}
+
+export const checkQuestionsInPilier = async (pilierId) => {
+    const collectionRef = Collection(db, 'questions');
+    const q = Query(collectionRef, Where('pilier.id', '==', pilierId));
+    const querySnapshot = await GetDocs(q);
+    return !querySnapshot.empty;
 }
 
 export const deletePilier = (docId) => {
@@ -289,7 +390,9 @@ export const addDefis = async (data) => {
     const collectionRef = Collection(db, 'defis');
 
     const docData = {
-        libelle: data.libelle
+        libelleFr: data.libelleFr,
+        libelleEn: data.libelleEn,
+        libelleIt: data.libelleIt
     }
 
     return AddDoc(collectionRef, docData);
@@ -307,8 +410,8 @@ export const updateDefis = async (data, docId) => {
     return UpdateDoc(collectionRef, docData)
 }
 
-export const uploadFicheReflexe = async (fiche, docId) => {
-    const storageRef = Ref(storage, `fiches_reflexes/defi/${docId}`);
+export const uploadFicheReflexe = async (fiche, docId, lang) => {
+    const storageRef = Ref(storage, `fiches_reflexes/defi/${docId}/${lang}`);
     const uploadTask = UploadBytesResumable(storageRef, fiche);
 
     return new Promise((resolve, reject) => {
@@ -366,14 +469,21 @@ export const updateFicheReflexionCollection = async (url) => {
 }
 
 
+export const checkQuestionsInDefi = async (defiId) => {
+    const collectionRef = Collection(db, 'questions');
+    const q = Query(collectionRef, Where('defi.id', '==', defiId));
+    const querySnapshot = await GetDocs(q);
+    return !querySnapshot.empty;
+}
+
 
 export const deleteDefis = (docId) => {
     const collectionRef = Doc(db, 'defis', docId);
     return DeleteDoc(collectionRef);
 }
 
-export const deleteFicheReflexeInStorage = async (docId) => {
-    const storageRef = Ref(storage, `fiches_reflexes/defi/${docId}`);
+export const deleteFicheReflexeInStorage = async (docId, lang) => {
+    const storageRef = Ref(storage, `fiches_reflexes/defi/${docId}/${lang}`);
     return DeleteObject(storageRef);
 }
 
@@ -446,10 +556,10 @@ export const getCompanyListBySecteur = async () => {
 function timeStampToDateString(timestamp) {
     // Convert the timestamp (in seconds) to milliseconds since JavaScript Date works with milliseconds.
     const timestampInMilliseconds = timestamp * 1000;
-    
+
     // Create a new Date object using the timestamp in milliseconds.
     const date = new Date(timestampInMilliseconds);
-    
+
     // Get the components of the date (year, month, day, hours, minutes, seconds).
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed, so we add 1 and pad with '0'.
@@ -457,53 +567,52 @@ function timeStampToDateString(timestamp) {
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
     const seconds = String(date.getSeconds()).padStart(2, '0');
-    
+
     // Create the formatted date string in the desired format.
     const dateString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-    
+
     return dateString;
-  }
-  
-  function getMonthFromDate(dateString) {
+}
+
+function getMonthFromDate(dateString) {
     // Extract the day and month parts from the date string.
     const [day, monthName, yearTime] = dateString.split(' ');
-    
+
     // Return the month name.
     return monthName;
-  }
-  
-  export const getCompanyListByMonth = async () => {
+}
+
+export const getCompanyListByMonth = async () => {
     const collectionRef = Collection(db, 'companies');
-  
+
     try {
-      const querySnapshot = await GetDocs(collectionRef);
-  
-      const groupedData = {};
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        console.log(`createdAt: ${data.createdAt}`);
-        
-        // Convert the timestamp (in seconds) to a JavaScript Date object.
-        const date = new Date(data.createdAt.seconds * 1000);
-        
-        // Get the month name from the Date object.
-        const monthName = date.toLocaleString('default', { month: 'long' });
-        
-        // Use the month name as the key for grouping the data.
-        const groupField = monthName;
-        
-        if (!groupedData[groupField]) {
-          groupedData[groupField] = [data];
-        } else {
-          groupedData[groupField].push(data);
-        }
-      });
-  
-      return groupedData;
+        const querySnapshot = await GetDocs(collectionRef);
+
+        const groupedData = {};
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            console.log(`createdAt: ${data.createdAt}`);
+
+            // Convert the timestamp (in seconds) to a JavaScript Date object.
+            const date = new Date(data.createdAt.seconds * 1000);
+
+            // Get the month name from the Date object.
+            const monthName = date.toLocaleString('default', { month: 'long' });
+
+            // Use the month name as the key for grouping the data.
+            const groupField = monthName;
+
+            if (!groupedData[groupField]) {
+                groupedData[groupField] = [data];
+            } else {
+                groupedData[groupField].push(data);
+            }
+        });
+
+        return groupedData;
     } catch (error) {
-      console.error('Error getting company list:', error);
-      return null;
+        console.error('Error getting company list:', error);
+        return null;
     }
-  }
-  
-  
+}
+

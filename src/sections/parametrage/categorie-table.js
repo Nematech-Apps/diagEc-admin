@@ -34,6 +34,7 @@ import {
 
 import { EditCategorie } from './edit-categorie';
 import { deleteCategorie } from 'src/firebase/firebaseServices';
+import { checkQuestionsInCategorie } from 'src/firebase/firebaseServices';
 import ToastComponent from '../../components/toast';
 
 export const CategorieTable = (props) => {
@@ -92,20 +93,26 @@ export const CategorieTable = (props) => {
         setIsModalOpen(true);
     };
 
-    const handleDeleteClick = (event, categorie) => {
-        deleteCategorie(categorie.id)
-            .then(() => {
-                return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
-            })
-            .catch((err) => {
-                return ToastComponent({ message: err.message, type: 'error' });
-            })
+    const handleDeleteClick = async (event, categorie) => {
+        const hasQuestions = await checkQuestionsInCategorie(categorie.id);
+        if (hasQuestions) {
+            return ToastComponent({ message: "Cette catégorie est déjà lié à une ou des question(s). Vous devez d'abord supprimer cette(ces) question(s)", type: 'error' });
+        }
+        else {
+            deleteCategorie(categorie.id)
+                .then(() => {
+                    return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                })
+                .catch((err) => {
+                    return ToastComponent({ message: err.message, type: 'error' });
+                })
+        }
     };
 
 
     return (
         <Card sx={sx}
-elevation={20}>
+            elevation={20}>
             <CardHeader title="Catégories" />
             <List>
                 {getPaginatedItems().map((categorie, index) => {
@@ -163,21 +170,21 @@ elevation={20}>
                                 secondaryTypographyProps={{ variant: 'body2' }}
                             />
                             <Fab size="small"
-color="secondary"
-aria-label="edit"
-sx={{ marginRight: 1 }}
+                                //color="secondary"
+                                aria-label="edit"
+                                sx={{ marginRight: 1 }}
                                 onClick={(event) => handleEditClick(event, categorie)} >
                                 <SvgIcon fontSize="small" >
                                     <PencilIcon />
                                 </SvgIcon>
                             </Fab>
 
-                            {/* <Fab size="small" color="error" aria-label="delete" sx={{ marginRight: 1 }}
+                            <Fab size="small" color="error" aria-label="delete" sx={{ marginRight: 1 }}
                                 onClick={(event) => handleDeleteClick(event, categorie)}>
                                 <SvgIcon fontSize="small">
                                     <TrashIcon />
                                 </SvgIcon>
-                            </Fab> */}
+                            </Fab>
 
                             {/* <Fab size="small" color="neutral" aria-label="load" sx={{ marginRight: 1 }}>
                                 <SvgIcon fontSize="small">
@@ -264,8 +271,8 @@ sx={{ marginRight: 1 }}
                             </Menu> */}
 
                             {isModalOpen && modalData && <EditCategorie data={modalData}
-isOpen={isModalOpen}
-handleClose={() => setIsModalOpen(false)} />}
+                                isOpen={isModalOpen}
+                                handleClose={() => setIsModalOpen(false)} />}
                         </ListItem>
 
                     );
@@ -275,7 +282,7 @@ handleClose={() => setIsModalOpen(false)} />}
             <Divider />
             <CardActions sx={{ justifyContent: 'flex-end', alignItems: 'center' }}>
                 <Stack direction={'row'}
-spacing={3} >
+                    spacing={3} >
                     <Button
                         color="inherit"
                         endIcon={(

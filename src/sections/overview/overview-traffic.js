@@ -19,7 +19,7 @@ import { Chart } from 'src/components/chart';
 import { getCompanyListByNiveau } from 'src/firebase/firebaseServices';
 import { OnSnapshot, Query } from 'src/firebase/firebaseConfig';
 
-const useChartOptions = (labels,theme) => {
+const useChartOptions = (labels, theme) => {
   //const theme = useTheme();
 
   return {
@@ -102,7 +102,7 @@ export const OverviewTraffic = (props) => {
       try {
         const groupedData = await getCompanyListByNiveau();
         const keysArray = Object.keys(groupedData);
-        const options = useChartOptions(keysArray,theme);
+        const options = useChartOptions(keysArray, theme);
         setChartOptions(options)
         const valuesArray = Object.values(groupedData);
         const arr = [];
@@ -134,13 +134,23 @@ export const OverviewTraffic = (props) => {
     <Card sx={sx}>
       <CardHeader title="Pourcentage d'entreprises par niveau" />
       <CardContent>
-        <Chart
-          height={300}
-          options={chartOptions}
-          series={chartSeries}
-          type="donut"
-          width="100%"
-        />
+        {
+          chartSeries.length != 0 ?
+            <Chart
+              height={300}
+              options={chartOptions}
+              series={chartSeries}
+              type="donut"
+              width="100%"
+            /> :
+            <Typography
+              color="text.secondary"
+              variant="subtitle2"
+            >
+              Aucune donnée statistique pour le moment
+            </Typography>
+        }
+
         <Stack
           alignItems="center"
           direction="row"

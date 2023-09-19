@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import ArrowDownOnSquareIcon from '@heroicons/react/24/solid/ArrowDownOnSquareIcon';
 import ClockIcon from '@heroicons/react/24/solid/ClockIcon';
-import { Avatar, Box, Card, CardContent, Divider, Stack, SvgIcon, Typography } from '@mui/material';
+import InformationCircleIcon from '@heroicons/react/24/solid/InformationCircleIcon';
+import { Avatar, Box, Card, CardContent, Divider, Stack, SvgIcon, Typography, Button, Fab, FormControlLabel } from '@mui/material';
+import { IOSSwitch } from 'src/components/ios-switch';
 
 export const CompanyCard = (props) => {
   const { company } = props;
@@ -20,7 +22,7 @@ export const CompanyCard = (props) => {
     };
 
     const formatted = date.toLocaleString('fr-FR', options);
-    const str =  formatted.replace('à', 'à ');
+    const str = formatted.replace('à', 'à ');
     return str.replace('UTC', '');
   }
 
@@ -54,6 +56,14 @@ export const CompanyCard = (props) => {
         >
           {company.raisonSociale}
         </Typography>
+        <Typography
+          align="center"
+          gutterBottom
+          variant="h5"
+        >
+          <IOSSwitch sx={{ m: 1 }} defaultChecked />
+        </Typography>
+
         <Typography
           align="center"
           variant="body1"
@@ -92,9 +102,24 @@ export const CompanyCard = (props) => {
         <Stack
           alignItems="center"
           direction="row"
-          spacing={1}
         >
-          <SvgIcon
+          <Fab
+            variant="extended"
+            size="small"
+            color="warning"
+            aria-label="info"
+          >
+            <SvgIcon fontSize="small">
+              <InformationCircleIcon />
+            </SvgIcon>
+          </Fab>
+          {/* <Button variant="outlined" startIcon={<SvgIcon
+            color="info"
+            fontSize="small"
+          ><InformationCircleIcon /></SvgIcon>}>
+
+          </Button> */}
+          {/* <SvgIcon
             color="action"
             fontSize="small"
           >
@@ -106,7 +131,7 @@ export const CompanyCard = (props) => {
             variant="body2"
           >
 
-          </Typography>
+          </Typography> */}
         </Stack>
       </Stack>
     </Card>

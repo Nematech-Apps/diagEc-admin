@@ -86,61 +86,70 @@ const iconMap = {
 };
 
 export const OverviewTraffic2 = (props) => {
-    const { labels, sx } = props;
-    //var chartOptions = useChartOptions(labels);
-  
-    const theme = useTheme();
-  
-    const [chartOptions, setChartOptions] = useState({});
-    const [chartSeries, setChartSeries] = useState([]);
-  
-    const [data, setData] = useState({});
-    const [isLoading, setIsLoading] = useState(true);
-  
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const groupedData = await getCompanyListBySecteur();
-          const keysArray = Object.keys(groupedData);
-          const options = useChartOptions(keysArray,theme);
-          setChartOptions(options)
-          const valuesArray = Object.values(groupedData);
-          const arr = [];
-          valuesArray.forEach((elt) => {
-            arr.push(elt.length)
-          });
-          setChartSeries(arr);
-          setData(groupedData);
-          setIsLoading(false);
-        } catch (error) {
-          console.log('Error fetching data:', error);
-          setIsLoading(false);
-        }
-      };
-  
-      fetchData();
-    }, []);
-  
-  
-    if (isLoading) {
-      return (
-        <Box sx={{ width: 200 }}>
-          <Skeleton variant="rectangular" width={210} height={118} />
-        </Box>
-      );
-    }
+  const { labels, sx } = props;
+  //var chartOptions = useChartOptions(labels);
+
+  const theme = useTheme();
+
+  const [chartOptions, setChartOptions] = useState({});
+  const [chartSeries, setChartSeries] = useState([]);
+
+  const [data, setData] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const groupedData = await getCompanyListBySecteur();
+        const keysArray = Object.keys(groupedData);
+        const options = useChartOptions(keysArray, theme);
+        setChartOptions(options)
+        const valuesArray = Object.values(groupedData);
+        const arr = [];
+        valuesArray.forEach((elt) => {
+          arr.push(elt.length)
+        });
+        setChartSeries(arr);
+        setData(groupedData);
+        setIsLoading(false);
+      } catch (error) {
+        console.log('Error fetching data:', error);
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+
+  if (isLoading) {
+    return (
+      <Box sx={{ width: 200 }}>
+        <Skeleton variant="rectangular" width={210} height={118} />
+      </Box>
+    );
+  }
 
   return (
     <Card sx={sx}>
       <CardHeader title="Pourcentage d'entreprises par secteur d'activité" />
       <CardContent>
-        <Chart
-          height={300}
-          options={chartOptions}
-          series={chartSeries}
-          type="donut"
-          width="100%"
-        />
+        {
+          chartSeries.length != 0 ?
+            <Chart
+              height={300}
+              options={chartOptions}
+              series={chartSeries}
+              type="donut"
+              width="100%"
+            /> :
+            <Typography
+              color="text.secondary"
+              variant="subtitle2"
+            >
+              Aucune donnée statistique pour le moment
+            </Typography>
+        }
         <Stack
           alignItems="center"
           direction="row"

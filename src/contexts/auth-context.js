@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useReducer, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-import { authenticate, register, addUserToCollection, logout, getUserByUid, getUserList } from "../firebase/firebaseServices";
+import { authenticate, register, addUserToCollection, logout, getUserByUid, getUserList, resetPassword } from "../firebase/firebaseServices";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { auth } from '../firebase/firebaseConfig';
 
@@ -188,6 +188,15 @@ export const AuthProvider = (props) => {
     });
   };
 
+  const resetUserPassword = async (email) => {
+    try {
+      await resetPassword(email);
+    } catch (error) {
+      throw new Error("Failed to reset user password : " + error.message);
+    }
+    
+  }
+
 
   const getUser = async (uid) => {
     try {
@@ -205,6 +214,7 @@ export const AuthProvider = (props) => {
         signIn,
         signUp,
         signOut,
+        resetUserPassword,
         getUser
       }}
     >

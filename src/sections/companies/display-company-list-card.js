@@ -17,6 +17,7 @@ import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { CompanyCard } from './company-card';
 import { CompaniesSearch } from './companies-search';
 
+
 import { getCompanyList } from 'src/firebase/firebaseServices';
 import { OnSnapshot } from 'src/firebase/firebaseConfig';
 
@@ -26,6 +27,11 @@ export const DisplayCompanyListCard = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     const [currentPage, setCurrentPage] = useState(1);
+
+    const itemsPerPage = 6;
+    const pageCount = Math.ceil(data.length / itemsPerPage);
+
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         const unsubscribe = OnSnapshot(
@@ -61,14 +67,25 @@ export const DisplayCompanyListCard = () => {
         );
     }
 
-    const itemsPerPage = 6;
-    const pageCount = Math.ceil(data.length / itemsPerPage);
+
+
+    const handleSearch = (searchTerm) => {
+        setCurrentPage(1);
+        setSearchTerm(searchTerm);
+    };
 
     const getPaginatedItems = () => {
+        const filteredData = data.filter((company) =>
+            (company.raisonSociale?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+            (company.adresse?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+            (company.secteurAppartenance?.libelle?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+            (company.niveauAppartenance?.libelle?.toLowerCase() || '').includes(searchTerm.toLowerCase())
+        );
+
         const startIndex = (currentPage - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
-        return data.slice(startIndex, endIndex);
-    }
+        return filteredData.slice(startIndex, endIndex);
+    };
 
     const handlePagechange = () => {
         if (currentPage < pageCount) {
@@ -81,22 +98,33 @@ export const DisplayCompanyListCard = () => {
 
     return (
         <>
-            <Grid container
-                spacing={3}>
-                {getPaginatedItems().map((company) => (
-                    <Grid xs={12}
-                        md={6}
-                        lg={4}
-                        key={company.id}>
-                        <CompanyCard company={company} />
+            <Stack direction={'column'} spacing={3}>
+                <CompaniesSearch onSearch={handleSearch} />
+                <Grid container
+                    spacing={3}>
+                    {getPaginatedItems().length != 0 ? getPaginatedItems().map((company) => (
+                        <Grid xs={12}
+                            md={6}
+                            lg={4}
+                            key={company.id}>
+                            <CompanyCard company={company} />
+                        </Grid>
+                    )) : <Grid lg={12} xs={12} md={12}>
+                        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                            <Typography variant="subtitle2">
+                                Aucun élément à afficher
+                            </Typography>
+                        </Box>
                     </Grid>
-                ))}
-            </Grid>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                <Pagination count={pageCount}
-                    size="small"
-                    onChange={handlePagechange} />
-            </Box>
+
+                    }
+                </Grid>
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <Pagination count={pageCount}
+                        size="small"
+                        onChange={handlePagechange} />
+                </Box>
+            </Stack>
         </>
     );
 };

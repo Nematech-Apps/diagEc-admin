@@ -43,6 +43,7 @@ const style = {
     border: '1px solid #000',
     boxShadow: 24,
     p: 4,
+    borderRadius: 4
 };
 
 export const EditCategorie = ({ handleClose, isOpen, data }) => {
@@ -106,18 +107,18 @@ export const EditCategorie = ({ handleClose, isOpen, data }) => {
                 .required("Le niveau d'appartenance est requis"),
         }),
         onSubmit: async (values, helpers) => {
-            updateCategorie(values,data.id)
-            .then(() => {
-                helpers.resetForm();
-                handleClose();
-                return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
-            })
-            .catch((err) => {
-                helpers.setStatus({ success: false });
-                helpers.setErrors({ submit: err.message });
-                helpers.setSubmitting(false);
-                return ToastComponent({ message: err.message, type: 'error' });
-            })
+            updateCategorie(values, data.id)
+                .then(() => {
+                    helpers.resetForm();
+                    handleClose();
+                    return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                })
+                .catch((err) => {
+                    helpers.setStatus({ success: false });
+                    helpers.setErrors({ submit: err.message });
+                    helpers.setSubmitting(false);
+                    return ToastComponent({ message: err.message, type: 'error' });
+                })
 
         }
     });
@@ -178,13 +179,13 @@ export const EditCategorie = ({ handleClose, isOpen, data }) => {
                                             </MenuItem>
                                             {secteurs.map((secteur, index) => {
                                                 return (<MenuItem value={JSON.stringify(secteur)}
-key={index}>{secteur.libelle}</MenuItem>)
+                                                    key={index}>{secteur.libelleFr}</MenuItem>)
                                             })}
 
                                         </Select>
                                         {formik.touched.secteurAppartenance && formik.errors.secteurAppartenance && (
                                             <Typography color="error"
-variant="caption">
+                                                variant="caption">
                                                 {formik.errors.secteurAppartenance}
                                             </Typography>
                                         )}
@@ -208,12 +209,12 @@ variant="caption">
                                             </MenuItem>
                                             {niveaux.map((niveau, index) => {
                                                 return (<MenuItem value={JSON.stringify(niveau)}
-key={index}>{niveau.libelle}</MenuItem>)
+                                                    key={index}>{niveau.libelleFr}</MenuItem>)
                                             })}
                                         </Select>
                                         {formik.touched.niveauAppartenance && formik.errors.niveauAppartenance && (
                                             <Typography color="error"
-variant="caption">
+                                                variant="caption">
                                                 {formik.errors.niveauAppartenance}
                                             </Typography>
                                         )}
@@ -232,9 +233,13 @@ variant="caption">
 
                             </CardContent>
                             <Divider />
-                            <CardActions sx={{ justifyContent: 'flex-end' }}>
+                            <CardActions sx={{ justifyContent: 'center' }}>
+                                <Button variant="contained" color='warning'
+                                    type='button' onClick={handleClose}>
+                                    Annuler
+                                </Button>
                                 <Button variant="contained"
-type='submit'>
+                                    type='submit'>
                                     Mettre à jour
                                 </Button>
                             </CardActions>

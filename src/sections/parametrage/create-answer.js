@@ -24,19 +24,24 @@ export const CreateAnswer = () => {
 
   const formik = useFormik({
     initialValues: {
-      libelle: '',
-      point: 0,
+      libelleFr: '',
+      libelleEn: '',
+      libelleIt: '',
       submit: null
     },
     validationSchema: Yup.object({
-      libelle: Yup
+      libelleFr: Yup
         .string()
         .max(255)
-        .required("Le libellé est requis"),
-      point: Yup
-        .number()
+        .required("Le libellé en français est requis"),
+      libelleEn: Yup
+        .string()
         .max(255)
-        .required("Le point est requis"),
+        .required("Le libellé en anglais est requis"),
+      libelleIt: Yup
+        .string()
+        .max(255)
+        .required("Le libellé en italien est requis"),
     }),
     onSubmit: async (values, helpers) => {
       // try{
@@ -86,27 +91,51 @@ export const CreateAnswer = () => {
       <Card>
         <CardHeader
           //subheader="catégorie"
-          title="Réponse"
+          title="Ajouter Réponse"
         />
         <Divider />
         <CardContent>
           <Stack
             spacing={3}
-            sx={{ maxWidth: 400 }}
+            sx={{ maxWidth: 1000 }}
           >
             <TextField
-              error={!!(formik.touched.libelle && formik.errors.libelle)}
+              error={!!(formik.touched.libelleFr && formik.errors.libelleFr)}
               fullWidth
-              helperText={formik.touched.libelle && formik.errors.libelle}
-              label="Libellé"
-              name="libelle"
+              helperText={formik.touched.libelleFr && formik.errors.libelleFr}
+              label="Libellé en français"
+              name="libelleFr"
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
               type="text"
-              value={formik.values.libelle}
+              value={formik.values.libelleFr}
             />
 
             <TextField
+              error={!!(formik.touched.libelleEn && formik.errors.libelleEn)}
+              fullWidth
+              helperText={formik.touched.libelleEn && formik.errors.libelleEn}
+              label="Libellé en anglais"
+              name="libelleEn"
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              type="text"
+              value={formik.values.libelleEn}
+            />
+
+            <TextField
+              error={!!(formik.touched.libelleIt && formik.errors.libelleIt)}
+              fullWidth
+              helperText={formik.touched.libelleIt && formik.errors.libelleIt}
+              label="Libellé en italien"
+              name="libelleIt"
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              type="text"
+              value={formik.values.libelleIt}
+            />
+
+            {/* <TextField
               error={!!(formik.touched.point && formik.errors.point)}
               fullWidth
               helperText={formik.touched.point && formik.errors.point}
@@ -116,7 +145,7 @@ export const CreateAnswer = () => {
               onChange={formik.handleChange}
               type="number"
               value={formik.values.point}
-            />
+            /> */}
           </Stack>
           {formik.errors.submit && (
             <Typography

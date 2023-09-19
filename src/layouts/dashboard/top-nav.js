@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import BellIcon from '@heroicons/react/24/solid/BellIcon';
 import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
 import Bars3Icon from '@heroicons/react/24/solid/Bars3Icon';
+import GlobeAltIcon from '@heroicons/react/24/solid/GlobeAltIcon';
 import MagnifyingGlassIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
 import {
   Avatar,
@@ -77,17 +78,11 @@ export const TopNav = (props) => {
             spacing={2}
           >
             
-            <Tooltip title="Notifications">
-              <IconButton>
-                <Badge
-                  badgeContent={4}
-                  color="success"
-                  variant="dot"
-                >
+            <Tooltip title="DiagEc-Web">
+              <IconButton href='https://diagec.ohana-entreprise.com/' target='_blank'>
                   <SvgIcon fontSize="small">
-                    <BellIcon />
+                    <GlobeAltIcon />
                   </SvgIcon>
-                </Badge>
               </IconButton>
             </Tooltip>
             <Avatar

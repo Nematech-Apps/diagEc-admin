@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -7,9 +7,19 @@ import {
   CardContent,
   CardHeader,
   Divider,
+  Stack,
+  Chip,
   TextField,
   Unstable_Grid2 as Grid
 } from '@mui/material';
+
+import EnvelopeIcon from '@heroicons/react/24/solid/EnvelopeIcon';
+import { SvgIcon } from '@mui/material';
+
+import { useAuth } from 'src/hooks/use-auth';
+import { auth as firebaseAuth } from '../../firebase/firebaseConfig';
+
+import ToastComponent from 'src/components/toast';
 
 const states = [
   {
@@ -57,6 +67,34 @@ export const AccountProfileDetails = () => {
     []
   );
 
+  const auth = useAuth();
+  const [userData, setUserData] = useState(null)
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userSnapshot = await auth.getUser(firebaseAuth.currentUser?.uid);
+        setUserData(userSnapshot);
+      } catch (error) {
+        alert(error.message);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  const [pwd, setPwd] = useState('')
+
+  const handleSendResetPwdLink = async () => {
+    try{
+      await auth.resetUserPassword(userData?.email);
+      return ToastComponent({ message: 'Lien envoyé avec succès! Veuillez vérifier votre boîte mail.', type: 'success' });
+    }
+    catch(error){
+      return ToastComponent({ message: error.message, type: 'error' });
+    }
+  }
+
   return (
     <form
       autoComplete="off"
@@ -65,8 +103,8 @@ export const AccountProfileDetails = () => {
     >
       <Card>
         <CardHeader
-          subheader="The information can be edited"
-          title="Profile"
+          subheader="Seul le mot de passe peut être modifié"
+          title="Détails"
         />
         <CardContent sx={{ pt: 0 }}>
           <Box sx={{ m: -1.5 }}>
@@ -80,41 +118,65 @@ export const AccountProfileDetails = () => {
               >
                 <TextField
                   fullWidth
-                  helperText="Please specify the first name"
-                  label="First name"
-                  name="firstName"
-                  onChange={handleChange}
-                  required
-                  value={values.firstName}
-                />
-              </Grid>
-              <Grid
-                xs={12}
-                md={6}
-              >
-                <TextField
-                  fullWidth
-                  label="Last name"
-                  name="lastName"
-                  onChange={handleChange}
-                  required
-                  value={values.lastName}
-                />
-              </Grid>
-              <Grid
-                xs={12}
-                md={6}
-              >
-                <TextField
-                  fullWidth
-                  label="Email Address"
+                  //helperText="Please specify the first name"
+                  label="Email"
                   name="email"
-                  onChange={handleChange}
                   required
-                  value={values.email}
+                  value={userData?.email}
+                  disabled
+                  sx={{ paddingTop: 2 }}
                 />
               </Grid>
               <Grid
+                xs={12}
+                md={6}
+              >
+                <TextField
+                  fullWidth
+                  label="Identifiant"
+                  name="identifiant"
+                  required
+                  value={userData?.identifiant}
+                  disabled
+                  sx={{ paddingTop: 2 }}
+                />
+              </Grid>
+              <Grid
+                xs={12}
+                md={12}
+              >
+                <Divider>
+                  <Chip label="Mise à jour du mot de passe" />
+                </Divider>
+              </Grid>
+
+              <Grid
+                xs={12}
+                md={12}
+              >
+                <Button
+                  variant="contained"
+                  endIcon={
+                    <SvgIcon>
+                      <EnvelopeIcon />
+                    </SvgIcon>
+                  }
+                  fullWidth
+                  onClick={handleSendResetPwdLink}
+                >
+                  Envoyer un lien de rénitialisation de mot de passe
+                </Button>
+                {/* <TextField
+                  fullWidth
+                  label="Mot de passe"
+                  name="mot de passe"
+                  type='password'
+                  onChange={(e) => setPwd(e.target.value)}
+                  required
+                  value={pwd}
+                /> */}
+              </Grid>
+              {/* <Grid
                 xs={12}
                 md={6}
               >
@@ -126,8 +188,8 @@ export const AccountProfileDetails = () => {
                   type="number"
                   value={values.phone}
                 />
-              </Grid>
-              <Grid
+              </Grid> */}
+              {/* <Grid
                 xs={12}
                 md={6}
               >
@@ -163,16 +225,16 @@ export const AccountProfileDetails = () => {
                     </option>
                   ))}
                 </TextField>
-              </Grid>
+              </Grid> */}
             </Grid>
           </Box>
         </CardContent>
         <Divider />
-        <CardActions sx={{ justifyContent: 'flex-end' }}>
-          <Button variant="contained">
-            Save details
+        {/* <CardActions sx={{ justifyContent: 'flex-end' }}>
+          <Button variant="contained" onClick={handleEditPwd}>
+            Enregistrer
           </Button>
-        </CardActions>
+        </CardActions> */}
       </Card>
     </form>
   );

@@ -3,6 +3,9 @@ import NextLink from 'next/link';
 import { Box, Typography, Unstable_Grid2 as Grid } from '@mui/material';
 import { Logo } from 'src/components/logo';
 
+import LottieAnimation from 'src/components/lottieAnimation';
+import animationData from 'src/animations/welcome.json';
+
 // TODO: Change subtitle text
 
 export const Layout = (props) => {
@@ -73,13 +76,13 @@ export const Layout = (props) => {
               align="center"
               color="inherit"
               sx={{
-                fontSize: '24px',
+                fontSize: '16px',
                 lineHeight: '32px',
                 mb: 1
               }}
-              variant="h1"
+              variant="h2"
             >
-              Bienvenue 
+              Bienvenue sur la plateforme admin de DiagEc
               <Box
                 component="a"
                 sx={{ color: '#15B79E' }}
@@ -90,15 +93,21 @@ export const Layout = (props) => {
             </Typography>
             <Typography
               align="center"
-              sx={{ mb: 3 }}
-              variant="subtitle1"
+              sx={{ 
+                mb: 3,
+                fontSize: '10px',
+                lineHeight: '32px', 
+              }}
+              variant="h4"
             >
-              sur la plateforme admin de DiagEc
+              Cette plateforme permet de créer des données qui seront utilisées par l'application mobile et 
+              l'application web Diag'Ec, d'administrer les données produites par ces deux applications.
             </Typography>
             {/* <img
               alt=""
-              src="/assets/auth-illustration.svg"
+              src="/assets/ecologie-industrielle_terre.png"
             /> */}
+            <LottieAnimation animationData={animationData} />
           </Box>
         </Grid>
       </Grid>

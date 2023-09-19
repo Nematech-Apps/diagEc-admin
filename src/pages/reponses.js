@@ -61,15 +61,15 @@ const Page = () => {
                         <Grid
                         xs={12}
                         md={12}
-                        lg={6}
+                        lg={12}
                     >
                         <CreateAnswer />
                     </Grid>
 
                     <Grid
                         xs={12}
-                        md={6}
-                        lg={6}
+                        md={12}
+                        lg={12}
                     >
                         <DisplayAnswerTable />
                     </Grid>

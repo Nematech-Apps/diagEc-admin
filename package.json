@@ -30,6 +30,7 @@
     "date-fns": "2.29.3",
     "firebase": "^9.22.2",
     "formik": "2.2.9",
+    "lottie-web": "^5.12.2",
     "next": "13.1.6",
     "nprogress": "0.2.0",
     "prop-types": "15.8.1",

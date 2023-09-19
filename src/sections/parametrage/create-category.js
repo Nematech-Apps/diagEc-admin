@@ -130,7 +130,7 @@ export const CreateCategory = () => {
       <Card>
         <CardHeader
           //subheader="catégorie"
-          title="Catégorie"
+          title="Ajouter Catégorie"
         />
         <Divider />
         <CardContent>
@@ -153,11 +153,11 @@ export const CreateCategory = () => {
               value={formik.values.libelle}
             />
 
-            <FormControl variant="standard" >
-              <InputLabel id="demo-simple-select-standard-label">Secteur d'appartenance</InputLabel>
+            <FormControl variant="filled" >
+              <InputLabel id="demo-simple-select-standard-label1">Secteur d'appartenance</InputLabel>
               <Select
-                labelId="demo-simple-select-standard-label"
-                id="demo-simple-select-standard"
+                labelId="demo-simple-select-standard-label1"
+                id="demo-simple-select-standard1"
                 name="secteurAppartenance"
                 error={!!(formik.touched.secteurAppartenance && formik.errors.secteurAppartenance)}
                 value={formik.values.secteurAppartenance}
@@ -170,24 +170,24 @@ export const CreateCategory = () => {
                 </MenuItem>
                 {secteurs.map((secteur, index) => {
                   return (<MenuItem value={JSON.stringify(secteur)}
-key={index}>{secteur.libelle}</MenuItem>)
+                    key={index}>{secteur.libelleFr}</MenuItem>)
                 })}
 
               </Select>
               {formik.touched.secteurAppartenance && formik.errors.secteurAppartenance && (
                 <Typography color="error"
-variant="caption">
+                  variant="caption">
                   {formik.errors.secteurAppartenance}
                 </Typography>
               )}
             </FormControl>
 
 
-            <FormControl variant="standard" >
-              <InputLabel id="demo-simple-select-standard-label">Niveau d'appartenance</InputLabel>
+            <FormControl variant="filled">
+              <InputLabel id="demo-simple-select-standard-label2">Niveau d'appartenance</InputLabel>
               <Select
-                labelId="demo-simple-select-standard-label"
-                id="demo-simple-select-standard"
+                labelId="demo-simple-select-standard-label2"
+                id="demo-simple-select-standard2"
                 name="niveauAppartenance"
                 error={!!(formik.touched.niveauAppartenance && formik.errors.niveauAppartenance)}
                 value={formik.values.niveauAppartenance}
@@ -200,12 +200,12 @@ variant="caption">
                 </MenuItem>
                 {niveaux.map((niveau, index) => {
                   return (<MenuItem value={JSON.stringify(niveau)}
-key={index}>{niveau.libelle}</MenuItem>)
+                    key={index}>{niveau.libelleFr}</MenuItem>)
                 })}
               </Select>
               {formik.touched.niveauAppartenance && formik.errors.niveauAppartenance && (
                 <Typography color="error"
-variant="caption">
+                  variant="caption">
                   {formik.errors.niveauAppartenance}
                 </Typography>
               )}
@@ -226,7 +226,7 @@ variant="caption">
         <Divider />
         <CardActions sx={{ justifyContent: 'flex-end' }}>
           <Button variant="contained"
-type='submit'>
+            type='submit'>
             Créer
           </Button>
         </CardActions>

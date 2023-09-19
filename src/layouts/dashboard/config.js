@@ -20,7 +20,7 @@ import { SvgIcon } from '@mui/material';
 
 export const items = [
   {
-    title: 'Vue Globale',
+    title: 'Tableau de bord',
     path: '/',
     icon: (
       <SvgIcon fontSize="small">

@@ -24,17 +24,36 @@ export const CreatePilier = () => {
 
     const formik = useFormik({
         initialValues: {
-            libelle: '',
-            definition: '',
+            libelleFr: '',
+            libelleEn: '',
+            libelleIt: '',
+            definitionFr: '',
+            definitionEn: '',
+            definitionIt: '',
             submit: null
         },
         validationSchema: Yup.object({
-            libelle: Yup
+            libelleFr: Yup
                 .string()
-                .required("Le libellé est requis"),
-            definition: Yup
+                .max(255)
+                .required("Le libellé en français est requis"),
+            libelleEn: Yup
                 .string()
-                .required("La definition est requise"),
+                .max(255)
+                .required("Le libellé en anglais est requis"),
+            libelleIt: Yup
+                .string()
+                .max(255)
+                .required("Le libellé en italien est requis"),
+            definitionFr: Yup
+                .string()
+                .required("La definition en français est requise"),
+            definitionEn: Yup
+                .string()
+                .required("La definition en anglais est requise"),
+            definitionIt: Yup
+                .string()
+                .required("La definition en italien est requise"),
         }),
         onSubmit: async (values, helpers) => {
 
@@ -77,7 +96,7 @@ export const CreatePilier = () => {
             <Card>
                 <CardHeader
                     //subheader="catégorie"
-                    title="Pilier"
+                    title="Ajouter Pilier"
                 />
                 <Divider />
                 <CardContent>
@@ -86,27 +105,75 @@ export const CreatePilier = () => {
                         sx={{ maxWidth: 800 }}
                     >
                         <TextField
-                            error={!!(formik.touched.libelle && formik.errors.libelle)}
+                            error={!!(formik.touched.libelleFr && formik.errors.libelleFr)}
                             fullWidth
-                            helperText={formik.touched.libelle && formik.errors.libelle}
-                            label="Libellé"
-                            name="libelle"
+                            helperText={formik.touched.libelleFr && formik.errors.libelleFr}
+                            label="Libellé en français"
+                            name="libelleFr"
                             onBlur={formik.handleBlur}
                             onChange={formik.handleChange}
                             type="text"
-                            value={formik.values.libelle}
+                            value={formik.values.libelleFr}
                         />
 
                         <TextField
-                            error={!!(formik.touched.definition && formik.errors.definition)}
+                            error={!!(formik.touched.libelleEn && formik.errors.libelleEn)}
                             fullWidth
-                            helperText={formik.touched.definition && formik.errors.definition}
-                            label="Definition"
-                            name="definition"
+                            helperText={formik.touched.libelleEn && formik.errors.libelleEn}
+                            label="Libellé en anglais"
+                            name="libelleEn"
                             onBlur={formik.handleBlur}
                             onChange={formik.handleChange}
                             type="text"
-                            value={formik.values.definition}
+                            value={formik.values.libelleEn}
+                        />
+
+                        <TextField
+                            error={!!(formik.touched.libelleIt && formik.errors.libelleIt)}
+                            fullWidth
+                            helperText={formik.touched.libelleIt && formik.errors.libelleIt}
+                            label="Libellé en italien"
+                            name="libelleIt"
+                            onBlur={formik.handleBlur}
+                            onChange={formik.handleChange}
+                            type="text"
+                            value={formik.values.libelleIt}
+                        />
+
+                        <TextField
+                            error={!!(formik.touched.definitionFr && formik.errors.definitionFr)}
+                            fullWidth
+                            helperText={formik.touched.definitionFr && formik.errors.definitionFr}
+                            label="Définition en français"
+                            name="definitionFr"
+                            onBlur={formik.handleBlur}
+                            onChange={formik.handleChange}
+                            type="text"
+                            value={formik.values.definitionFr}
+                        />
+
+                        <TextField
+                            error={!!(formik.touched.definitionEn && formik.errors.definitionEn)}
+                            fullWidth
+                            helperText={formik.touched.definitionEn && formik.errors.definitionEn}
+                            label="Définition en anglais"
+                            name="definitionEn"
+                            onBlur={formik.handleBlur}
+                            onChange={formik.handleChange}
+                            type="text"
+                            value={formik.values.definitionEn}
+                        />
+
+                        <TextField
+                            error={!!(formik.touched.definitionIt && formik.errors.definitionIt)}
+                            fullWidth
+                            helperText={formik.touched.definitionIt && formik.errors.definitionIt}
+                            label="Définition en italien"
+                            name="definitionIt"
+                            onBlur={formik.handleBlur}
+                            onChange={formik.handleChange}
+                            type="text"
+                            value={formik.values.definitionIt}
                         />
 
                     </Stack>
@@ -123,7 +190,7 @@ export const CreatePilier = () => {
                 <Divider />
                 <CardActions sx={{ justifyContent: 'flex-end' }}>
                     <Button variant="contained"
-type='submit'>
+                        type='submit'>
                         Créer
                     </Button>
                 </CardActions>

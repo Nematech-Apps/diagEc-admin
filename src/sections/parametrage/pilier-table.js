@@ -34,6 +34,7 @@ import { SvgIcon } from '@mui/material';
 
 import { EditPilier } from './edit-pilier';
 import { deletePilier } from 'src/firebase/firebaseServices';
+import { checkQuestionsInPilier } from 'src/firebase/firebaseServices';
 import { AddMotCle } from './add-motCle';
 import ToastComponent from '../../components/toast';
 
@@ -73,14 +74,20 @@ export const PilierTable = (props) => {
         setIsAddMotCleOpen(true);
     }
 
-    const handleDeleteClick = (event, pilier) => {
-        deletePilier(pilier.id)
-            .then(() => {
-                return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
-            })
-            .catch((err) => {
-                return ToastComponent({ message: err.message, type: 'error' });
-            })
+    const handleDeleteClick = async (event, pilier) => {
+        const hasQuestions = await checkQuestionsInPilier(pilier.id);
+        if (hasQuestions) {
+            return ToastComponent({ message: "Ce pilier est déjà lié à une ou des question(s). Vous devez d'abord supprimer cette(ces) question(s)", type: 'error' });
+        }
+        else {
+            deletePilier(pilier.id)
+                .then(() => {
+                    return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                })
+                .catch((err) => {
+                    return ToastComponent({ message: err.message, type: 'error' });
+                })
+        }
     };
 
     return (
@@ -103,11 +110,11 @@ export const PilierTable = (props) => {
                             />
                         </TableCell> */}
                         <TableCell>
-                            Libellé
+                            Libellés
                         </TableCell>
 
                         <TableCell>
-                            Définition
+                            Définitions
                         </TableCell>
 
                         <TableCell>
@@ -147,29 +154,49 @@ export const PilierTable = (props) => {
                                     <TableCell>
                                         <Stack
                                             alignItems="center"
-                                            direction="row"
+                                            direction="column"
                                             spacing={2}
                                         >
                                             {/* <Avatar src={customer.avatar}>
                                                 {getInitials(customer.name)}
                                             </Avatar> */}
                                             <Typography variant="subtitle2">
-                                                {pilier.libelle}
+                                                <ul>
+                                                    <li>{pilier.libelleFr}</li>
+                                                    <li>{pilier.libelleEn}</li>
+                                                    <li>{pilier.libelleIt}</li>
+                                                </ul>
                                             </Typography>
+                                            {/* <Typography variant="subtitle2">
+                                                {pilier.libelleEn}
+                                            </Typography>
+                                            <Typography variant="subtitle2">
+                                                {pilier.libelleIt}
+                                            </Typography> */}
                                         </Stack>
                                     </TableCell>
                                     <TableCell>
                                         <Stack
                                             alignItems="center"
-                                            direction="row"
+                                            direction="column"
                                             spacing={2}
                                         >
                                             {/* <Avatar src={customer.avatar}>
                                                 {getInitials(customer.name)}
                                             </Avatar> */}
                                             <Typography variant="subtitle2">
-                                                {pilier.definition}
+                                                <ul>
+                                                    <li>{pilier.definitionFr}</li>
+                                                    <li>{pilier.definitionEn}</li>
+                                                    <li>{pilier.definitionIt}</li>
+                                                </ul>
                                             </Typography>
+                                            {/* <Typography variant="subtitle2">
+                                                {pilier.definitionEn}
+                                            </Typography>
+                                            <Typography variant="subtitle2">
+                                                {pilier.definitionIt}
+                                            </Typography> */}
                                         </Stack>
                                     </TableCell>
                                     <TableCell>
@@ -196,12 +223,12 @@ export const PilierTable = (props) => {
                                     </TableCell>
                                     <TableCell>
                                         <Stack direction={'row'}
-spacing={2}>
+                                            spacing={2}>
                                             <Stack direction={'column'}
-spacing={2}>
+                                                spacing={2}>
                                                 <Button variant="outlined"
-size="small"
-color='success'
+                                                    size="small"
+                                                    color='success'
                                                     onClick={(event) => handleAddMotcleClick(event, pilier)}>
                                                     Ajouter mot-clés
                                                 </Button>
@@ -212,32 +239,32 @@ color='success'
                                             </Stack>
 
                                             <Stack direction={'column'}
-spacing={2}>
+                                                spacing={2}>
                                                 <Fab size="small"
-color="secondary"
-aria-label="edit"
+                                                    //color="secondary"
+                                                    aria-label="edit"
                                                     onClick={(event) => handleEditClick(event, pilier)}>
                                                     <SvgIcon fontSize="small">
                                                         <PencilIcon />
                                                     </SvgIcon>
                                                 </Fab>
-                                                {/* <Fab size="small" color="error" aria-label="delete"
+                                                <Fab size="small" color="error" aria-label="delete"
                                                     onClick={(event) => handleDeleteClick(event, pilier)}>
                                                     <SvgIcon fontSize="small">
                                                         <TrashIcon />
                                                     </SvgIcon>
-                                                </Fab> */}
+                                                </Fab>
                                             </Stack>
 
                                         </Stack>
                                     </TableCell>
 
                                     {isModalOpen && modalData && <EditPilier data={modalData}
-isOpen={isModalOpen}
-handleClose={() => setIsModalOpen(false)} />}
+                                        isOpen={isModalOpen}
+                                        handleClose={() => setIsModalOpen(false)} />}
                                     {isAddMotCleOpen && addMotCleData && <AddMotCle data={addMotCleData}
-isOpen={isAddMotCleOpen}
-handleClose={() => setIsAddMotCleOpen(false)} />}
+                                        isOpen={isAddMotCleOpen}
+                                        handleClose={() => setIsAddMotCleOpen(false)} />}
                                 </TableRow>
                             );
                         }) :
@@ -271,6 +298,12 @@ handleClose={() => setIsAddMotCleOpen(false)} />}
                     page={page}
                     rowsPerPage={rowsPerPage}
                     rowsPerPageOptions={[5, 10, 25]}
+                    labelDisplayedRows={
+                        ({ from, to, count }) => {
+                            return '' + from + '-' + to + ' sur ' + count
+                        }
+                    }
+                    labelRowsPerPage="Eléments par page"
                 />
             </CardActions>
         </Card>

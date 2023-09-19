@@ -36,6 +36,7 @@ import { SvgIcon } from '@mui/material';
 import { EditDefis } from './edit-defis';
 import { DisplayFicheReflexe } from './display-fiche-reflexe';
 import { deleteDefis, deleteFicheReflexeInStorage } from 'src/firebase/firebaseServices';
+import { checkQuestionsInDefi } from 'src/firebase/firebaseServices';
 import ToastComponent from '../../components/toast';
 
 
@@ -70,15 +71,45 @@ export const DefisTable = (props) => {
         setIsModalOpen(true);
     };
 
-    const handleShowFiche = (event, defis) => {
-        setDisplayFileModalData(defis.ficheReflexe);
+    const handleShowFicheFr = (event, defis) => {
+        setDisplayFileModalData(defis.ficheReflexeFr);
         setIsDisplayFileModalOpen(true);
     }
 
-    const handleDeleteClick = (event, defis) => {
+    const handleShowFicheEn = (event, defis) => {
+        setDisplayFileModalData(defis.ficheReflexeEn);
+        setIsDisplayFileModalOpen(true);
+    }
+
+    const handleShowFicheIt = (event, defis) => {
+        setDisplayFileModalData(defis.ficheReflexeIt);
+        setIsDisplayFileModalOpen(true);
+    }
+
+    const handleDeleteClick = async(event, defis) => {
+        const hasQuestions = await checkQuestionsInDefi(defis.id);
+        if (hasQuestions) {
+            return ToastComponent({ message: "Ce défi est déjà lié à une ou des question(s). Vous devez d'abord supprimer cette(ces) question(s)", type: 'error' });
+        }
         deleteDefis(defis.id)
             .then(() => {
-                deleteFicheReflexeInStorage(defis.id)
+                deleteFicheReflexeInStorage(defis.id, 'Fr')
+                    .then(() => {
+                        return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                    })
+                    .catch((err) => {
+                        return ToastComponent({ message: err.message, type: 'error' });
+                    })
+
+                deleteFicheReflexeInStorage(defis.id, 'En')
+                    .then(() => {
+                        return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                    })
+                    .catch((err) => {
+                        return ToastComponent({ message: err.message, type: 'error' });
+                    })
+
+                deleteFicheReflexeInStorage(defis.id, 'It')
                     .then(() => {
                         return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
                     })
@@ -111,7 +142,7 @@ export const DefisTable = (props) => {
                             />
                         </TableCell> */}
                         <TableCell>
-                            Libellé
+                            Libellés
                         </TableCell>
 
                         <TableCell>
@@ -150,49 +181,69 @@ export const DefisTable = (props) => {
                                     </TableCell> */}
                                     <TableCell>
                                         <Stack
-                                            alignItems="center"
-                                            direction="row"
+                                            alignItems="flex-start"
+                                            direction="column"
                                             spacing={2}
                                         >
                                             {/* <Avatar src={customer.avatar}>
                                                 {getInitials(customer.name)}
                                             </Avatar> */}
                                             <Typography variant="subtitle2">
-                                                {defis.libelle}
+                                                <ul>
+                                                    <li>{defis.libelleFr}</li>
+                                                    <li>{defis.libelleEn}</li>
+                                                    <li>{defis.libelleIt}</li>
+                                                </ul>
                                             </Typography>
+                                            {/* <Typography variant="subtitle2">
+                                                {defis.libelleEn}
+                                            </Typography>
+                                            <Typography variant="subtitle2">
+                                                {defis.libelleIt}
+                                            </Typography> */}
 
                                         </Stack>
                                     </TableCell>
                                     <TableCell>
                                         <Stack
-                                            alignItems="center"
-                                            direction="row"
+                                            alignItems="flex-start"
+                                            direction="column"
                                             spacing={2}
                                         >
                                             {
-                                                defis.ficheReflexe &&
+                                                defis.ficheReflexeFr &&
                                                 <Button variant="outlined"
-onClick={(event) => handleShowFiche(event, defis)}>Voir fiche</Button>
+                                                    onClick={(event) => handleShowFicheFr(event, defis)}>Voir fiche en français</Button>
+                                            }
+                                            {
+                                                defis.ficheReflexeEn &&
+                                                <Button variant="outlined"
+                                                    onClick={(event) => handleShowFicheEn(event, defis)}>Voir fiche en anglais</Button>
+                                            }
+                                            {
+                                                defis.ficheReflexeIt &&
+                                                <Button variant="outlined"
+                                                    onClick={(event) => handleShowFicheIt(event, defis)}>Voir fiche en italien</Button>
                                             }
                                         </Stack>
                                     </TableCell>
                                     <TableCell>
                                         <Stack direction={'row'}
-spacing={2}>
+                                            spacing={2}>
                                             <Fab size="small"
-color="secondary"
-aria-label="edit"
+                                                //color="secondary"
+                                                aria-label="edit"
                                                 onClick={(event) => handleEditClick(event, defis)}>
                                                 <SvgIcon fontSize="small">
                                                     <PencilIcon />
                                                 </SvgIcon>
                                             </Fab>
-                                            {/* <Fab size="small" color="error" aria-label="delete"
+                                            <Fab size="small" color="error" aria-label="delete"
                                                 onClick={(event) => handleDeleteClick(event, defis)}>
                                                 <SvgIcon fontSize="small">
                                                     <TrashIcon />
                                                 </SvgIcon>
-                                            </Fab> */}
+                                            </Fab>
                                         </Stack>
                                     </TableCell>
                                     {/* <TableCell>
@@ -205,11 +256,11 @@ aria-label="edit"
                                         {createdAt}
                                     </TableCell> */}
                                     {isModalOpen && modalData && <EditDefis data={modalData}
-isOpen={isModalOpen}
-handleClose={() => setIsModalOpen(false)} />}
+                                        isOpen={isModalOpen}
+                                        handleClose={() => setIsModalOpen(false)} />}
                                     {isDisplayFileModalOpen && displayFileModalData && <DisplayFicheReflexe fileUrl={displayFileModalData}
-isOpen={isDisplayFileModalOpen}
-handleClose={() => setIsDisplayFileModalOpen(false)} />}
+                                        isOpen={isDisplayFileModalOpen}
+                                        handleClose={() => setIsDisplayFileModalOpen(false)} />}
                                 </TableRow>
                             );
                         }) :
@@ -243,6 +294,12 @@ handleClose={() => setIsDisplayFileModalOpen(false)} />}
                     page={page}
                     rowsPerPage={rowsPerPage}
                     rowsPerPageOptions={[5, 10, 25]}
+                    labelDisplayedRows={
+                        ({ from, to, count }) => {
+                            return '' + from + '-' + to + ' sur ' + count
+                        }
+                    }
+                    labelRowsPerPage="Eléments par page"
                 />
             </CardActions>
         </Card>

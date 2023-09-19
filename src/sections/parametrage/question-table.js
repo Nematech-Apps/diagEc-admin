@@ -33,6 +33,7 @@ import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
 import { SvgIcon } from '@mui/material';
 
 import { EditAnswer } from './edit-answer';
+import { EditQuestion } from './edit-question';
 import { deleteQuestion } from 'src/firebase/firebaseServices';
 import ToastComponent from '../../components/toast';
 
@@ -94,16 +95,16 @@ export const QuestionTable = (props) => {
                             />
                         </TableCell> */}
                         <TableCell>
-                            Libellé
+                            Libellés
                         </TableCell>
 
                         <TableCell>
                             Pilier
                         </TableCell>
 
-                        {/* <TableCell>
+                        <TableCell>
                             Actions
-                        </TableCell> */}
+                        </TableCell>
 
                     </TableRow>
                 </TableHead>
@@ -133,47 +134,63 @@ export const QuestionTable = (props) => {
                                     </TableCell> */}
                                     <TableCell>
                                         <Stack
-                                            alignItems="center"
-                                            direction="row"
+                                            alignItems="flex-start"
+                                            direction="column"
                                             spacing={2}
                                         >
                                             {/* <Avatar src={customer.avatar}>
                                                 {getInitials(customer.name)}
                                             </Avatar> */}
                                             <Typography variant="subtitle2">
-                                                {question.libelle}
+                                                <ul>
+                                                    <li>{question.libelleFr}</li>
+                                                    <li>{question.libelleEn}</li>
+                                                    <li>{question.libelleIt}</li>
+                                                </ul>
                                             </Typography>
+                                            {/* <Typography variant="subtitle2">
+                                                {question.libelleEn}
+                                            </Typography>
+                                            <Typography variant="subtitle2">
+                                                {question.libelleIt}
+                                            </Typography> */}
                                         </Stack>
                                     </TableCell>
                                     <TableCell>
                                         <Stack
-                                            alignItems="center"
-                                            direction="row"
+                                            alignItems="flex-start"
+                                            direction="column"
                                             spacing={2}
                                         >
                                             {/* <Avatar src={customer.avatar}>
                                                 {getInitials(customer.name)}
                                             </Avatar> */}
                                             <Typography variant="subtitle2">
-                                                {question.pilier.libelle}
+                                                {question.pilier.libelleFr}
                                             </Typography>
+                                            {/* <Typography variant="subtitle2">
+                                                {question.pilier.libelleEn}
+                                            </Typography>
+                                            <Typography variant="subtitle2">
+                                                {question.pilier.libelleIt}
+                                            </Typography> */}
                                         </Stack>
                                     </TableCell>
                                     <TableCell>
                                         <Stack direction={'row'}
-spacing={2}>
-                                            {/* <Fab size="small" color="secondary" aria-label="edit"
+                                            spacing={2}>
+                                            <Fab size="small" color="secondary" aria-label="edit"
                                                 onClick={(event) => handleEditClick(event, question)}>
                                                 <SvgIcon fontSize="small">
                                                     <PencilIcon />
                                                 </SvgIcon>
-                                            </Fab> */}
-                                            {/* <Fab size="small" color="error" aria-label="delete"
+                                            </Fab>
+                                            <Fab size="small" color="error" aria-label="delete"
                                                 onClick={(event) => handleDeleteClick(event, question)}>
                                                 <SvgIcon fontSize="small">
                                                     <TrashIcon />
                                                 </SvgIcon>
-                                            </Fab> */}
+                                            </Fab>
                                         </Stack>
                                     </TableCell>
                                     {/* <TableCell>
@@ -185,9 +202,9 @@ spacing={2}>
                                     <TableCell>
                                         {createdAt}
                                     </TableCell> */}
-                                    {isModalOpen && modalData && <EditAnswer data={modalData}
-isOpen={isModalOpen}
-handleClose={() => setIsModalOpen(false)} />}
+                                    {isModalOpen && modalData && <EditQuestion data={modalData}
+                                        isOpen={isModalOpen}
+                                        handleClose={() => setIsModalOpen(false)} />}
                                 </TableRow>
                             );
                         }) :
@@ -221,6 +238,12 @@ handleClose={() => setIsModalOpen(false)} />}
                     page={page}
                     rowsPerPage={rowsPerPage}
                     rowsPerPageOptions={[5, 10, 25]}
+                    labelDisplayedRows={
+                        ({ from, to, count }) => {
+                            return '' + from + '-' + to + ' sur ' + count
+                        }
+                    }
+                    labelRowsPerPage="Eléments par page"
                 />
             </CardActions>
         </Card>

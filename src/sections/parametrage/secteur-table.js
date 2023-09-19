@@ -35,6 +35,8 @@ import { SvgIcon } from '@mui/material';
 
 import { EditSecteur } from './edit-secteur';
 import { deleteSecteur } from 'src/firebase/firebaseServices';
+import { checkCategoriesInSecteur } from 'src/firebase/firebaseServices';
+import { checkCompaniesInSecteur } from 'src/firebase/firebaseServices';
 import ToastComponent from '../../components/toast';
 
 
@@ -67,14 +69,25 @@ export const SecteurTable = (props) => {
         setIsModalOpen(true);
     };
 
-    const handleDeleteClick = (event, secteur) => {
-        deleteSecteur(secteur.id)
-            .then(() => {
-                return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
-            })
-            .catch((err) => {
-                return ToastComponent({ message: err.message, type: 'error' });
-            })
+    const handleDeleteClick = async (event, secteur) => {
+        const hasCategories = await checkCategoriesInSecteur(secteur.id);
+        const hasCompanies = await checkCompaniesInSecteur(secteur.id);
+        if (hasCategories) {
+            return ToastComponent({ message: "Ce secteur est déjà lié à une ou des catégorie(s). Vous devez d'abord supprimer cette(ces) catégorie(s)", type: 'error' });
+        }
+        else if (hasCompanies) {
+            return ToastComponent({ message: "Ce secteur contient déjà une ou des entreprise(s). Vous devez d'abord supprimer cette(ces) entreprise(s)", type: 'error' });
+        }
+        else {
+            deleteSecteur(secteur.id)
+                .then(() => {
+                    return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                })
+                .catch((err) => {
+                    return ToastComponent({ message: err.message, type: 'error' });
+                })
+        }
+
     };
 
     return (
@@ -97,7 +110,15 @@ export const SecteurTable = (props) => {
                             />
                         </TableCell> */}
                         <TableCell>
-                            Libellé
+                            Libellé(Français)
+                        </TableCell>
+
+                        <TableCell>
+                            Libellé(Anglais)
+                        </TableCell>
+
+                        <TableCell>
+                            Libellé(Italien)
                         </TableCell>
 
                         <TableCell>
@@ -140,27 +161,55 @@ export const SecteurTable = (props) => {
                                                 {getInitials(customer.name)}
                                             </Avatar> */}
                                             <Typography variant="subtitle2">
-                                                {secteur.libelle}
+                                                {secteur.libelleFr}
+                                            </Typography>
+                                        </Stack>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Stack
+                                            alignItems="center"
+                                            direction="row"
+                                            spacing={2}
+                                        >
+                                            {/* <Avatar src={customer.avatar}>
+                                                {getInitials(customer.name)}
+                                            </Avatar> */}
+                                            <Typography variant="subtitle2">
+                                                {secteur.libelleEn}
+                                            </Typography>
+                                        </Stack>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Stack
+                                            alignItems="center"
+                                            direction="row"
+                                            spacing={2}
+                                        >
+                                            {/* <Avatar src={customer.avatar}>
+                                                {getInitials(customer.name)}
+                                            </Avatar> */}
+                                            <Typography variant="subtitle2">
+                                                {secteur.libelleIt}
                                             </Typography>
                                         </Stack>
                                     </TableCell>
                                     <TableCell>
                                         <Stack direction={'row'}
-spacing={2}>
+                                            spacing={2}>
                                             <Fab size="small"
-color="secondary"
-aria-label="edit"
+                                                //color="secondary"
+                                                aria-label="edit"
                                                 onClick={(event) => handleEditClick(event, secteur)}>
                                                 <SvgIcon fontSize="small">
                                                     <PencilIcon />
                                                 </SvgIcon>
                                             </Fab>
-                                            {/* <Fab size="small" color="error" aria-label="delete"
+                                            <Fab size="small" color="error" aria-label="delete"
                                                 onClick={(event) => handleDeleteClick(event, secteur)}>
                                                 <SvgIcon fontSize="small">
                                                     <TrashIcon />
                                                 </SvgIcon>
-                                            </Fab> */}
+                                            </Fab>
                                         </Stack>
                                     </TableCell>
                                     {/* <TableCell>
@@ -173,8 +222,8 @@ aria-label="edit"
                                         {createdAt}
                                     </TableCell> */}
                                     {isModalOpen && modalData && <EditSecteur data={modalData}
-isOpen={isModalOpen}
-handleClose={() => setIsModalOpen(false)} />}
+                                        isOpen={isModalOpen}
+                                        handleClose={() => setIsModalOpen(false)} />}
                                 </TableRow>
                             );
                         }) : (
@@ -211,6 +260,12 @@ handleClose={() => setIsModalOpen(false)} />}
                     page={page}
                     rowsPerPage={rowsPerPage}
                     rowsPerPageOptions={[2, 5, 10]}
+                    labelDisplayedRows={
+                        ({ from, to, count }) => {
+                            return '' + from + '-' + to + ' sur ' + count
+                        }
+                    }
+                    labelRowsPerPage="Eléments par page"
                 />
             </CardActions>
         </Card>

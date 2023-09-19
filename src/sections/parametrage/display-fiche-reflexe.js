@@ -25,12 +25,13 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 850,
-    height: 500,
+    width: 770,
+    height: 550,
     bgcolor: 'background.paper',
     border: '1px solid #000',
     boxShadow: 24,
     p: 4,
+    borderRadius: 5
 };
 
 export const DisplayFicheReflexe = ({ handleClose, isOpen, fileUrl }) => {
@@ -57,8 +58,7 @@ export const DisplayFicheReflexe = ({ handleClose, isOpen, fileUrl }) => {
             >
                 <Box sx={style}>
                     {!iframeLoaded && (
-                        <Typography variant="body1"
-align="center">
+                        <Typography variant="body1" align="center">
                             Chargement...
                         </Typography>
                     )}

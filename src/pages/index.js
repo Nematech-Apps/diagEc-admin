@@ -104,7 +104,7 @@ const Page = () => (
             md={12}
             lg={12}
           >
-             <OverviewSales
+             {/* <OverviewSales
               chartSeries={[
                 {
                   name: 'This year',
@@ -116,7 +116,7 @@ const Page = () => (
                 }
               ]}
               sx={{ height: '100%' }}
-            />
+            /> */}
           </Grid>
 
           <Grid

@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import {
   Avatar,
   Box,
@@ -9,6 +10,9 @@ import {
   Typography
 } from '@mui/material';
 
+import { useAuth } from 'src/hooks/use-auth';
+import { auth as firebaseAuth } from '../../firebase/firebaseConfig';
+
 const user = {
   avatar: '/assets/avatars/avatar-anika-visser.png',
   city: 'Los Angeles',
@@ -18,8 +22,25 @@ const user = {
   timezone: 'GTM-7'
 };
 
-export const AccountProfile = () => (
-  <Card>
+export const AccountProfile = () => {
+  const auth = useAuth();
+  const [userData, setUserData] = useState(null)
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userSnapshot = await auth.getUser(firebaseAuth.currentUser?.uid);
+        setUserData(userSnapshot);
+      } catch (error) {
+        alert(error.message);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  return(
+    <Card>
     <CardContent>
       <Box
         sx={{
@@ -29,7 +50,7 @@ export const AccountProfile = () => (
         }}
       >
         <Avatar
-          src={user.avatar}
+          src='/assets/avatars/user.png'
           sx={{
             height: 80,
             mb: 2,
@@ -40,30 +61,32 @@ export const AccountProfile = () => (
           gutterBottom
           variant="h5"
         >
-          {user.name}
+          {userData?.identifiant}
         </Typography>
-        <Typography
+        {/* <Typography
           color="text.secondary"
           variant="body2"
         >
           {user.city} {user.country}
-        </Typography>
-        <Typography
+        </Typography> */}
+        {/* <Typography
           color="text.secondary"
           variant="body2"
         >
           {user.timezone}
-        </Typography>
+        </Typography> */}
       </Box>
     </CardContent>
     <Divider />
-    <CardActions>
+    {/* <CardActions>
       <Button
         fullWidth
         variant="text"
       >
         Upload picture
       </Button>
-    </CardActions>
+    </CardActions> */}
   </Card>
-);
+  );
+  
+};

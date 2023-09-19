@@ -54,14 +54,14 @@ export const OverviewBudget = (props) => {
           alignItems="flex-start"
           direction="row"
           justifyContent="space-between"
-          spacing={3}
+          spacing={2}
         >
           <Stack spacing={1}>
             <Typography
               color="text.secondary"
               variant="overline"
             >
-              Questionnaire
+              Questionnaires
             </Typography>
             <Typography variant="h4">
               {data.length}

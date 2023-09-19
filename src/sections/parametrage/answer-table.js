@@ -94,7 +94,15 @@ export const AnswerTable = (props) => {
                             />
                         </TableCell> */}
                         <TableCell>
-                            Libellé
+                            Libellé(Français)
+                        </TableCell>
+
+                        <TableCell>
+                            Libellé(Anglais)
+                        </TableCell>
+
+                        <TableCell>
+                            Libellé(Italien)
                         </TableCell>
 
                         <TableCell>
@@ -137,27 +145,55 @@ export const AnswerTable = (props) => {
                                                 {getInitials(customer.name)}
                                             </Avatar> */}
                                             <Typography variant="subtitle2">
-                                                {answer.libelle}
+                                                {answer.libelleFr}
+                                            </Typography>
+                                        </Stack>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Stack
+                                            alignItems="center"
+                                            direction="row"
+                                            spacing={2}
+                                        >
+                                            {/* <Avatar src={customer.avatar}>
+                                                {getInitials(customer.name)}
+                                            </Avatar> */}
+                                            <Typography variant="subtitle2">
+                                                {answer.libelleEn}
+                                            </Typography>
+                                        </Stack>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Stack
+                                            alignItems="center"
+                                            direction="row"
+                                            spacing={2}
+                                        >
+                                            {/* <Avatar src={customer.avatar}>
+                                                {getInitials(customer.name)}
+                                            </Avatar> */}
+                                            <Typography variant="subtitle2">
+                                                {answer.libelleIt}
                                             </Typography>
                                         </Stack>
                                     </TableCell>
                                     <TableCell>
                                         <Stack direction={'row'}
-spacing={2}>
+                                            spacing={2}>
                                             <Fab size="small"
-color="secondary"
-aria-label="edit"
+                                                //color="secondary"
+                                                aria-label="edit"
                                                 onClick={(event) => handleEditClick(event, answer)}>
                                                 <SvgIcon fontSize="small">
                                                     <PencilIcon />
                                                 </SvgIcon>
                                             </Fab>
-                                            {/* <Fab size="small" color="error" aria-label="delete"
+                                            <Fab size="small" color="error" aria-label="delete"
                                                 onClick={(event) => handleDeleteClick(event, answer)}>
                                                 <SvgIcon fontSize="small">
                                                     <TrashIcon />
                                                 </SvgIcon>
-                                            </Fab> */}
+                                            </Fab>
                                         </Stack>
                                     </TableCell>
                                     {/* <TableCell>
@@ -170,8 +206,8 @@ aria-label="edit"
                                         {createdAt}
                                     </TableCell> */}
                                     {isModalOpen && modalData && <EditAnswer data={modalData}
-isOpen={isModalOpen}
-handleClose={() => setIsModalOpen(false)} />}
+                                        isOpen={isModalOpen}
+                                        handleClose={() => setIsModalOpen(false)} />}
                                 </TableRow>
                             );
                         }) :
@@ -205,6 +241,12 @@ handleClose={() => setIsModalOpen(false)} />}
                     page={page}
                     rowsPerPage={rowsPerPage}
                     rowsPerPageOptions={[5, 10, 25]}
+                    labelDisplayedRows={
+                        ({ from, to, count }) => {
+                            return '' + from + '-' + to + ' sur ' + count
+                        }
+                    }
+                    labelRowsPerPage="Eléments par page"
                 />
             </CardActions>
         </Card>

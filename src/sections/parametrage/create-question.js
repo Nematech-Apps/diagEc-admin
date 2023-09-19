@@ -74,7 +74,7 @@ export const CreateQuestion = () => {
         if (answerLibelle.length != 0 && answers.length != 0) {
             answerLibelle.map((item) => {
                 answers.map((elt) => {
-                    if (elt.libelle == item) {
+                    if (elt.libelleFr == item) {
                         const obj = elt;
                         arr.push(obj);
                     }
@@ -157,7 +157,9 @@ export const CreateQuestion = () => {
 
     const formik = useFormik({
         initialValues: {
-            libelle: '',
+            libelleFr: '',
+            libelleEn: '',
+            libelleIt: '',
             categorie: '',
             poids: 10,
             pilier: '',
@@ -165,10 +167,18 @@ export const CreateQuestion = () => {
             submit: null
         },
         validationSchema: Yup.object({
-            libelle: Yup
+            libelleFr: Yup
                 .string()
                 .max(255)
-                .required("Le libellé est requis"),
+                .required("Le libellé en français est requis"),
+            libelleEn: Yup
+                .string()
+                .max(255)
+                .required("Le libellé en anglais est requis"),
+            libelleIt: Yup
+                .string()
+                .max(255)
+                .required("Le libellé en italien est requis"),
             categorie: Yup
                 .string()
                 .required("La catégorie est requise"),
@@ -185,9 +195,54 @@ export const CreateQuestion = () => {
         }),
         onSubmit: async (values, helpers) => {
 
-            if (answerLibelle.length == answers.length) {
+            // if (answerLibelle.length == answers.length) {
+            //     const data = {
+            //         libelle: values.libelle,
+            //         answers: objectList,
+            //         categorie: values.categorie,
+            //         poids: values.poids,
+            //         pilier: values.pilier,
+            //         defi: values.defi
+            //     }
+
+            //     addQuestion(data)
+            //         .then(async (doc) => {
+            //             const collectionRef = Doc(db, 'questions', doc.id);
+            //             const snapshot = await GetDoc(collectionRef);
+
+            //             const docData = {
+            //                 ...snapshot.data(),
+            //                 id: doc.id
+            //             };
+
+            //             UpdateDoc(collectionRef, docData)
+            //                 .then(() => {
+            //                     helpers.resetForm();
+            //                     return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+            //                 })
+            //                 .catch((err) => {
+            //                     helpers.setStatus({ success: false });
+            //                     helpers.setErrors({ submit: err.message });
+            //                     helpers.setSubmitting(false);
+            //                     return ToastComponent({ message: err.message, type: 'error' });
+            //                 })
+
+            //         })
+            //         .catch((err) => {
+            //             helpers.setStatus({ success: false });
+            //             helpers.setErrors({ submit: err.message });
+            //             helpers.setSubmitting(false);
+            //             return ToastComponent({ message: err.message, type: 'error' });
+            //         })
+            // }
+
+
+
+            if (answerLibelle.length != 0) {
                 const data = {
-                    libelle: values.libelle,
+                    libelleFr: values.libelleFr,
+                    libelleEn: values.libelleEn,
+                    libelleIt: values.libelleIt,
                     answers: objectList,
                     categorie: values.categorie,
                     poids: values.poids,
@@ -226,6 +281,9 @@ export const CreateQuestion = () => {
                     })
             }
 
+
+
+
         }
     });
 
@@ -240,7 +298,7 @@ export const CreateQuestion = () => {
             <Card>
                 <CardHeader
                     //subheader="catégorie"
-                    title="Question"
+                    title="Ajouter Question"
                 />
                 <Divider />
                 <CardContent>
@@ -257,8 +315,8 @@ export const CreateQuestion = () => {
                             spacing={3}
                             sx={{ maxWidth: 1500 }}
                         >
-                            <FormControl variant="standard"
-sx={{ m: 1, width: 500 }}>
+                            <FormControl variant="filled"
+                                sx={{ width: 500 }}>
                                 <InputLabel id="pilier">Pilier</InputLabel>
                                 <Select
                                     labelId="pilier"
@@ -276,20 +334,20 @@ sx={{ m: 1, width: 500 }}>
                                     </MenuItem>
                                     {piliers.map((pilier, index) => {
                                         return (<MenuItem value={JSON.stringify(pilier)}
-key={index}>{pilier.libelle}</MenuItem>)
+                                            key={index}>{pilier.libelleFr}</MenuItem>)
                                     })}
 
                                 </Select>
                                 {formik.touched.pilier && formik.errors.pilier && (
                                     <Typography color="error"
-variant="caption">
+                                        variant="caption">
                                         {formik.errors.pilier}
                                     </Typography>
                                 )}
                             </FormControl>
 
-                            <FormControl variant="standard"
-sx={{ width: 500 }}>
+                            <FormControl variant="filled"
+                                sx={{ width: 500 }}>
                                 <InputLabel id="defi">Défis</InputLabel>
                                 <Select
                                     labelId="defi"
@@ -307,13 +365,13 @@ sx={{ width: 500 }}>
                                     </MenuItem>
                                     {defis.map((defi, index) => {
                                         return (<MenuItem value={JSON.stringify(defi)}
-key={index}>{defi.libelle}</MenuItem>)
+                                            key={index}>{defi.libelleFr}</MenuItem>)
                                     })}
 
                                 </Select>
                                 {formik.touched.defi && formik.errors.defi && (
                                     <Typography color="error"
-variant="caption">
+                                        variant="caption">
                                         {formik.errors.defi}
                                     </Typography>
                                 )}
@@ -324,15 +382,39 @@ variant="caption">
 
 
                         <TextField
-                            error={!!(formik.touched.libelle && formik.errors.libelle)}
+                            error={!!(formik.touched.libelleFr && formik.errors.libelleFr)}
                             fullWidth
-                            helperText={formik.touched.libelle && formik.errors.libelle}
-                            label="Libellé"
-                            name="libelle"
+                            helperText={formik.touched.libelleFr && formik.errors.libelleFr}
+                            label="Libellé en français"
+                            name="libelleFr"
                             onBlur={formik.handleBlur}
                             onChange={formik.handleChange}
                             type="text"
-                            value={formik.values.libelle}
+                            value={formik.values.libelleFr}
+                        />
+
+                        <TextField
+                            error={!!(formik.touched.libelleEn && formik.errors.libelleEn)}
+                            fullWidth
+                            helperText={formik.touched.libelleEn && formik.errors.libelleEn}
+                            label="Libellé en anglais"
+                            name="libelleEn"
+                            onBlur={formik.handleBlur}
+                            onChange={formik.handleChange}
+                            type="text"
+                            value={formik.values.libelleEn}
+                        />
+
+                        <TextField
+                            error={!!(formik.touched.libelleIt && formik.errors.libelleIt)}
+                            fullWidth
+                            helperText={formik.touched.libelleIt && formik.errors.libelleIt}
+                            label="Libellé en italien"
+                            name="libelleIt"
+                            onBlur={formik.handleBlur}
+                            onChange={formik.handleChange}
+                            type="text"
+                            value={formik.values.libelleIt}
                         />
 
                         <Stack
@@ -340,13 +422,13 @@ variant="caption">
                             spacing={3}
                             sx={{ maxWidth: 1500 }}
                         >
-                            <FormControl sx={{ m: 1, width: 300 }}>
+                            <FormControl sx={{ m: 1, width: 300 }} variant="filled" >
                                 <InputLabel id="demo-multiple-checkbox-label">Réponses</InputLabel>
                                 <Select
                                     labelId="demo-multiple-checkbox-label"
                                     id="demo-multiple-checkbox"
                                     multiple
-                                    error={answerLibelle.length != answers.length}
+                                    error={answerLibelle.length == 0}
                                     value={answerLibelle}
                                     onChange={handleChange}
                                     input={<OutlinedInput label="Réponses" />}
@@ -355,22 +437,29 @@ variant="caption">
                                 >
                                     {answers.map((answer, index) => (
                                         <MenuItem key={index}
-value={answer.libelle}>
-                                            <Checkbox checked={answerLibelle.indexOf(answer.libelle) > -1} />
-                                            <ListItemText primary={answer.libelle} />
+                                            value={answer.libelleFr}>
+                                            <Checkbox checked={answerLibelle.indexOf(answer.libelleFr) > -1} />
+                                            <ListItemText primary={answer.libelleFr} />
                                         </MenuItem>
                                     ))}
                                 </Select>
-                                {answerLibelle.length != answers.length && (
+                                {/* {answerLibelle.length != answers.length && (
                                     <Typography color="error"
-variant="caption">
+                                        variant="caption">
                                         Toutes les réponses doivent être sélectionnées
+                                    </Typography>
+                                )} */}
+
+                                {answerLibelle.length == 0 && (
+                                    <Typography color="error"
+                                        variant="caption">
+                                        Veuillez sélectionner une réponse
                                     </Typography>
                                 )}
                             </FormControl>
 
                             <FormControl variant="standard"
-sx={{ m: 1, width: 300 }}>
+                                sx={{ m: 1, width: 300 }}>
                                 <InputLabel id="demo-simple-select-standard-label">Catégorie</InputLabel>
                                 <Select
                                     labelId="demo-simple-select-standard-label"
@@ -387,22 +476,22 @@ sx={{ m: 1, width: 300 }}>
                                     </MenuItem>
                                     {categories.map((categorie, index) => {
                                         return (<MenuItem value={JSON.stringify(categorie)}
-key={index}>{categorie.libelle}</MenuItem>)
+                                            key={index}>{categorie.libelle}</MenuItem>)
                                     })}
 
                                 </Select>
                                 {formik.touched.categorie && formik.errors.categorie && (
                                     <Typography color="error"
-variant="caption">
+                                        variant="caption">
                                         {formik.errors.categorie}
                                     </Typography>
                                 )}
                             </FormControl>
 
                             <FormControl variant="standard"
-sx={{ m: 1, width: 300 }}>
+                                sx={{ m: 1, width: 300 }}>
                                 <Stack direction={'column'}
-spacing={4}>
+                                    spacing={4}>
                                     <InputLabel >Poids</InputLabel>
                                     <Slider
                                         aria-label="Poids"
@@ -422,7 +511,7 @@ spacing={4}>
                                 </Stack>
                                 {formik.touched.poids && formik.errors.poids && (
                                     <Typography color="error"
-variant="caption">
+                                        variant="caption">
                                         {formik.errors.poids}
                                     </Typography>
                                 )}
@@ -450,7 +539,7 @@ variant="caption">
                 <Divider />
                 <CardActions sx={{ justifyContent: 'flex-end' }}>
                     <Button variant="contained"
-type='submit'>
+                        type='submit'>
                         Créer
                     </Button>
                 </CardActions>

@@ -34,6 +34,8 @@ import { SvgIcon } from '@mui/material';
 
 import { EditNiveau } from './edit-niveau';
 import { deleteNiveau } from 'src/firebase/firebaseServices';
+import { checkCategoriesInNiveau } from 'src/firebase/firebaseServices';
+import { checkCompaniesInNiveau } from 'src/firebase/firebaseServices';
 import ToastComponent from '../../components/toast';
 
 
@@ -64,14 +66,25 @@ export const NiveauTable = (props) => {
         setIsModalOpen(true);
     };
 
-    const handleDeleteClick = (event, niveau) => {
-        deleteNiveau(niveau.id)
-            .then(() => {
-                return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
-            })
-            .catch((err) => {
-                return ToastComponent({ message: err.message, type: 'error' });
-            })
+    const handleDeleteClick = async (event, niveau) => {
+        const hasCategories = await checkCategoriesInNiveau(niveau.id);
+        const hasCompanies = await checkCompaniesInNiveau(niveau.id);
+        if (hasCategories) {
+            return ToastComponent({ message: "Ce niveau est déjà lié à une ou des catégorie(s). Vous devez d'abord supprimer cette(ces) catégorie(s)", type: 'error' });
+        }
+        else if (hasCompanies) {
+            return ToastComponent({ message: "Ce niveau contient déjà une ou des entreprise(s). Vous devez d'abord supprimer cette(ces) entreprise(s)", type: 'error' });
+        }
+        else {
+            deleteNiveau(niveau.id)
+                .then(() => {
+                    return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                })
+                .catch((err) => {
+                    return ToastComponent({ message: err.message, type: 'error' });
+                })
+        }
+
     };
 
     return (
@@ -94,7 +107,15 @@ export const NiveauTable = (props) => {
                             />
                         </TableCell> */}
                         <TableCell>
-                            Libellé
+                            Libellé(Français)
+                        </TableCell>
+
+                        <TableCell>
+                            Libellé(Anglais)
+                        </TableCell>
+
+                        <TableCell>
+                            Libellé(Italien)
                         </TableCell>
 
                         <TableCell>
@@ -137,27 +158,55 @@ export const NiveauTable = (props) => {
                                                 {getInitials(customer.name)}
                                             </Avatar> */}
                                             <Typography variant="subtitle2">
-                                                {niveau.libelle}
+                                                {niveau.libelleFr}
+                                            </Typography>
+                                        </Stack>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Stack
+                                            alignItems="center"
+                                            direction="row"
+                                            spacing={2}
+                                        >
+                                            {/* <Avatar src={customer.avatar}>
+                                                {getInitials(customer.name)}
+                                            </Avatar> */}
+                                            <Typography variant="subtitle2">
+                                                {niveau.libelleEn}
+                                            </Typography>
+                                        </Stack>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Stack
+                                            alignItems="center"
+                                            direction="row"
+                                            spacing={2}
+                                        >
+                                            {/* <Avatar src={customer.avatar}>
+                                                {getInitials(customer.name)}
+                                            </Avatar> */}
+                                            <Typography variant="subtitle2">
+                                                {niveau.libelleIt}
                                             </Typography>
                                         </Stack>
                                     </TableCell>
                                     <TableCell>
                                         <Stack direction={'row'}
-spacing={2}>
+                                            spacing={2}>
                                             <Fab size="small"
-color="secondary"
-aria-label="edit"
+                                                //color="secondary"
+                                                aria-label="edit"
                                                 onClick={(event) => handleEditClick(event, niveau)}>
                                                 <SvgIcon fontSize="small">
                                                     <PencilIcon />
                                                 </SvgIcon>
                                             </Fab>
-                                            {/* <Fab size="small" color="error" aria-label="delete"
+                                            <Fab size="small" color="error" aria-label="delete"
                                                 onClick={(event) => handleDeleteClick(event, niveau)}>
                                                 <SvgIcon fontSize="small">
                                                     <TrashIcon />
                                                 </SvgIcon>
-                                            </Fab> */}
+                                            </Fab>
                                         </Stack>
                                     </TableCell>
                                     {/* <TableCell>
@@ -170,8 +219,8 @@ aria-label="edit"
                                         {createdAt}
                                     </TableCell> */}
                                     {isModalOpen && modalData && <EditNiveau data={modalData}
-isOpen={isModalOpen}
-handleClose={() => setIsModalOpen(false)} />}
+                                        isOpen={isModalOpen}
+                                        handleClose={() => setIsModalOpen(false)} />}
                                 </TableRow>
                             );
                         }) :
@@ -205,6 +254,12 @@ handleClose={() => setIsModalOpen(false)} />}
                     page={page}
                     rowsPerPage={rowsPerPage}
                     rowsPerPageOptions={[5, 10, 25]}
+                    labelDisplayedRows={
+                        ({ from, to, count }) => {
+                            return '' + from + '-' + to + ' sur ' + count
+                        }
+                    }
+                    labelRowsPerPage="Eléments par page"
                 />
             </CardActions>
         </Card>

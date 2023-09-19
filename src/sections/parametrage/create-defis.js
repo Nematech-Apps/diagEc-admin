@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import {
     Button,
     Card,
@@ -9,7 +9,8 @@ import {
     Stack,
     TextField,
     Typography,
-    Input
+    Input,
+    SvgIcon
 } from '@mui/material';
 import DocumentIcon from '@heroicons/react/24/solid/DocumentIcon';
 
@@ -27,29 +28,39 @@ export const CreateDefis = () => {
 
     const formik = useFormik({
         initialValues: {
-            libelle: '',
+            libelleFr: '',
+            libelleEn: '',
+            libelleIt: '',
             submit: null
         },
         validationSchema: Yup.object({
-            libelle: Yup
+            libelleFr: Yup
                 .string()
                 .max(255)
-                .required("Le libellé est requis"),
+                .required("Le libellé en français est requis"),
+            libelleEn: Yup
+                .string()
+                .max(255)
+                .required("Le libellé en anglais est requis"),
+            libelleIt: Yup
+                .string()
+                .max(255)
+                .required("Le libellé en italien est requis"),
         }),
         onSubmit: async (values, helpers) => {
-            if (selectedFile != null) {
+            if (selectedFileFr != null && selectedFileEn != null && selectedFileIt != null) {
                 addDefis(values)
                     .then(async (doc) => {
                         const collectionRef = Doc(db, 'defis', doc.id);
                         const snapshot = await GetDoc(collectionRef);
 
 
-                        uploadFicheReflexe(selectedFile, doc.id)
+                        uploadFicheReflexe(selectedFileFr, doc.id, 'Fr')
                             .then((url) => {
                                 const docData = {
                                     ...snapshot.data(),
                                     id: doc.id,
-                                    ficheReflexe: url
+                                    ficheReflexeFr: url
                                 };
                                 UpdateDoc(collectionRef, docData)
                                     .then(() => {
@@ -66,7 +77,117 @@ export const CreateDefis = () => {
                                                 UpdateDoc(collectionRef, docData)
                                                     .then(() => {
                                                         helpers.resetForm();
-                                                        setSelectedFile(null);
+                                                        setSelectedFileFr(null);
+                                                        return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                                                    })
+                                                    .catch((err) => {
+                                                        helpers.setStatus({ success: false });
+                                                        helpers.setErrors({ submit: err.message });
+                                                        helpers.setSubmitting(false);
+                                                        return ToastComponent({ message: err.message, type: 'error' });
+                                                    })
+                                            })
+                                            .catch((err) => {
+                                                helpers.setStatus({ success: false });
+                                                helpers.setErrors({ submit: err.message });
+                                                helpers.setSubmitting(false);
+                                                return ToastComponent({ message: err.message, type: 'error' });
+                                            })
+
+                                    })
+                                    .catch((err) => {
+                                        helpers.setStatus({ success: false });
+                                        helpers.setErrors({ submit: err.message });
+                                        helpers.setSubmitting(false);
+                                        return ToastComponent({ message: err.message, type: 'error' });
+                                    })
+                            })
+                            .catch((err) => {
+                                helpers.setStatus({ success: false });
+                                helpers.setErrors({ submit: err.message });
+                                helpers.setSubmitting(false);
+                                return ToastComponent({ message: err.message, type: 'error' });
+                            })
+
+
+                        uploadFicheReflexe(selectedFileEn, doc.id, 'En')
+                            .then((url) => {
+                                const docData = {
+                                    ...snapshot.data(),
+                                    id: doc.id,
+                                    ficheReflexeEn: url
+                                };
+                                UpdateDoc(collectionRef, docData)
+                                    .then(() => {
+                                        updateFicheReflexionCollection(url)
+                                            .then(async (doc) => {
+                                                const collectionRef = Doc(db, 'ficheReflexes', doc.id);
+                                                const snapshot = await GetDoc(collectionRef);
+
+                                                const docData = {
+                                                    ...snapshot.data(),
+                                                    id: doc.id,
+                                                };
+
+                                                UpdateDoc(collectionRef, docData)
+                                                    .then(() => {
+                                                        helpers.resetForm();
+                                                        setSelectedFileEn(null);
+                                                        return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                                                    })
+                                                    .catch((err) => {
+                                                        helpers.setStatus({ success: false });
+                                                        helpers.setErrors({ submit: err.message });
+                                                        helpers.setSubmitting(false);
+                                                        return ToastComponent({ message: err.message, type: 'error' });
+                                                    })
+                                            })
+                                            .catch((err) => {
+                                                helpers.setStatus({ success: false });
+                                                helpers.setErrors({ submit: err.message });
+                                                helpers.setSubmitting(false);
+                                                return ToastComponent({ message: err.message, type: 'error' });
+                                            })
+
+                                    })
+                                    .catch((err) => {
+                                        helpers.setStatus({ success: false });
+                                        helpers.setErrors({ submit: err.message });
+                                        helpers.setSubmitting(false);
+                                        return ToastComponent({ message: err.message, type: 'error' });
+                                    })
+                            })
+                            .catch((err) => {
+                                helpers.setStatus({ success: false });
+                                helpers.setErrors({ submit: err.message });
+                                helpers.setSubmitting(false);
+                                return ToastComponent({ message: err.message, type: 'error' });
+                            })
+
+
+                        uploadFicheReflexe(selectedFileIt, doc.id, 'It')
+                            .then((url) => {
+                                const docData = {
+                                    ...snapshot.data(),
+                                    id: doc.id,
+                                    ficheReflexeIt: url
+                                };
+                                UpdateDoc(collectionRef, docData)
+                                    .then(() => {
+                                        updateFicheReflexionCollection(url)
+                                            .then(async (doc) => {
+                                                const collectionRef = Doc(db, 'ficheReflexes', doc.id);
+                                                const snapshot = await GetDoc(collectionRef);
+
+                                                const docData = {
+                                                    ...snapshot.data(),
+                                                    id: doc.id,
+                                                };
+
+                                                UpdateDoc(collectionRef, docData)
+                                                    .then(() => {
+                                                        helpers.resetForm();
+                                                        setSelectedFileIt(null);
                                                         return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
                                                     })
                                                     .catch((err) => {
@@ -112,12 +233,76 @@ export const CreateDefis = () => {
     });
 
 
-    const [selectedFile, setSelectedFile] = useState(null);
+    const [selectedFileFr, setSelectedFileFr] = useState(null);
 
-    const handleImageChange = (event) => {
+    const [fileNameFr, setFileNameFr] = useState(null);
+
+    const [selectedFileEn, setSelectedFileEn] = useState(null);
+
+    const [fileNameEn, setFileNameEn] = useState(null);
+
+    const [selectedFileIt, setSelectedFileIt] = useState(null);
+
+    const [fileNameIt, setFileNameIt] = useState(null);
+
+    const formatFileNameFr = () => {
+        if (selectedFileFr != null) {
+            const formatedStr = `${selectedFileFr.name.substring(0, selectedFileFr.name.length / 2)}....`;
+            setFileNameFr(formatedStr);
+        }
+    }
+
+    useEffect(() => {
+        formatFileNameFr();
+    }, [selectedFileFr])
+
+    const handleImageChangeFr = (event) => {
         const file = event.target.files[0];
         if (file && file.type === 'application/pdf') {
-            setSelectedFile(file);
+            setSelectedFileFr(file);
+            // formatFileNameFr();
+            // console.log(fileNameFr);
+        } else {
+            alert('Veuillez choisir un fichier PDF.');
+        }
+    };
+
+    useEffect(() => {
+        formatFileNameEn();
+    }, [selectedFileEn])
+
+
+    const formatFileNameEn = () => {
+        if (selectedFileEn != null) {
+            const formatedStr = `${selectedFileEn.name.substring(0, selectedFileEn.name.length / 2)}....`;
+            setFileNameEn(formatedStr);
+        }
+    }
+
+    const handleImageChangeEn = (event) => {
+        const file = event.target.files[0];
+        if (file && file.type === 'application/pdf') {
+            setSelectedFileEn(file);
+        } else {
+            alert('Veuillez choisir un fichier PDF.');
+        }
+    };
+
+    const formatFileNameIt = () => {
+        if (selectedFileIt != null) {
+            const formatedStr = `${selectedFileIt.name.substring(0, selectedFileIt.name.length / 2)}....`;
+            setFileNameIt(formatedStr);
+        }
+    }
+
+    useEffect(() => {
+        formatFileNameIt();
+    }, [selectedFileIt])
+
+    const handleImageChangeIt = (event) => {
+        const file = event.target.files[0];
+        if (file && file.type === 'application/pdf') {
+            setSelectedFileIt(file);
         } else {
             alert('Veuillez choisir un fichier PDF.');
         }
@@ -129,7 +314,7 @@ export const CreateDefis = () => {
             <Card>
                 <CardHeader
                     //subheader="catégorie"
-                    title="Defis"
+                    title="Ajouter Défis"
                 />
                 <Divider />
                 <CardContent>
@@ -138,35 +323,128 @@ export const CreateDefis = () => {
                         sx={{ maxWidth: 800 }}
                     >
                         <TextField
-                            error={!!(formik.touched.libelle && formik.errors.libelle)}
+                            error={!!(formik.touched.libelleFr && formik.errors.libelleFr)}
                             fullWidth
-                            helperText={formik.touched.libelle && formik.errors.libelle}
-                            label="Libellé"
-                            name="libelle"
+                            helperText={formik.touched.libelleFr && formik.errors.libelleFr}
+                            label="Libellé en français"
+                            name="libelleFr"
                             onBlur={formik.handleBlur}
                             onChange={formik.handleChange}
                             type="text"
-                            value={formik.values.libelle}
+                            value={formik.values.libelleFr}
+                        />
+
+                        <TextField
+                            error={!!(formik.touched.libelleEn && formik.errors.libelleEn)}
+                            fullWidth
+                            helperText={formik.touched.libelleEn && formik.errors.libelleEn}
+                            label="Libellé en anglais"
+                            name="libelleEn"
+                            onBlur={formik.handleBlur}
+                            onChange={formik.handleChange}
+                            type="text"
+                            value={formik.values.libelleEn}
+                        />
+
+                        <TextField
+                            error={!!(formik.touched.libelleIt && formik.errors.libelleIt)}
+                            fullWidth
+                            helperText={formik.touched.libelleIt && formik.errors.libelleIt}
+                            label="Libellé en italien"
+                            name="libelleIt"
+                            onBlur={formik.handleBlur}
+                            onChange={formik.handleChange}
+                            type="text"
+                            value={formik.values.libelleIt}
                         />
 
                         <Stack direction={'row'}
-spacing={3}>
+                            spacing={3}>
                             <Input
                                 accept="application/pdf"
-                                id="file-input"
+                                id="file-inputFr"
                                 type="file"
-                                onChange={handleImageChange}
+                                onChange={handleImageChangeFr}
                                 style={{ display: 'none' }}
                             />
-                            <label htmlFor="file-input">
-                                <Button variant="outlined"
-startIcon={<DocumentIcon />}
-component="span">
-                                    Choisir la fiche réflexe
+                            <label htmlFor="file-inputFr">
+                                <Button variant="outlined" color='info'
+                                    startIcon={
+                                        <SvgIcon>
+                                            <DocumentIcon />
+                                        </SvgIcon>
+                                    }
+                                    component="span">
+                                    Choisir la fiche réflexe en français
                                 </Button>
                             </label>
+
                             <label>
-                                {selectedFile && selectedFile.name}
+                                {
+                                    selectedFileFr &&
+                                    fileNameFr
+                                }
+                            </label>
+
+                        </Stack>
+
+
+                        <Stack direction={'row'}
+                            spacing={3}>
+                            <Input
+                                accept="application/pdf"
+                                id="file-inputEn"
+                                type="file"
+                                onChange={handleImageChangeEn}
+                                style={{ display: 'none' }}
+                            />
+                            <label htmlFor="file-inputEn">
+                                <Button variant="outlined" color='info'
+                                    startIcon={
+                                        <SvgIcon>
+                                            <DocumentIcon />
+                                        </SvgIcon>
+                                    }
+                                    component="span">
+                                    Choisir la fiche réflexe en anglais
+                                </Button>
+                            </label>
+
+                            <label>
+                                {
+                                    selectedFileEn &&
+                                    fileNameEn
+                                }
+                            </label>
+
+                        </Stack>
+
+                        <Stack direction={'row'}
+                            spacing={3}>
+                            <Input
+                                accept="application/pdf"
+                                id="file-inputIt"
+                                type="file"
+                                onChange={handleImageChangeIt}
+                                style={{ display: 'none' }}
+                            />
+                            <label htmlFor="file-inputIt">
+                                <Button variant="outlined" color='info'
+                                    startIcon={
+                                        <SvgIcon>
+                                            <DocumentIcon />
+                                        </SvgIcon>
+                                    }
+                                    component="span">
+                                    Choisir la fiche réflexe en italien
+                                </Button>
+                            </label>
+
+                            <label>
+                                {
+                                    selectedFileIt &&
+                                    fileNameIt
+                                }
                             </label>
 
                         </Stack>
@@ -183,20 +461,23 @@ component="span">
                         </Typography>
                     )}
 
-                    {selectedFile == null && (
+                    {(selectedFileFr == null || selectedFileEn == null || selectedFileIt == null) && (
                         <Typography
                             color="error"
                             sx={{ mt: 3 }}
                             variant="body2"
                         >
-                            Vous devez sélectionner un fichier
+                            Vous devez sélectionner un fichier pour les trois langues Français, anglais et italien (Seuls les fichiers PDF sont autorisés)
                         </Typography>
                     )}
+
+
+
                 </CardContent>
                 <Divider />
                 <CardActions sx={{ justifyContent: 'flex-end' }}>
                     <Button variant="contained"
-type='submit'>
+                        type='submit'>
                         Créer
                     </Button>
                 </CardActions>

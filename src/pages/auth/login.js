@@ -29,7 +29,7 @@ const Page = () => {
 
   useEffect(() => {
     console.log(isAuthenticated);
-    if(isAuthenticated){
+    if (isAuthenticated) {
       router.push('/');
     }
   })
@@ -55,7 +55,7 @@ const Page = () => {
       try {
         await auth.signIn(values.email, values.password);
         console.log(isAuthenticated)
-        if(isAuthenticated){
+        if (isAuthenticated) {
           router.push('/');
         }
       } catch (err) {
@@ -130,55 +130,70 @@ const Page = () => {
               </Typography> */}
             </Stack>
             <form
-                noValidate
-                onSubmit={formik.handleSubmit}
+              noValidate
+              onSubmit={formik.handleSubmit}
+            >
+              <Stack spacing={3}>
+                <TextField
+                  error={!!(formik.touched.email && formik.errors.email)}
+                  fullWidth
+                  helperText={formik.touched.email && formik.errors.email}
+                  label="Email"
+                  name="email"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  type="email"
+                  value={formik.values.email}
+                />
+                <TextField
+                  error={!!(formik.touched.password && formik.errors.password)}
+                  fullWidth
+                  helperText={formik.touched.password && formik.errors.password}
+                  label="Mot de passe"
+                  name="password"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  type="password"
+                  value={formik.values.password}
+                />
+              </Stack>
+              <Typography
+                color="text.secondary"
+                variant="body2"
               >
-                <Stack spacing={3}>
-                  <TextField
-                    error={!!(formik.touched.email && formik.errors.email)}
-                    fullWidth
-                    helperText={formik.touched.email && formik.errors.email}
-                    label="Email"
-                    name="email"
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                    type="email"
-                    value={formik.values.email}
-                  />
-                  <TextField
-                    error={!!(formik.touched.password && formik.errors.password)}
-                    fullWidth
-                    helperText={formik.touched.password && formik.errors.password}
-                    label="Mot de passe"
-                    name="password"
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                    type="password"
-                    value={formik.values.password}
-                  />
-                </Stack>
-                {/* <FormHelperText sx={{ mt: 1 }}>
+                Mot de passe oublié ?
+                &nbsp;
+                <Link
+                  component={NextLink}
+                  href="/auth/forgot-password"
+                  underline="hover"
+                  variant="subtitle2"
+                >
+                  Récupération
+                </Link>
+              </Typography>
+              {/* <FormHelperText sx={{ mt: 1 }}>
                   Optionally you can skip.
                 </FormHelperText> */}
-                {formik.errors.submit && (
-                  <Typography
-                    color="error"
-                    sx={{ mt: 3 }}
-                    variant="body2"
-                  >
-                    {formik.errors.submit}
-                  </Typography>
-                )}
-                <Button
-                  fullWidth
-                  size="large"
+              {formik.errors.submit && (
+                <Typography
+                  color="error"
                   sx={{ mt: 3 }}
-                  type="submit"
-                  variant="contained"
+                  variant="body2"
                 >
-                  Connexion
-                </Button>
-                {/* <Button
+                  {formik.errors.submit}
+                </Typography>
+              )}
+              <Button
+                fullWidth
+                size="large"
+                sx={{ mt: 3 }}
+                type="submit"
+                variant="contained"
+              >
+                Connexion
+              </Button>
+              {/* <Button
                   fullWidth
                   size="large"
                   sx={{ mt: 3 }}
@@ -195,7 +210,7 @@ const Page = () => {
                     You can use <b>demo@devias.io</b> and password <b>Password123!</b>
                   </div>
                 </Alert> */}
-              </form>
+            </form>
             {/* <Tabs
               onChange={handleMethodChange}
               sx={{ mb: 3 }}

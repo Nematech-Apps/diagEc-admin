@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs, addDoc, doc, setDoc, getDoc, updateDoc, deleteDoc, onSnapshot, query } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, addDoc, doc, setDoc, getDoc, updateDoc, deleteDoc, onSnapshot, query, where } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, uploadBytesResumable, getDownloadURL, deleteObject} from 'firebase/storage';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendPasswordResetEmail } from "firebase/auth";
 
 // Initialize Firebase
 const firebaseConfig = {
@@ -33,7 +33,9 @@ export const GetDoc = getDoc;
 export const GetDocs = getDocs;
 export const OnSnapshot = onSnapshot;
 export const Query = query;
+export const Where = where;
 export const auth = getAuth(app);
 export const signin = signInWithEmailAndPassword;
 export const signupUser = createUserWithEmailAndPassword;
 export const signout = signOut;
+export const SendPasswordResetEmail = sendPasswordResetEmail;
