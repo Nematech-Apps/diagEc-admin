@@ -1,9 +1,13 @@
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import ArrowDownOnSquareIcon from '@heroicons/react/24/solid/ArrowDownOnSquareIcon';
 import ClockIcon from '@heroicons/react/24/solid/ClockIcon';
 import InformationCircleIcon from '@heroicons/react/24/solid/InformationCircleIcon';
 import { Avatar, Box, Card, CardContent, Divider, Stack, SvgIcon, Typography, Button, Fab, FormControlLabel } from '@mui/material';
 import { IOSSwitch } from 'src/components/ios-switch';
+
+
+import { CompanyModalDetails } from './companies-modal-details';
 
 export const CompanyCard = (props) => {
   const { company } = props;
@@ -27,6 +31,13 @@ export const CompanyCard = (props) => {
   }
 
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalData, setModalData] = useState(null);
+
+  const handleDetailsClick = (event, company) => {
+    setModalData(company);
+    setIsModalOpen(true);
+  };
 
   return (
     <Card
@@ -108,11 +119,16 @@ export const CompanyCard = (props) => {
             size="small"
             color="warning"
             aria-label="info"
+            onClick={(event) => handleDetailsClick(event, company)}
           >
             <SvgIcon fontSize="small">
               <InformationCircleIcon />
             </SvgIcon>
           </Fab>
+
+          {isModalOpen && modalData && <CompanyModalDetails data={modalData}
+            isOpen={isModalOpen}
+            handleClose={() => setIsModalOpen(false)} />}
           {/* <Button variant="outlined" startIcon={<SvgIcon
             color="info"
             fontSize="small"

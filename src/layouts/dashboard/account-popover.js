@@ -59,7 +59,9 @@ export const AccountPopover = (props) => {
       <Box
         sx={{
           py: 1.5,
-          px: 2
+          px: 2,
+          color: 'white',
+          backgroundColor: '#077c93'
         }}
       >
         <Typography variant="overline" onClick={handleAccount} style={{ cursor: 'pointer' }}>
@@ -68,6 +70,19 @@ export const AccountPopover = (props) => {
         {/* <Typography variant="overline" >
           Mon compte
         </Typography> */}
+        {/* <Typography
+          color="text.secondary"
+          variant="body2"
+        >
+          {userData?.identifiant}
+        </Typography> */}
+      </Box>
+      <Box
+        sx={{
+          py: 1.5,
+          px: 2,
+        }}
+      >
         <Typography
           color="text.secondary"
           variant="body2"

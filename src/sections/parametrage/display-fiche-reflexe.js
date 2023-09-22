@@ -17,8 +17,12 @@ import {
     MenuItem,
     Typography,
     Stack,
-    Modal
+    Modal,
+    Fab,
+    SvgIcon
 } from '@mui/material';
+
+import XCircleIcon from '@heroicons/react/24/solid/XCircleIcon';
 
 const style = {
     position: 'absolute',
@@ -31,7 +35,7 @@ const style = {
     border: '1px solid #000',
     boxShadow: 24,
     p: 4,
-    borderRadius: 5
+    //borderRadius: 5
 };
 
 export const DisplayFicheReflexe = ({ handleClose, isOpen, fileUrl }) => {
@@ -41,7 +45,7 @@ export const DisplayFicheReflexe = ({ handleClose, isOpen, fileUrl }) => {
         if (isOpen) {
             setIframeLoaded(false);
         }
-        
+
     }, [isOpen]);
 
     const handleIframeLoad = () => {
@@ -56,7 +60,9 @@ export const DisplayFicheReflexe = ({ handleClose, isOpen, fileUrl }) => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
+
                 <Box sx={style}>
+                    
                     {!iframeLoaded && (
                         <Typography variant="body1" align="center">
                             Chargement...

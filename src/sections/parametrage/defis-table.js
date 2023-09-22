@@ -39,7 +39,10 @@ import { deleteDefis, deleteFicheReflexeInStorage } from 'src/firebase/firebaseS
 import { checkQuestionsInDefi } from 'src/firebase/firebaseServices';
 import ToastComponent from '../../components/toast';
 
+import swal from 'sweetalert';
 
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 export const DefisTable = (props) => {
     const {
@@ -86,40 +89,68 @@ export const DefisTable = (props) => {
         setIsDisplayFileModalOpen(true);
     }
 
-    const handleDeleteClick = async(event, defis) => {
-        const hasQuestions = await checkQuestionsInDefi(defis.id);
-        if (hasQuestions) {
-            return ToastComponent({ message: "Ce défi est déjà lié à une ou des question(s). Vous devez d'abord supprimer cette(ces) question(s)", type: 'error' });
-        }
-        deleteDefis(defis.id)
-            .then(() => {
-                deleteFicheReflexeInStorage(defis.id, 'Fr')
-                    .then(() => {
-                        return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
-                    })
-                    .catch((err) => {
-                        return ToastComponent({ message: err.message, type: 'error' });
-                    })
+    const handleDeleteClick = async (event, defis) => {
+        confirmAlert({
+            title: 'Attention⚠',
+            message: 'Voulez-vous vraiment effectuer cette suppression ?',
+            buttons: [
+                {
+                    label: 'Non',
+                    style: {
+                        backgroundColor: 'red'
+                    }
+                },
+                {
+                    label: 'Oui',
+                    style: {
+                        backgroundColor: 'white',
+                        borderStyle: 'solid',
+                        borderWidth: 2,
+                        borderColor: 'limegreen',
+                        color: 'black'
+                    },
+                    onClick: async () => {
+                        const hasQuestions = await checkQuestionsInDefi(defis.id);
+                        if (hasQuestions) {
+                            return ToastComponent({ message: "Ce défi est déjà lié à une ou des question(s). Vous devez d'abord supprimer cette(ces) question(s)", type: 'error' });
+                        }
+                        deleteDefis(defis.id)
+                            .then(() => {
+                                deleteFicheReflexeInStorage(defis.id, 'Fr')
+                                    .then(() => {
+                                        return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                                    })
+                                    .catch((err) => {
+                                        return ToastComponent({ message: err.message, type: 'error' });
+                                    })
 
-                deleteFicheReflexeInStorage(defis.id, 'En')
-                    .then(() => {
-                        return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
-                    })
-                    .catch((err) => {
-                        return ToastComponent({ message: err.message, type: 'error' });
-                    })
+                                deleteFicheReflexeInStorage(defis.id, 'En')
+                                    .then(() => {
+                                        return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                                    })
+                                    .catch((err) => {
+                                        return ToastComponent({ message: err.message, type: 'error' });
+                                    })
 
-                deleteFicheReflexeInStorage(defis.id, 'It')
-                    .then(() => {
-                        return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
-                    })
-                    .catch((err) => {
-                        return ToastComponent({ message: err.message, type: 'error' });
-                    })
-            })
-            .catch((err) => {
-                return ToastComponent({ message: err.message, type: 'error' });
-            })
+                                deleteFicheReflexeInStorage(defis.id, 'It')
+                                    .then(() => {
+                                        return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                                    })
+                                    .catch((err) => {
+                                        return ToastComponent({ message: err.message, type: 'error' });
+                                    })
+                            })
+                            .catch((err) => {
+                                return ToastComponent({ message: err.message, type: 'error' });
+                            })
+                    }
+                }
+            ],
+            closeOnEscape: true,
+            closeOnClickOutside: false
+        });
+
+
     };
 
     return (
@@ -141,8 +172,9 @@ export const DefisTable = (props) => {
                                 }}
                             />
                         </TableCell> */}
+                        
                         <TableCell>
-                            Libellés
+                            Libellé
                         </TableCell>
 
                         <TableCell>
@@ -179,6 +211,7 @@ export const DefisTable = (props) => {
                                             }}
                                         />
                                     </TableCell> */}
+                                    
                                     <TableCell>
                                         <Stack
                                             alignItems="flex-start"
@@ -189,11 +222,7 @@ export const DefisTable = (props) => {
                                                 {getInitials(customer.name)}
                                             </Avatar> */}
                                             <Typography variant="subtitle2">
-                                                <ul>
-                                                    <li>{defis.libelleFr}</li>
-                                                    <li>{defis.libelleEn}</li>
-                                                    <li>{defis.libelleIt}</li>
-                                                </ul>
+                                            {defis.libelleFr}
                                             </Typography>
                                             {/* <Typography variant="subtitle2">
                                                 {defis.libelleEn}
@@ -215,16 +244,7 @@ export const DefisTable = (props) => {
                                                 <Button variant="outlined"
                                                     onClick={(event) => handleShowFicheFr(event, defis)}>Voir fiche en français</Button>
                                             }
-                                            {
-                                                defis.ficheReflexeEn &&
-                                                <Button variant="outlined"
-                                                    onClick={(event) => handleShowFicheEn(event, defis)}>Voir fiche en anglais</Button>
-                                            }
-                                            {
-                                                defis.ficheReflexeIt &&
-                                                <Button variant="outlined"
-                                                    onClick={(event) => handleShowFicheIt(event, defis)}>Voir fiche en italien</Button>
-                                            }
+                                            
                                         </Stack>
                                     </TableCell>
                                     <TableCell>

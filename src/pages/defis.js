@@ -27,6 +27,8 @@ import { DisplayCategorieTable } from 'src/sections/parametrage/display-categori
 import { DisplayAnswerTable } from 'src/sections/parametrage/display-answer-table';
 import { DisplayPilierTable } from 'src/sections/parametrage/display-pilier-table';
 import { DisplayDefisTable } from 'src/sections/parametrage/display-defis-table';
+import { DisplayDefisTableEn } from 'src/sections/parametrage/display-defis-tableEn';
+import { DisplayDefisTableIt } from 'src/sections/parametrage/display-defis-tableIt';
 import { DisplayQuestionTable } from 'src/sections/parametrage/display-question-table';
 
 import { useCallback, useMemo, useState } from 'react';
@@ -37,6 +39,56 @@ const now = new Date();
 
 
 const Page = () => {
+
+    const [alignment, setAlignment] = useState("Français");
+
+    const handleChange = (event, newAlignment) => {
+        setAlignment(newAlignment);
+    };
+
+    const display = () => {
+        if (alignment == "Français") {
+            return (
+                <>
+                    <Grid
+                        xs={12}
+                        md={12}
+                        lg={12}
+                    >
+                        <DisplayDefisTable />
+                    </Grid>
+
+                </>
+            )
+        } else if (alignment == 'Anglais') {
+            return (
+                <>
+                    <Grid
+                        xs={12}
+                        md={12}
+                        lg={12}
+                    >
+                        <DisplayDefisTableEn />
+                    </Grid>
+
+
+                </>
+            )
+        } else if (alignment == 'Italien') {
+            return (
+                <>
+                    <Grid
+                        xs={12}
+                        md={12}
+                        lg={12}
+                    >
+                        <DisplayDefisTableIt />
+                    </Grid>
+
+                </>
+            )
+        }
+    }
 
     return (
         <>
@@ -58,21 +110,33 @@ const Page = () => {
                         spacing={3}
                     >
                         <Grid
-                        xs={12}
-                        md={12}
-                        lg={12}
-                    >
-                        <CreateDefis />
-                    </Grid>
+                            xs={12}
+                            md={12}
+                            lg={12}
+                        >
+                            <CreateDefis />
+                        </Grid>
 
-                    <Grid
-                        xs={12}
-                        md={12}
-                        lg={12}
-                    >
-                        <DisplayDefisTable />
-                    </Grid>
+                        <Grid
+                            xs={12}
+                            sm={6}
+                            lg={12}
+                        >
+                            <ToggleButtonGroup
+                                color="primary"
+                                value={alignment}
+                                exclusive
+                                onChange={handleChange}
+                                aria-label="Platform"
+                                fullWidth
+                            >
+                                <ToggleButton value="Français">Français</ToggleButton>
+                                <ToggleButton value="Anglais">Anglais</ToggleButton>
+                                <ToggleButton value="Italien">Italien</ToggleButton>
+                            </ToggleButtonGroup>
+                        </Grid>
 
+                        {display()}
                     </Grid>
                 </Container>
             </Box>

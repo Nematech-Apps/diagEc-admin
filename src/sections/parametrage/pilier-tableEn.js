@@ -48,7 +48,7 @@ import * as emoji from 'node-emoji';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
-export const PilierTable = (props) => {
+export const PilierTableEn = (props) => {
     const {
         count = 0,
         items = [],
@@ -202,7 +202,7 @@ export const PilierTable = (props) => {
                                             </Avatar> */}
 
                                                 <Typography variant="subtitle2">
-                                                {pilier.libelleFr}
+                                                {pilier.libelleEn}
                                                 </Typography>
                                                 {/* <Typography variant="subtitle2">
                                                 {pilier.libelleEn}
@@ -222,7 +222,7 @@ export const PilierTable = (props) => {
                                                 {getInitials(customer.name)}
                                             </Avatar> */}
                                                 <Typography variant="subtitle2">
-                                                {pilier.definitionFr}
+                                                {pilier.definitionEn}
                                                 </Typography>
                                                 {/* <Typography variant="subtitle2">
                                                 {pilier.definitionEn}
@@ -239,20 +239,22 @@ export const PilierTable = (props) => {
                                                 spacing={2}
                                             >
 
+                                                
+
                                                 <ul>
                                                     {
-                                                        pilier.motClesFr != null ? pilier.motClesFr.map((mot, index) => {
+                                                        pilier.motClesEn != null ? pilier.motClesEn.map((mot, index) => {
                                                             return (
                                                                 <Chip label={mot} variant="outlined" key={index} />
                                                             )
                                                         }) : <Typography variant="subtitle2">
-                                                            Aucun mot clé en français ajouté
+                                                            Aucun mot clé en anglais ajouté
                                                         </Typography>
                                                     }
 
                                                 </ul>
 
-                                                
+                                               
 
                                             </Stack>
                                         </TableCell>
@@ -349,7 +351,7 @@ export const PilierTable = (props) => {
     );
 };
 
-PilierTable.propTypes = {
+PilierTableEn.propTypes = {
     count: PropTypes.number,
     items: PropTypes.array,
     onDeselectAll: PropTypes.func,

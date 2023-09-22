@@ -283,7 +283,8 @@ export const addQuestion = async (data) => {
         libelleEn: data.libelleEn,
         libelleIt: data.libelleIt,
         answers: data.answers,
-        categorie: JSON.parse(data.categorie),
+        categories: data.categories,
+        //categorie: JSON.parse(data.categorie),
         poids: data.poids,
         pilier: JSON.parse(data.pilier),
         defi: JSON.parse(data.defi)
@@ -302,7 +303,8 @@ export const updateQuestion = async (data, docId) => {
         libelleEn: data.libelleEn,
         libelleIt: data.libelleIt,
         answers: data.answers,
-        categorie: JSON.parse(data.categorie),
+        categories: data.categories,
+        //categorie: JSON.parse(data.categorie),
         poids: data.poids,
         pilier: JSON.parse(data.pilier),
         defi: JSON.parse(data.defi)
@@ -361,7 +363,9 @@ export const addMotCleToPilier = async (data, docId) => {
     const collectionRef = Doc(db, 'piliers', docId);
 
     const docData = {
-        motCles: data.motCles
+        motClesFr: data.motClesFr,
+        motClesEn: data.motClesEn,
+        motClesIt: data.motClesIt
     };
 
     return UpdateDoc(collectionRef, docData)
@@ -404,7 +408,9 @@ export const updateDefis = async (data, docId) => {
 
     const docData = {
         ...snapshot.data(),
-        libelle: data.libelle
+        libelleFr: data.libelleFr,
+        libelleEn: data.libelleEn,
+        libelleIt: data.libelleIt
     };
 
     return UpdateDoc(collectionRef, docData)

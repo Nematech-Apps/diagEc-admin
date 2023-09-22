@@ -28,6 +28,8 @@ import { DisplayAnswerTable } from 'src/sections/parametrage/display-answer-tabl
 import { DisplayPilierTable } from 'src/sections/parametrage/display-pilier-table';
 import { DisplayDefisTable } from 'src/sections/parametrage/display-defis-table';
 import { DisplayQuestionTable } from 'src/sections/parametrage/display-question-table';
+import { DisplayQuestionTableEn } from 'src/sections/parametrage/display-question-tableEn';
+import { DisplayQuestionTableIt } from 'src/sections/parametrage/display-question-tableIt';
 
 import { useCallback, useMemo, useState } from 'react';
 import ToggleButton from '@mui/material/ToggleButton';
@@ -37,7 +39,58 @@ const now = new Date();
 
 
 const Page = () => {
+    const [alignment, setAlignment] = useState("Français");
 
+    const handleChange = (event, newAlignment) => {
+        setAlignment(newAlignment);
+    };
+
+    const display = () => {
+        if (alignment == "Français") {
+            return (
+                <>
+                    <Grid
+                        xs={12}
+                        md={12}
+                        lg={12}
+                    >
+                        <DisplayQuestionTable />
+                    </Grid>
+
+
+
+                </>
+            )
+        } else if (alignment == 'Anglais') {
+            return (
+                <>
+                    <Grid
+                        xs={12}
+                        md={12}
+                        lg={12}
+                    >
+                        <DisplayQuestionTableEn />
+                    </Grid>
+
+
+                </>
+            )
+        } else if (alignment == 'Italien') {
+            return (
+                <>
+                    <Grid
+                        xs={12}
+                        md={12}
+                        lg={12}
+                    >
+                        <DisplayQuestionTableIt />
+                    </Grid>
+
+
+                </>
+            )
+        }
+    }
     
 
     return (
@@ -68,12 +121,25 @@ const Page = () => {
                     </Grid>
 
                     <Grid
-                        xs={12}
-                        md={12}
-                        lg={12}
-                    >
-                        <DisplayQuestionTable />
-                    </Grid>
+                            xs={12}
+                            sm={6}
+                            lg={12}
+                        >
+                            <ToggleButtonGroup
+                                color="primary"
+                                value={alignment}
+                                exclusive
+                                onChange={handleChange}
+                                aria-label="Platform"
+                                fullWidth
+                            >
+                                <ToggleButton value="Français">Français</ToggleButton>
+                                <ToggleButton value="Anglais">Anglais</ToggleButton>
+                                <ToggleButton value="Italien">Italien</ToggleButton>
+                            </ToggleButtonGroup>
+                        </Grid>
+
+                        {display()}
 
                     </Grid>
                 </Container>

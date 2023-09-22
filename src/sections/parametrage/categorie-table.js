@@ -37,6 +37,11 @@ import { deleteCategorie } from 'src/firebase/firebaseServices';
 import { checkQuestionsInCategorie } from 'src/firebase/firebaseServices';
 import ToastComponent from '../../components/toast';
 
+import swal from 'sweetalert';
+
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+
 export const CategorieTable = (props) => {
     const { products = [], sx } = props;
 
@@ -94,19 +99,47 @@ export const CategorieTable = (props) => {
     };
 
     const handleDeleteClick = async (event, categorie) => {
-        const hasQuestions = await checkQuestionsInCategorie(categorie.id);
-        if (hasQuestions) {
-            return ToastComponent({ message: "Cette catégorie est déjà lié à une ou des question(s). Vous devez d'abord supprimer cette(ces) question(s)", type: 'error' });
-        }
-        else {
-            deleteCategorie(categorie.id)
-                .then(() => {
-                    return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
-                })
-                .catch((err) => {
-                    return ToastComponent({ message: err.message, type: 'error' });
-                })
-        }
+        confirmAlert({
+            title: 'Attention⚠',
+            message: 'Voulez-vous vraiment effectuer cette suppression ?',
+            buttons: [
+                {
+                    label: 'Non',
+                    style: {
+                        backgroundColor: 'red'
+                    }
+                },
+                {
+                    label: 'Oui',
+                    style: {
+                        backgroundColor: 'white',
+                        borderStyle: 'solid',
+                        borderWidth: 2,
+                        borderColor: 'limegreen',
+                        color: 'black'
+                    },
+                    onClick: async () => {
+                        const hasQuestions = await checkQuestionsInCategorie(categorie.id);
+                        if (hasQuestions) {
+                            return ToastComponent({ message: "Cette catégorie est déjà lié à une ou des question(s). Vous devez d'abord supprimer cette(ces) question(s)", type: 'error' });
+                        }
+                        else {
+                            deleteCategorie(categorie.id)
+                                .then(() => {
+                                    return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                                })
+                                .catch((err) => {
+                                    return ToastComponent({ message: err.message, type: 'error' });
+                                })
+                        }
+                    }
+                }
+            ],
+            closeOnEscape: true,
+            closeOnClickOutside: false
+        });
+
+
     };
 
 

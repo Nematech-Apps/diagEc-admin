@@ -26,6 +26,8 @@ import { DisplayNiveauTable } from 'src/sections/parametrage/display-niveau-tabl
 import { DisplayCategorieTable } from 'src/sections/parametrage/display-categorie-table';
 import { DisplayAnswerTable } from 'src/sections/parametrage/display-answer-table';
 import { DisplayPilierTable } from 'src/sections/parametrage/display-pilier-table';
+import { DisplayPilierTableEn } from 'src/sections/parametrage/display-pilier-tableEn';
+import { DisplayPilierTableIt } from 'src/sections/parametrage/display-pilier-tableIt';
 import { DisplayDefisTable } from 'src/sections/parametrage/display-defis-table';
 import { DisplayQuestionTable } from 'src/sections/parametrage/display-question-table';
 
@@ -38,7 +40,59 @@ const now = new Date();
 
 const Page = () => {
 
-    
+    const [alignment, setAlignment] = useState("Français");
+
+    const handleChange = (event, newAlignment) => {
+        setAlignment(newAlignment);
+    };
+
+    const display = () => {
+        if (alignment == "Français") {
+            return (
+                <>
+                    <Grid
+                        xs={12}
+                        md={12}
+                        lg={12}
+                    >
+                        <DisplayPilierTable />
+                    </Grid>
+
+
+
+                </>
+            )
+        } else if (alignment == 'Anglais') {
+            return (
+                <>
+                    <Grid
+                        xs={12}
+                        md={12}
+                        lg={12}
+                    >
+                        <DisplayPilierTableEn />
+                    </Grid>
+
+
+                </>
+            )
+        } else if (alignment == 'Italien') {
+            return (
+                <>
+                    <Grid
+                        xs={12}
+                        md={12}
+                        lg={12}
+                    >
+                        <DisplayPilierTableIt />
+                    </Grid>
+
+
+                </>
+            )
+        }
+    }
+
 
     return (
         <>
@@ -60,21 +114,33 @@ const Page = () => {
                         spacing={3}
                     >
                         <Grid
-                        xs={12}
-                        md={12}
-                        lg={12}
-                    >
-                        <CreatePilier />
-                    </Grid>
+                            xs={12}
+                            md={12}
+                            lg={12}
+                        >
+                            <CreatePilier />
+                        </Grid>
 
-                    <Grid
-                        xs={12}
-                        md={12}
-                        lg={12}
-                    >
-                        <DisplayPilierTable />
-                    </Grid>
+                        <Grid
+                            xs={12}
+                            sm={6}
+                            lg={12}
+                        >
+                            <ToggleButtonGroup
+                                color="primary"
+                                value={alignment}
+                                exclusive
+                                onChange={handleChange}
+                                aria-label="Platform"
+                                fullWidth
+                            >
+                                <ToggleButton value="Français">Français</ToggleButton>
+                                <ToggleButton value="Anglais">Anglais</ToggleButton>
+                                <ToggleButton value="Italien">Italien</ToggleButton>
+                            </ToggleButtonGroup>
+                        </Grid>
 
+                        {display()}
                     </Grid>
                 </Container>
             </Box>

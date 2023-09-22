@@ -38,7 +38,10 @@ import { checkCategoriesInNiveau } from 'src/firebase/firebaseServices';
 import { checkCompaniesInNiveau } from 'src/firebase/firebaseServices';
 import ToastComponent from '../../components/toast';
 
+import swal from 'sweetalert';
 
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 export const NiveauTable = (props) => {
     const {
@@ -67,23 +70,50 @@ export const NiveauTable = (props) => {
     };
 
     const handleDeleteClick = async (event, niveau) => {
-        const hasCategories = await checkCategoriesInNiveau(niveau.id);
-        const hasCompanies = await checkCompaniesInNiveau(niveau.id);
-        if (hasCategories) {
-            return ToastComponent({ message: "Ce niveau est déjà lié à une ou des catégorie(s). Vous devez d'abord supprimer cette(ces) catégorie(s)", type: 'error' });
-        }
-        else if (hasCompanies) {
-            return ToastComponent({ message: "Ce niveau contient déjà une ou des entreprise(s). Vous devez d'abord supprimer cette(ces) entreprise(s)", type: 'error' });
-        }
-        else {
-            deleteNiveau(niveau.id)
-                .then(() => {
-                    return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
-                })
-                .catch((err) => {
-                    return ToastComponent({ message: err.message, type: 'error' });
-                })
-        }
+        confirmAlert({
+            title: 'Attention⚠',
+            message: 'Voulez-vous vraiment effectuer cette suppression ?',
+            buttons: [
+                {
+                    label: 'Non',
+                    style: {
+                        backgroundColor: 'red'
+                    }
+                },
+                {
+                    label: 'Oui',
+                    style: {
+                        backgroundColor: 'white',
+                        borderStyle: 'solid',
+                        borderWidth: 2,
+                        borderColor: 'limegreen',
+                        color: 'black'
+                    },
+                    onClick: async () => {
+                        const hasCategories = await checkCategoriesInNiveau(niveau.id);
+                        const hasCompanies = await checkCompaniesInNiveau(niveau.id);
+                        if (hasCategories) {
+                            return ToastComponent({ message: "Ce niveau est déjà lié à une ou des catégorie(s). Vous devez d'abord supprimer cette(ces) catégorie(s)", type: 'error' });
+                        }
+                        else if (hasCompanies) {
+                            return ToastComponent({ message: "Ce niveau contient déjà une ou des entreprise(s). Vous devez d'abord supprimer cette(ces) entreprise(s)", type: 'error' });
+                        }
+                        else {
+                            deleteNiveau(niveau.id)
+                                .then(() => {
+                                    return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                                })
+                                .catch((err) => {
+                                    return ToastComponent({ message: err.message, type: 'error' });
+                                })
+                        }
+                    }
+                }
+            ],
+            closeOnEscape: true,
+            closeOnClickOutside: false
+        });
+
 
     };
 

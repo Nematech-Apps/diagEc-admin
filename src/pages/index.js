@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { subDays, subHours } from 'date-fns';
-import { Box, Container, Unstable_Grid2 as Grid } from '@mui/material';
+import { Box, Container, Unstable_Grid2 as Grid, Button, SvgIcon } from '@mui/material';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { OverviewBudget } from 'src/sections/overview/overview-budget';
 import { OverviewLatestOrders } from 'src/sections/overview/overview-latest-orders';
@@ -11,6 +11,9 @@ import { OverviewTotalCustomers } from 'src/sections/overview/overview-total-cus
 import { OverviewTotalProfit } from 'src/sections/overview/overview-total-profit';
 import { OverviewTraffic } from 'src/sections/overview/overview-traffic';
 import { OverviewTraffic2 } from 'src/sections/overview/overview-traffic2';
+import ArrowDownTrayIcon from '@heroicons/react/24/solid/ArrowDownTrayIcon';
+import { ExportPDF } from 'src/sections/btnExport/exportPdf';
+import { ExportEXCEL } from 'src/sections/btnExport/exportExcel';
 
 const now = new Date();
 
@@ -54,7 +57,7 @@ const Page = () => (
               difference={16}
               positive={false}
               sx={{ height: '80%' }}
-              
+
             />
           </Grid>
           <Grid
@@ -81,6 +84,18 @@ const Page = () => (
             xs={12}
             lg={6}
           >
+            <ExportPDF/>
+          </Grid>
+          <Grid
+            xs={12}
+            lg={6}
+          >
+            <ExportEXCEL/>
+          </Grid>
+          <Grid
+            xs={12}
+            lg={6}
+          >
             <OverviewTraffic2
               //chartSeries={[63, 15, 22]}
               //labels={['Desktop', 'Tablet', 'Phone']}
@@ -98,13 +113,13 @@ const Page = () => (
               sx={{ height: '90%' }}
             />
           </Grid>
-          
+
           <Grid
             xs={12}
             md={12}
             lg={12}
           >
-             {/* <OverviewSales
+            {/* <OverviewSales
               chartSeries={[
                 {
                   name: 'This year',

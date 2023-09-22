@@ -53,7 +53,7 @@ const style = {
     border: '1px solid #000',
     boxShadow: 24,
     p: 4,
-    borderRadius: 4
+    //borderRadius: 4
 };
 
 const ITEM_HEIGHT = 48;
@@ -81,6 +81,10 @@ export const EditQuestion = ({ handleClose, isOpen, data }) => {
 
     const [objectList, setObjectList] = useState([]);
 
+    const [categLibelle, setCategLibelle] = useState([]);
+
+    const [objectListCateg, setObjectListCateg] = useState([]);
+
     const handleChange = (event) => {
         setAnswerLibelle(
             // On autofill we get a stringified value.
@@ -105,9 +109,29 @@ export const EditQuestion = ({ handleClose, isOpen, data }) => {
         }
     }, [answerLibelle])
 
+    const handleChangeCateg = (event) => {
+        setCategLibelle(
+            // On autofill we get a stringified value.
+            typeof event.target.value === 'string' ? value.split(',') : event.target.value,
+        );
+
+    };
+
+
     useEffect(() => {
-        console.log(`value : ${JSON.stringify(objectList)}`);
-    }, [objectList])
+        const arr = [];
+        if (categLibelle.length != 0 && categories.length != 0) {
+            categLibelle.map((item) => {
+                categories.map((elt) => {
+                    if (elt.libelle == item) {
+                        const obj = elt;
+                        arr.push(obj);
+                    }
+                })
+            })
+            setObjectListCateg(arr);
+        }
+    }, [categLibelle])
 
     useEffect(() => {
         const unsubscribe1 = OnSnapshot(
@@ -182,7 +206,7 @@ export const EditQuestion = ({ handleClose, isOpen, data }) => {
             libelleEn: data.libelleEn,
             libelleIt: data.libelleIt,
             poids: data.poids,
-            categorie: '',
+            // categorie: '',
             pilier: '',
             defi: '',
             submit: null
@@ -203,9 +227,9 @@ export const EditQuestion = ({ handleClose, isOpen, data }) => {
             poids: Yup
                 .number()
                 .required("Le poids est requis"),
-            categorie: Yup
-                .string()
-                .required("La catégorie est requise"),
+            // categorie: Yup
+            //     .string()
+            //     .required("La catégorie est requise"),
             pilier: Yup
                 .string()
                 .required("Le pilier est requis"),
@@ -215,13 +239,14 @@ export const EditQuestion = ({ handleClose, isOpen, data }) => {
 
         }),
         onSubmit: async (values, helpers) => {
-            if (answerLibelle.length != 0) {
+            if (answerLibelle.length != 0 && categLibelle.length != 0) {
                 const datas = {
                     libelleFr: values.libelleFr,
                     libelleEn: values.libelleEn,
                     libelleIt: values.libelleIt,
                     answers: objectList,
-                    categorie: values.categorie,
+                    categories: objectListCateg,
+                    //categorie: values.categorie,
                     poids: values.poids,
                     pilier: values.pilier,
                     defi: values.defi
@@ -433,7 +458,44 @@ export const EditQuestion = ({ handleClose, isOpen, data }) => {
                                             )}
                                         </FormControl>
 
-                                        <FormControl variant="standard"
+
+                                        <FormControl sx={{ m: 1, width: 300 }} variant="filled" >
+                                            <InputLabel id="demo-multiple-checkbox-label">Catégories</InputLabel>
+                                            <Select
+                                                labelId="demo-multiple-checkbox-label"
+                                                id="demo-multiple-checkbox"
+                                                multiple
+                                                error={categLibelle.length == 0}
+                                                value={categLibelle}
+                                                onChange={handleChangeCateg}
+                                                input={<OutlinedInput label="Catégories" />}
+                                                renderValue={(selected) => selected.join(', ')}
+                                                MenuProps={MenuProps}
+                                            >
+                                                {categories.map((categ, index) => (
+                                                    <MenuItem key={index}
+                                                        value={categ.libelle}>
+                                                        <Checkbox checked={categLibelle.indexOf(categ.libelle) > -1} />
+                                                        <ListItemText primary={categ.libelle} />
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                            {/* {answerLibelle.length != answers.length && (
+                                    <Typography color="error"
+                                        variant="caption">
+                                        Toutes les réponses doivent être sélectionnées
+                                    </Typography>
+                                )} */}
+
+                                            {categLibelle.length == 0 && (
+                                                <Typography color="error"
+                                                    variant="caption">
+                                                    Veuillez sélectionner une catégorie
+                                                </Typography>
+                                            )}
+                                        </FormControl>
+
+                                        {/* <FormControl variant="standard"
                                             sx={{ m: 1, width: 300 }}>
                                             <InputLabel id="demo-simple-select-standard-label">Catégorie</InputLabel>
                                             <Select
@@ -461,7 +523,7 @@ export const EditQuestion = ({ handleClose, isOpen, data }) => {
                                                     {formik.errors.categorie}
                                                 </Typography>
                                             )}
-                                        </FormControl>
+                                        </FormControl> */}
 
                                         <FormControl variant="standard"
                                             sx={{ m: 1, width: 300 }}>

@@ -18,7 +18,6 @@ import {
     ListItemAvatar,
     ListItemText,
     Table,
-    TableContainer,
     TableBody,
     TableCell,
     TableHead,
@@ -30,24 +29,22 @@ import {
 
 import PencilIcon from '@heroicons/react/24/solid/PencilIcon';
 import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
+import DocumentIcon from '@heroicons/react/24/solid/DocumentIcon';
 
 import { SvgIcon } from '@mui/material';
 
-import { EditSecteur } from './edit-secteur';
-import { deleteSecteur } from 'src/firebase/firebaseServices';
-import { checkCategoriesInSecteur } from 'src/firebase/firebaseServices';
-import { checkCompaniesInSecteur } from 'src/firebase/firebaseServices';
+import { EditDefis } from './edit-defis';
+import { DisplayFicheReflexe } from './display-fiche-reflexe';
+import { deleteDefis, deleteFicheReflexeInStorage } from 'src/firebase/firebaseServices';
+import { checkQuestionsInDefi } from 'src/firebase/firebaseServices';
 import ToastComponent from '../../components/toast';
-
-
-import SweetAlert from 'src/components/SweetAlert';
 
 import swal from 'sweetalert';
 
-import { confirmAlert } from 'react-confirm-alert'; 
+import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
-export const SecteurTable = (props) => {
+export const DefisTableIt = (props) => {
     const {
         count = 0,
         items = [],
@@ -68,12 +65,31 @@ export const SecteurTable = (props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalData, setModalData] = useState(null);
 
-    const handleEditClick = (event, secteur) => {
-        setModalData(secteur);
+    const [isDisplayFileModalOpen, setIsDisplayFileModalOpen] = useState(false);
+    const [displayFileModalData, setDisplayFileModalData] = useState(null);
+
+
+    const handleEditClick = (event, defis) => {
+        setModalData(defis);
         setIsModalOpen(true);
     };
 
-    const handleDeleteClick = async (event, secteur) => {
+    const handleShowFicheFr = (event, defis) => {
+        setDisplayFileModalData(defis.ficheReflexeFr);
+        setIsDisplayFileModalOpen(true);
+    }
+
+    const handleShowFicheEn = (event, defis) => {
+        setDisplayFileModalData(defis.ficheReflexeEn);
+        setIsDisplayFileModalOpen(true);
+    }
+
+    const handleShowFicheIt = (event, defis) => {
+        setDisplayFileModalData(defis.ficheReflexeIt);
+        setIsDisplayFileModalOpen(true);
+    }
+
+    const handleDeleteClick = async (event, defis) => {
         confirmAlert({
             title: 'Attention⚠',
             message: 'Voulez-vous vraiment effectuer cette suppression ?',
@@ -93,24 +109,40 @@ export const SecteurTable = (props) => {
                         borderColor: 'limegreen',
                         color: 'black'
                     },
-                    onClick: async() => {
-                        const hasCategories = await checkCategoriesInSecteur(secteur.id);
-                        const hasCompanies = await checkCompaniesInSecteur(secteur.id);
-                        if (hasCategories) {
-                            return ToastComponent({ message: "Ce secteur est déjà lié à une ou des catégorie(s). Vous devez d'abord supprimer cette(ces) catégorie(s)", type: 'error' });
+                    onClick: async () => {
+                        const hasQuestions = await checkQuestionsInDefi(defis.id);
+                        if (hasQuestions) {
+                            return ToastComponent({ message: "Ce défi est déjà lié à une ou des question(s). Vous devez d'abord supprimer cette(ces) question(s)", type: 'error' });
                         }
-                        else if (hasCompanies) {
-                            return ToastComponent({ message: "Ce secteur contient déjà une ou des entreprise(s). Vous devez d'abord supprimer cette(ces) entreprise(s)", type: 'error' });
-                        }
-                        else {
-                            deleteSecteur(secteur.id)
-                                .then(() => {
-                                    return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
-                                })
-                                .catch((err) => {
-                                    return ToastComponent({ message: err.message, type: 'error' });
-                                });
-                        }
+                        deleteDefis(defis.id)
+                            .then(() => {
+                                deleteFicheReflexeInStorage(defis.id, 'Fr')
+                                    .then(() => {
+                                        return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                                    })
+                                    .catch((err) => {
+                                        return ToastComponent({ message: err.message, type: 'error' });
+                                    })
+
+                                deleteFicheReflexeInStorage(defis.id, 'En')
+                                    .then(() => {
+                                        return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                                    })
+                                    .catch((err) => {
+                                        return ToastComponent({ message: err.message, type: 'error' });
+                                    })
+
+                                deleteFicheReflexeInStorage(defis.id, 'It')
+                                    .then(() => {
+                                        return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                                    })
+                                    .catch((err) => {
+                                        return ToastComponent({ message: err.message, type: 'error' });
+                                    })
+                            })
+                            .catch((err) => {
+                                return ToastComponent({ message: err.message, type: 'error' });
+                            })
                     }
                 }
             ],
@@ -123,8 +155,8 @@ export const SecteurTable = (props) => {
 
     return (
         <Card elevation={20}>
-            <CardHeader title="Secteurs" />
-            <Table >
+            <CardHeader title="Défis" />
+            <Table>
                 <TableHead>
                     <TableRow>
                         {/* <TableCell padding="checkbox">
@@ -140,16 +172,13 @@ export const SecteurTable = (props) => {
                                 }}
                             />
                         </TableCell> */}
+                        
                         <TableCell>
-                            Libellé(Français)
+                            Libellé
                         </TableCell>
 
                         <TableCell>
-                            Libellé(Anglais)
-                        </TableCell>
-
-                        <TableCell>
-                            Libellé(Italien)
+                            Fiche réflexe
                         </TableCell>
 
                         <TableCell>
@@ -160,14 +189,14 @@ export const SecteurTable = (props) => {
                 </TableHead>
                 <TableBody>
                     {
-                        items.length != 0 ? items.map((secteur) => {
-                            const isSelected = selected.includes(secteur.id);
+                        items.length != 0 ? items.map((defis) => {
+                            const isSelected = selected.includes(defis.id);
                             //const createdAt = format(customer.createdAt, 'dd/MM/yyyy');
 
                             return (
                                 <TableRow
                                     hover
-                                    key={secteur.id}
+                                    key={defis.id}
                                     selected={isSelected}
                                 >
                                     {/* <TableCell padding="checkbox">
@@ -182,46 +211,40 @@ export const SecteurTable = (props) => {
                                             }}
                                         />
                                     </TableCell> */}
+                                    
                                     <TableCell>
                                         <Stack
-                                            alignItems="center"
-                                            direction="row"
+                                            alignItems="flex-start"
+                                            direction="column"
                                             spacing={2}
                                         >
                                             {/* <Avatar src={customer.avatar}>
                                                 {getInitials(customer.name)}
                                             </Avatar> */}
                                             <Typography variant="subtitle2">
-                                                {secteur.libelleFr}
+                                            {defis.libelleIt}
                                             </Typography>
+                                            {/* <Typography variant="subtitle2">
+                                                {defis.libelleEn}
+                                            </Typography>
+                                            <Typography variant="subtitle2">
+                                                {defis.libelleIt}
+                                            </Typography> */}
+
                                         </Stack>
                                     </TableCell>
                                     <TableCell>
                                         <Stack
-                                            alignItems="center"
-                                            direction="row"
+                                            alignItems="flex-start"
+                                            direction="column"
                                             spacing={2}
                                         >
-                                            {/* <Avatar src={customer.avatar}>
-                                                {getInitials(customer.name)}
-                                            </Avatar> */}
-                                            <Typography variant="subtitle2">
-                                                {secteur.libelleEn}
-                                            </Typography>
-                                        </Stack>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Stack
-                                            alignItems="center"
-                                            direction="row"
-                                            spacing={2}
-                                        >
-                                            {/* <Avatar src={customer.avatar}>
-                                                {getInitials(customer.name)}
-                                            </Avatar> */}
-                                            <Typography variant="subtitle2">
-                                                {secteur.libelleIt}
-                                            </Typography>
+                                            
+                                            {
+                                                defis.ficheReflexeIt &&
+                                                <Button variant="outlined"
+                                                    onClick={(event) => handleShowFicheIt(event, defis)}>Voir fiche en italien</Button>
+                                            }
                                         </Stack>
                                     </TableCell>
                                     <TableCell>
@@ -230,13 +253,13 @@ export const SecteurTable = (props) => {
                                             <Fab size="small"
                                                 //color="secondary"
                                                 aria-label="edit"
-                                                onClick={(event) => handleEditClick(event, secteur)}>
+                                                onClick={(event) => handleEditClick(event, defis)}>
                                                 <SvgIcon fontSize="small">
                                                     <PencilIcon />
                                                 </SvgIcon>
                                             </Fab>
                                             <Fab size="small" color="error" aria-label="delete"
-                                                onClick={(event) => handleDeleteClick(event, secteur)}>
+                                                onClick={(event) => handleDeleteClick(event, defis)}>
                                                 <SvgIcon fontSize="small">
                                                     <TrashIcon />
                                                 </SvgIcon>
@@ -252,23 +275,24 @@ export const SecteurTable = (props) => {
                                     <TableCell>
                                         {createdAt}
                                     </TableCell> */}
-                                    {isModalOpen && modalData && <EditSecteur data={modalData}
+                                    {isModalOpen && modalData && <EditDefis data={modalData}
                                         isOpen={isModalOpen}
                                         handleClose={() => setIsModalOpen(false)} />}
+                                    {isDisplayFileModalOpen && displayFileModalData && <DisplayFicheReflexe fileUrl={displayFileModalData}
+                                        isOpen={isDisplayFileModalOpen}
+                                        handleClose={() => setIsDisplayFileModalOpen(false)} />}
                                 </TableRow>
                             );
-                        }) : (
+                        }) :
                             <TableRow
                                 hover
                             >
-
                                 <TableCell>
                                     <Stack
                                         alignItems="center"
                                         direction="row"
                                         spacing={2}
                                     >
-
                                         <Typography variant="subtitle2">
                                             Aucun élément à afficher
                                         </Typography>
@@ -276,7 +300,6 @@ export const SecteurTable = (props) => {
                                 </TableCell>
 
                             </TableRow>
-                        )
                     }
 
                 </TableBody>
@@ -290,7 +313,7 @@ export const SecteurTable = (props) => {
                     onRowsPerPageChange={onRowsPerPageChange}
                     page={page}
                     rowsPerPage={rowsPerPage}
-                    rowsPerPageOptions={[2, 5, 10]}
+                    rowsPerPageOptions={[5, 10, 25]}
                     labelDisplayedRows={
                         ({ from, to, count }) => {
                             return '' + from + '-' + to + ' sur ' + count
@@ -303,7 +326,7 @@ export const SecteurTable = (props) => {
     );
 };
 
-SecteurTable.propTypes = {
+DefisTableIt.propTypes = {
     count: PropTypes.number,
     items: PropTypes.array,
     onDeselectAll: PropTypes.func,

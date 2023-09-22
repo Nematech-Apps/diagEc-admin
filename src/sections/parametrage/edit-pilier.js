@@ -41,7 +41,7 @@ const style = {
     border: '1px solid #000',
     boxShadow: 24,
     p: 4,
-    borderRadius: 4
+    //borderRadius: 4
 };
 
 export const EditPilier = ({ handleClose, isOpen, data }) => {

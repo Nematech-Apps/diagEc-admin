@@ -37,7 +37,10 @@ import { EditQuestion } from './edit-question';
 import { deleteQuestion } from 'src/firebase/firebaseServices';
 import ToastComponent from '../../components/toast';
 
+import swal from 'sweetalert';
 
+import { confirmAlert } from 'react-confirm-alert'; 
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 export const QuestionTable = (props) => {
     const {
@@ -66,13 +69,41 @@ export const QuestionTable = (props) => {
     };
 
     const handleDeleteClick = (event, question) => {
-        deleteQuestion(question.id)
-            .then(() => {
-                return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
-            })
-            .catch((err) => {
-                return ToastComponent({ message: err.message, type: 'error' });
-            })
+        confirmAlert({
+            title: 'Attention⚠',
+            message: 'Voulez-vous vraiment effectuer cette suppression ?',
+            buttons: [
+                {
+                    label: 'Non',
+                    style: {
+                        backgroundColor: 'red'
+                    }
+                },
+                {
+                    label: 'Oui',
+                    style: {
+                        backgroundColor: 'white',
+                        borderStyle: 'solid',
+                        borderWidth: 2,
+                        borderColor: 'limegreen',
+                        color: 'black'
+                    },
+                    onClick: async () => {
+                        deleteQuestion(question.id)
+                            .then(() => {
+                                return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                            })
+                            .catch((err) => {
+                                return ToastComponent({ message: err.message, type: 'error' });
+                            });
+                    }
+                }
+            ],
+            closeOnEscape: true,
+            closeOnClickOutside: false
+        });
+
+
     };
 
     return (
@@ -94,8 +125,9 @@ export const QuestionTable = (props) => {
                                 }}
                             />
                         </TableCell> */}
+                        
                         <TableCell>
-                            Libellés
+                            Libellé
                         </TableCell>
 
                         <TableCell>
@@ -132,6 +164,7 @@ export const QuestionTable = (props) => {
                                             }}
                                         />
                                     </TableCell> */}
+                                    
                                     <TableCell>
                                         <Stack
                                             alignItems="flex-start"
@@ -142,11 +175,7 @@ export const QuestionTable = (props) => {
                                                 {getInitials(customer.name)}
                                             </Avatar> */}
                                             <Typography variant="subtitle2">
-                                                <ul>
-                                                    <li>{question.libelleFr}</li>
-                                                    <li>{question.libelleEn}</li>
-                                                    <li>{question.libelleIt}</li>
-                                                </ul>
+                                            {question.libelleFr}
                                             </Typography>
                                             {/* <Typography variant="subtitle2">
                                                 {question.libelleEn}
@@ -179,7 +208,7 @@ export const QuestionTable = (props) => {
                                     <TableCell>
                                         <Stack direction={'row'}
                                             spacing={2}>
-                                            <Fab size="small" color="secondary" aria-label="edit"
+                                            <Fab size="small" color="inherit" aria-label="edit"
                                                 onClick={(event) => handleEditClick(event, question)}>
                                                 <SvgIcon fontSize="small">
                                                     <PencilIcon />

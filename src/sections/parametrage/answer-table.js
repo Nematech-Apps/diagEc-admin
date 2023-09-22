@@ -36,7 +36,10 @@ import { EditAnswer } from './edit-answer';
 import { deleteAnswer } from 'src/firebase/firebaseServices';
 import ToastComponent from '../../components/toast';
 
+import swal from 'sweetalert';
 
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 export const AnswerTable = (props) => {
     const {
@@ -65,13 +68,41 @@ export const AnswerTable = (props) => {
     };
 
     const handleDeleteClick = (event, answer) => {
-        deleteAnswer(answer.id)
-            .then(() => {
-                return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
-            })
-            .catch((err) => {
-                return ToastComponent({ message: err.message, type: 'error' });
-            })
+        confirmAlert({
+            title: 'Attention⚠',
+            message: 'Voulez-vous vraiment effectuer cette suppression ?',
+            buttons: [
+                {
+                    label: 'Non',
+                    style: {
+                        backgroundColor: 'red'
+                    }
+                },
+                {
+                    label: 'Oui',
+                    style: {
+                        backgroundColor: 'white',
+                        borderStyle: 'solid',
+                        borderWidth: 2,
+                        borderColor: 'limegreen',
+                        color: 'black'
+                    },
+                    onClick: async () => {
+                        deleteAnswer(answer.id)
+                            .then(() => {
+                                return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                            })
+                            .catch((err) => {
+                                return ToastComponent({ message: err.message, type: 'error' });
+                            })
+                    }
+                }
+            ],
+            closeOnEscape: true,
+            closeOnClickOutside: false
+        });
+
+
     };
 
     return (
