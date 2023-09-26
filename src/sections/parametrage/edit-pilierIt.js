@@ -28,7 +28,7 @@ import { addCategorie } from 'src/firebase/firebaseServices';
 import { db, GetDoc, Doc, UpdateDoc } from 'src/firebase/firebaseConfig';
 import ToastComponent from '../../components/toast';
 
-import { updatePilier } from 'src/firebase/firebaseServices';
+import { updatePilierIt } from 'src/firebase/firebaseServices';
 
 
 const style = {
@@ -44,25 +44,25 @@ const style = {
     //borderRadius: 4
 };
 
-export const EditPilier = ({ handleClose, isOpen, data }) => {
+export const EditPilierIt = ({ handleClose, isOpen, data }) => {
 
     const formik = useFormik({
         initialValues: {
-            libelleFr: data.libelleFr,
-            definitionFr: data.definitionFr,
+            libelleIt: data.libelleIt,
+            definitionIt: data.definitionIt,
             submit: null
         },
         validationSchema: Yup.object({
-            libelleFr: Yup
+            libelleIt: Yup
                 .string()
                 .max(255)
-                .required("Le libellé en français est requis"),
-            definitionFr: Yup
+                .required("Le libellé en italien est requis"),
+            definitionIt: Yup
                 .string()
-                .required("La definition en français est requise")
+                .required("La definition en italien est requise")
         }),
         onSubmit: async (values, helpers) => {
-            updatePilier(values, data.id)
+            updatePilierIt(values, data.id)
                 .then(() => {
                     helpers.resetForm();
                     handleClose();
@@ -109,15 +109,15 @@ export const EditPilier = ({ handleClose, isOpen, data }) => {
                                         sx={{ maxWidth: 800 }}
                                     >
                                         <TextField
-                                            error={!!(formik.touched.libelleFr && formik.errors.libelleFr)}
+                                            error={!!(formik.touched.libelleIt && formik.errors.libelleIt)}
                                             fullWidth
-                                            helperText={formik.touched.libelleFr && formik.errors.libelleFr}
-                                            label="Libellé en français"
-                                            name="libelleFr"
+                                            helperText={formik.touched.libelleIt && formik.errors.libelleIt}
+                                            label="Libellé en italien"
+                                            name="libelleIt"
                                             onBlur={formik.handleBlur}
                                             onChange={formik.handleChange}
                                             type="text"
-                                            value={formik.values.libelleFr}
+                                            value={formik.values.libelleIt}
                                         />
 
                                         
@@ -126,19 +126,18 @@ export const EditPilier = ({ handleClose, isOpen, data }) => {
 
 
                                     <TextField
-                                        error={!!(formik.touched.definitionFr && formik.errors.definitionFr)}
+                                        error={!!(formik.touched.definitionIt && formik.errors.definitionIt)}
                                         fullWidth
-                                        helperText={formik.touched.definitionFr && formik.errors.definitionFr}
-                                        label="Définition en français"
-                                        name="definitionFr"
+                                        helperText={formik.touched.definitionIt && formik.errors.definitionIt}
+                                        label="Définition en italien"
+                                        name="definitionIt"
                                         onBlur={formik.handleBlur}
                                         onChange={formik.handleChange}
                                         type="text"
-                                        value={formik.values.definitionFr}
+                                        value={formik.values.definitionIt}
                                     />
 
                                     
-
 
                                 </Stack>
 

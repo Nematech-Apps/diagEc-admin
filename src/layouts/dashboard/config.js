@@ -83,7 +83,7 @@ export const items = [
     )
   },
   {
-    title: "Defis",
+    title: "Défis",
     path: '/defis',
     icon: (
       <SvgIcon fontSize="small">

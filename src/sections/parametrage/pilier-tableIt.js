@@ -32,13 +32,17 @@ import {
 
 import PencilIcon from '@heroicons/react/24/solid/PencilIcon';
 import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
+import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
+import XMarkIcon from '@heroicons/react/24/solid/XMarkIcon';
+import XCircleIcon from '@heroicons/react/24/solid/XCircleIcon';
 
 import { SvgIcon } from '@mui/material';
 
-import { EditPilier } from './edit-pilier';
+import { EditPilierIt } from './edit-pilierIt';
 import { deletePilier } from 'src/firebase/firebaseServices';
 import { checkQuestionsInPilier } from 'src/firebase/firebaseServices';
-import { AddMotCle } from './add-motCle';
+import { AddMotCleIt } from './add-motCleIt';
+import { deleteMotCleIt } from 'src/firebase/firebaseServices';
 import ToastComponent from '../../components/toast';
 
 import swal from 'sweetalert';
@@ -80,6 +84,43 @@ export const PilierTableIt = (props) => {
     const handleAddMotcleClick = (event, pilier) => {
         setAddMotCle(pilier);
         setIsAddMotCleOpen(true);
+    }
+
+
+    const handleDeleteMotCleclick = (event, pilier) => {
+        confirmAlert({
+            title: 'Attention⚠',
+            message: 'Voulez-vous vraiment effectuer cette suppression ?',
+            buttons: [
+                {
+                    label: 'Non',
+                    style: {
+                        backgroundColor: 'red'
+                    }
+                },
+                {
+                    label: 'Oui',
+                    style: {
+                        backgroundColor: 'white',
+                        borderStyle: 'solid',
+                        borderWidth: 2,
+                        borderColor: 'limegreen',
+                        color: 'black'
+                    },
+                    onClick: async () => {
+                        deleteMotCleIt(pilier.id)
+                                .then(() => {
+                                    return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                                })
+                                .catch((err) => {
+                                    return ToastComponent({ message: err.message, type: 'error' });
+                                });
+                    }
+                }
+            ],
+            closeOnEscape: true,
+            closeOnClickOutside: false
+        });
     }
 
     const handleDeleteClick = async (event, pilier) => {
@@ -263,16 +304,35 @@ export const PilierTableIt = (props) => {
                                                 spacing={2}>
                                                 <Stack direction={'column'}
                                                     spacing={2}>
-                                                    <Button variant="outlined"
+                                                    {/* <Button variant="outlined"
                                                         size="small"
                                                         color='success'
                                                         onClick={(event) => handleAddMotcleClick(event, pilier)}>
                                                         Ajouter mot-clés
+                                                    </Button> */}
+                                                    <Button variant="outlined"
+                                                        size="small"
+                                                        color='success'
+                                                        sx={{paddingX: 5}}
+                                                        onClick={(event) => handleAddMotcleClick(event, pilier)}>
+                                                        {/* <SvgIcon sx={{mr: 1}}>
+                                                            <PlusIcon/>
+                                                        </SvgIcon> */}
+                                                        Ajouter
+                                                        mot-clés
                                                     </Button>
-                                                    {/* <Button variant="outlined" size="small" color='warning'
-                                                    onClick={(event) => handleAddMotcleClick(event, pilier)}>
-                                                    Modifier mot-clés
-                                                </Button> */}
+                                                    {/* <Button variant="outlined" size="small" color='error'
+                                                        onClick={(event) => handleDeleteMotCleclick(event, pilier)}>
+                                                        Supprimer mot-clés
+                                                    </Button> */}
+                                                    <Button variant="outlined" size="small" color='error' sx={{paddingX: 5}}
+                                                        onClick={(event) => handleDeleteMotCleclick(event, pilier)}>
+                                                        {/* <SvgIcon sx={{mr: 1}}>
+                                                            <XCircleIcon/>
+                                                        </SvgIcon> */}
+                                                        Supprimer
+                                                        mot-clés
+                                                    </Button>
                                                 </Stack>
 
                                                 <Stack direction={'column'}
@@ -296,10 +356,10 @@ export const PilierTableIt = (props) => {
                                             </Stack>
                                         </TableCell>
 
-                                        {isModalOpen && modalData && <EditPilier data={modalData}
+                                        {isModalOpen && modalData && <EditPilierIt data={modalData}
                                             isOpen={isModalOpen}
                                             handleClose={() => setIsModalOpen(false)} />}
-                                        {isAddMotCleOpen && addMotCleData && <AddMotCle data={addMotCleData}
+                                        {isAddMotCleOpen && addMotCleData && <AddMotCleIt data={addMotCleData}
                                             isOpen={isAddMotCleOpen}
                                             handleClose={() => setIsAddMotCleOpen(false)} />}
                                     </TableRow>

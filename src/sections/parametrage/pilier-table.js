@@ -32,6 +32,9 @@ import {
 
 import PencilIcon from '@heroicons/react/24/solid/PencilIcon';
 import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
+import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
+import XMarkIcon from '@heroicons/react/24/solid/XMarkIcon';
+import XCircleIcon from '@heroicons/react/24/solid/XCircleIcon';
 
 import { SvgIcon } from '@mui/material';
 
@@ -39,6 +42,7 @@ import { EditPilier } from './edit-pilier';
 import { deletePilier } from 'src/firebase/firebaseServices';
 import { checkQuestionsInPilier } from 'src/firebase/firebaseServices';
 import { AddMotCle } from './add-motCle';
+import { deleteMotCle } from 'src/firebase/firebaseServices';
 import ToastComponent from '../../components/toast';
 
 import swal from 'sweetalert';
@@ -80,6 +84,42 @@ export const PilierTable = (props) => {
     const handleAddMotcleClick = (event, pilier) => {
         setAddMotCle(pilier);
         setIsAddMotCleOpen(true);
+    }
+
+    const handleDeleteMotCleclick = (event, pilier) => {
+        confirmAlert({
+            title: 'Attention⚠',
+            message: 'Voulez-vous vraiment effectuer cette suppression ?',
+            buttons: [
+                {
+                    label: 'Non',
+                    style: {
+                        backgroundColor: 'red'
+                    }
+                },
+                {
+                    label: 'Oui',
+                    style: {
+                        backgroundColor: 'white',
+                        borderStyle: 'solid',
+                        borderWidth: 2,
+                        borderColor: 'limegreen',
+                        color: 'black'
+                    },
+                    onClick: async () => {
+                        deleteMotCle(pilier.id)
+                            .then(() => {
+                                return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                            })
+                            .catch((err) => {
+                                return ToastComponent({ message: err.message, type: 'error' });
+                            });
+                    }
+                }
+            ],
+            closeOnEscape: true,
+            closeOnClickOutside: false
+        });
     }
 
     const handleDeleteClick = async (event, pilier) => {
@@ -147,7 +187,7 @@ export const PilierTable = (props) => {
                             />
                         </TableCell> */}
 
-                            
+
                             <TableCell>
                                 Libellé
                             </TableCell>
@@ -190,7 +230,7 @@ export const PilierTable = (props) => {
                                             }}
                                         />
                                     </TableCell> */}
-                                        
+
                                         <TableCell>
                                             <Stack
                                                 alignItems="flex-start"
@@ -202,7 +242,7 @@ export const PilierTable = (props) => {
                                             </Avatar> */}
 
                                                 <Typography variant="subtitle2">
-                                                {pilier.libelleFr}
+                                                    {pilier.libelleFr}
                                                 </Typography>
                                                 {/* <Typography variant="subtitle2">
                                                 {pilier.libelleEn}
@@ -222,7 +262,7 @@ export const PilierTable = (props) => {
                                                 {getInitials(customer.name)}
                                             </Avatar> */}
                                                 <Typography variant="subtitle2">
-                                                {pilier.definitionFr}
+                                                    {pilier.definitionFr}
                                                 </Typography>
                                                 {/* <Typography variant="subtitle2">
                                                 {pilier.definitionEn}
@@ -252,7 +292,7 @@ export const PilierTable = (props) => {
 
                                                 </ul>
 
-                                                
+
 
                                             </Stack>
                                         </TableCell>
@@ -266,13 +306,30 @@ export const PilierTable = (props) => {
                                                     <Button variant="outlined"
                                                         size="small"
                                                         color='success'
+                                                        sx={{paddingX: 5}}
                                                         onClick={(event) => handleAddMotcleClick(event, pilier)}>
-                                                        Ajouter mot-clés
+                                                        Ajouter
+                                                        mot-clés
                                                     </Button>
-                                                    {/* <Button variant="outlined" size="small" color='warning'
+                                                    {/* <Fab variant="extended" color='success' sx={{paddingX: 5}}
                                                     onClick={(event) => handleAddMotcleClick(event, pilier)}>
-                                                    Modifier mot-clés
-                                                </Button> */}
+                                                        <SvgIcon>
+                                                            <PlusIcon/>
+                                                        </SvgIcon>
+                                                        mot-clés
+                                                    </Fab> */}
+                                                    <Button variant="outlined" size="small" color='error' sx={{paddingX: 5}}
+                                                        onClick={(event) => handleDeleteMotCleclick(event, pilier)}>
+                                                        Supprimer
+                                                        mot-clés
+                                                    </Button>
+                                                    {/* <Fab variant="extended" color='error' sx={{paddingX: 5}}
+                                                    onClick={(event) => handleDeleteMotCleclick(event, pilier)}>
+                                                        <SvgIcon>
+                                                            <XCircleIcon/>
+                                                        </SvgIcon>
+                                                        mot-clés
+                                                    </Fab> */}
                                                 </Stack>
 
                                                 <Stack direction={'column'}

@@ -1,10 +1,13 @@
 import { useCallback, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import PropTypes from 'prop-types';
-import { Box, Divider, MenuItem, MenuList, Popover, Typography } from '@mui/material';
+import { Box, Divider, MenuItem, MenuList, Popover, Typography, Stack, SvgIcon } from '@mui/material';
 import { useAuth } from 'src/hooks/use-auth';
 
 import { auth as firebaseAuth } from '../../firebase/firebaseConfig'
+
+import UserIcon from '@heroicons/react/24/solid/UserIcon';
+import Cog6ToothIcon from '@heroicons/react/24/solid/Cog6ToothIcon';
 
 export const AccountPopover = (props) => {
   const { anchorEl, onClose, open } = props;
@@ -45,6 +48,15 @@ export const AccountPopover = (props) => {
     [onClose]
   );
 
+
+  const handleSettings = useCallback(
+    () => {
+      onClose?.();
+      router.push('/settings');
+    },
+    [onClose]
+  );
+
   return (
     <Popover
       anchorEl={anchorEl}
@@ -64,8 +76,8 @@ export const AccountPopover = (props) => {
           backgroundColor: '#077c93'
         }}
       >
-        <Typography variant="overline" onClick={handleAccount} style={{ cursor: 'pointer' }}>
-          Mon compte
+        <Typography variant="subtitle2">
+          {userData?.identifiant}
         </Typography>
         {/* <Typography variant="overline" >
           Mon compte
@@ -83,13 +95,42 @@ export const AccountPopover = (props) => {
           px: 2,
         }}
       >
+        <Stack direction={'column'} spacing={1}>
+          <Stack direction={'row'} spacing={1}>
+            <SvgIcon>
+              <UserIcon />
+            </SvgIcon>
+            <Typography variant="overline" onClick={handleAccount} style={{ cursor: 'pointer' }}>
+              Mon compte
+            </Typography>
+          </Stack>
+          <Divider />
+          <Stack direction={'row'} spacing={1}>
+            <SvgIcon>
+              <Cog6ToothIcon />
+            </SvgIcon>
+            <Typography variant="overline" onClick={handleSettings} style={{ cursor: 'pointer' }}>
+              Paramètres
+            </Typography>
+          </Stack>
+
+        </Stack>
+
+      </Box>
+
+      {/* <Box
+        sx={{
+          py: 1.5,
+          px: 2,
+        }}
+      >
         <Typography
           color="text.secondary"
           variant="body2"
         >
           {userData?.identifiant}
         </Typography>
-      </Box>
+      </Box> */}
       <Divider />
       <MenuList
         disablePadding

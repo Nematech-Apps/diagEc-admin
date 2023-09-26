@@ -35,7 +35,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 import { addCategorie } from 'src/firebase/firebaseServices';
-import { addMotCleToPilier } from 'src/firebase/firebaseServices';
+import { addMotCleToPilierIt } from 'src/firebase/firebaseServices';
 import { db, GetDoc, Doc, UpdateDoc } from 'src/firebase/firebaseConfig';
 import ToastComponent from '../../components/toast';
 
@@ -59,29 +59,29 @@ const CustomListItem = styled('li')(({ theme }) => ({
 }));
 
 
-export const AddMotCle = ({ handleClose, isOpen, data }) => {
+export const AddMotCleIt = ({ handleClose, isOpen, data }) => {
 
-    const [listMotCleFr, setListMotCleFr] = useState([]);
+    const [listMotCleIt, setListMotCleIt] = useState([]);
 
 
     const formik = useFormik({
         initialValues: {
-            libelleFr: '',
+            libelleIt: '',
             submit: null
         },
         validationSchema: Yup.object({
-            libelleFr: Yup
+            libelleIt: Yup
                 .string()
                 .max(255)
 
         }),
         onSubmit: async (values, helpers) => {
 
-            if (listMotCleFr.length != 0) {
+            if (listMotCleIt.length != 0) {
                 const obj = {
-                    motClesFr: listMotCleFr,
+                    motClesIt: listMotCleIt
                 }
-                addMotCleToPilier(obj, data.id)
+                addMotCleToPilierIt(obj, data.id)
                     .then(() => {
                         helpers.resetForm();
                         handleClose();
@@ -101,16 +101,16 @@ export const AddMotCle = ({ handleClose, isOpen, data }) => {
 
 
 
-    const handleAddMotCleFr = () => {
-        const newMotCle = formik.values.libelleFr;
-        if (newMotCle && !listMotCleFr.includes(newMotCle)) {
-            setListMotCleFr((prevListMotCle) => [...prevListMotCle, newMotCle]);
-            formik.setFieldValue('libelleFr', '');
+    const handleAddMotCleIt = () => {
+        const newMotCle = formik.values.libelleIt;
+        if (newMotCle && !listMotCleIt.includes(newMotCle)) {
+            setListMotCleIt((prevListMotCle) => [...prevListMotCle, newMotCle]);
+            formik.setFieldValue('libelleIt', '');
         }
     };
 
-    const handleDeleteFr = (motCle) => {
-        setListMotCleFr((prevListMotCle) =>
+    const handleDeleteIt = (motCle) => {
+        setListMotCleIt((prevListMotCle) =>
             prevListMotCle.filter((m) => m !== motCle)
         );
     };
@@ -135,30 +135,28 @@ export const AddMotCle = ({ handleClose, isOpen, data }) => {
                                     spacing={3}
                                 // sx={{ maxWidth: 600 }}
                                 >
+
                                     <Stack direction={'row'}
-                                        spacing={3}
-                                    >
+                                        spacing={3}>
                                         <TextField
-                                            error={!!(listMotCleFr.length == 0 && formik.errors.libelleFr)}
-                                            helperText={listMotCleFr.length == 0 ? formik.errors.libelleFr : ''}
-                                            label="Libellé en français"
-                                            name="libelleFr"
+                                            error={!!(listMotCleIt.length == 0 && formik.errors.libelleIt)}
+                                            helperText={listMotCleIt.length == 0 ? formik.errors.libelleIt : ''}
+                                            label="Libellé en italien"
+                                            name="libelleIt"
                                             onBlur={formik.handleBlur}
                                             onChange={formik.handleChange}
                                             type="text"
-                                            value={formik.values.libelleFr}
+                                            value={formik.values.libelleIt}
                                         />
 
                                         <Fab size="small"
                                             color="secondary"
                                             aria-label="add"
-                                            onClick={handleAddMotCleFr}>
+                                            onClick={handleAddMotCleIt}>
                                             <SvgIcon fontSize="small">
                                                 <PlusIcon />
                                             </SvgIcon>
                                         </Fab>
-                                        {/* 
-                                        <Divider orientation="vertical" flexItem /> */}
 
                                         <Paper
                                             sx={{
@@ -171,66 +169,31 @@ export const AddMotCle = ({ handleClose, isOpen, data }) => {
                                             }}
                                             component="ul"
                                         >
-                                            {listMotCleFr.length !== 0 ? (
-                                                listMotCleFr.map((item, index) => (
+                                            {listMotCleIt.length !== 0 ? (
+                                                listMotCleIt.map((item, index) => (
                                                     <CustomListItem key={index}>
                                                         <Chip label={item}
-                                                            onDelete={() => handleDeleteFr(item)} />
+                                                            onDelete={() => handleDeleteIt(item)} />
                                                     </CustomListItem>
                                                 ))
                                             ) : (
                                                 <ListItem>
-                                                    <ListItemText primary={'Aucun mot-clé en français ajouté'} />
+                                                    <ListItemText primary={'Aucun mot-clé en italien ajouté'} />
                                                 </ListItem>
                                             )}
                                         </Paper>
-
                                     </Stack>
-
-                                    {listMotCleFr.length === 0 && (
-                                        <Typography color="error"
-                                            sx={{ mt: 3 }}
-                                            variant="body2">
-                                            Vous devez ajouter un mot clé en Français
-                                        </Typography>
-                                    )}
-
-
-
-
-
-
-
-
-
-                                    {/* {formik.errors.submit && listMotCleEn.length == 0 && (
-                                    <Typography color="error"
-                                        sx={{ mt: 3 }}
-                                        variant="body2">
-                                        {formik.errors.submit}
-                                    </Typography>
-                                )}
-
-                                {formik.errors.submit && listMotCleIt.length == 0 && (
-                                    <Typography color="error"
-                                        sx={{ mt: 3 }}
-                                        variant="body2">
-                                        {formik.errors.submit}
-                                    </Typography>
-                                )}
-
-                                {formik.errors.submit && listMotCleFr.length == 0 && listMotCleEn.length == 0
-                                    && listMotCleIt.length == 0 && (
-                                        <Typography color="error"
-                                            sx={{ mt: 3 }}
-                                            variant="body2">
-                                            {formik.errors.submit}
-                                        </Typography>
-                                    )} */}
-
 
 
                                 </Stack>
+
+                                {listMotCleIt.length === 0 && (
+                                    <Typography color="error"
+                                        sx={{ mt: 3 }}
+                                        variant="body2">
+                                        Vous devez ajouter un mot clé en Italien
+                                    </Typography>
+                                )}
 
 
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useLayoutEffect } from 'react';
 
 import PencilIcon from '@heroicons/react/24/solid/PencilIcon';
 import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
@@ -18,8 +18,12 @@ import {
     MenuItem,
     Typography,
     Stack,
+    SvgIcon,
+    Input,
     Modal
 } from '@mui/material';
+
+import DocumentIcon from '@heroicons/react/24/solid/DocumentIcon';
 
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -30,13 +34,17 @@ import ToastComponent from '../../components/toast';
 
 import { updateDefis } from 'src/firebase/firebaseServices';
 
+import { FileUploader } from "react-drag-drop-files";
+
+const fileTypes = ["PDF"];
 
 const style = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: 600,
+    minHeight: 500,
     bgcolor: 'background.paper',
     border: '1px solid #000',
     boxShadow: 24,
@@ -49,23 +57,13 @@ export const EditDefis = ({ handleClose, isOpen, data }) => {
     const formik = useFormik({
         initialValues: {
             libelleFr: data.libelleFr,
-            libelleEn: data.libelleEn,
-            libelleIt: data.libelleIt,
             submit: null
         },
         validationSchema: Yup.object({
             libelleFr: Yup
                 .string()
                 .max(255)
-                .required("Le libellé en français est requis"),
-            libelleEn: Yup
-                .string()
-                .max(255)
-                .required("Le libellé en anglais est requis"),
-            libelleIt: Yup
-                .string()
-                .max(255)
-                .required("Le libellé en italien est requis"),
+                .required("Le libellé en français est requis")
         }),
         onSubmit: async (values, helpers) => {
             updateDefis(values, data.id)
@@ -85,6 +83,7 @@ export const EditDefis = ({ handleClose, isOpen, data }) => {
     });
 
 
+    
 
     return (
         <div>
@@ -97,7 +96,7 @@ export const EditDefis = ({ handleClose, isOpen, data }) => {
                 <Box sx={style}>
                     <form noValidate
                         onSubmit={formik.handleSubmit}>
-                        <Card>
+                        <Card sx={{ minHeight: 200 }}>
                             <CardHeader
                                 //subheader="catégorie"
                                 title="Modifier Défis"
@@ -109,7 +108,7 @@ export const EditDefis = ({ handleClose, isOpen, data }) => {
                                     spacing={3}
                                     sx={{ maxWidth: 400 }}
                                 >
-                                    {/* <ImagePicker /> */}
+
 
                                     <TextField
                                         error={!!(formik.touched.libelleFr && formik.errors.libelleFr)}
@@ -121,30 +120,6 @@ export const EditDefis = ({ handleClose, isOpen, data }) => {
                                         onChange={formik.handleChange}
                                         type="text"
                                         value={formik.values.libelleFr}
-                                    />
-
-                                    <TextField
-                                        error={!!(formik.touched.libelleEn && formik.errors.libelleEn)}
-                                        fullWidth
-                                        helperText={formik.touched.libelleEn && formik.errors.libelleEn}
-                                        label="Libellé en anglais"
-                                        name="libelleEn"
-                                        onBlur={formik.handleBlur}
-                                        onChange={formik.handleChange}
-                                        type="text"
-                                        value={formik.values.libelleEn}
-                                    />
-
-                                    <TextField
-                                        error={!!(formik.touched.libelleIt && formik.errors.libelleIt)}
-                                        fullWidth
-                                        helperText={formik.touched.libelleIt && formik.errors.libelleIt}
-                                        label="Libellé en italien"
-                                        name="libelleIt"
-                                        onBlur={formik.handleBlur}
-                                        onChange={formik.handleChange}
-                                        type="text"
-                                        value={formik.values.libelleIt}
                                     />
 
                                 </Stack>

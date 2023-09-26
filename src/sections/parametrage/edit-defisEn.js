@@ -28,7 +28,7 @@ import { addCategorie } from 'src/firebase/firebaseServices';
 import { db, GetDoc, Doc, UpdateDoc } from 'src/firebase/firebaseConfig';
 import ToastComponent from '../../components/toast';
 
-import { updatePilier } from 'src/firebase/firebaseServices';
+import { updateDefisEn } from 'src/firebase/firebaseServices';
 
 
 const style = {
@@ -36,7 +36,7 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 800,
+    width: 400,
     bgcolor: 'background.paper',
     border: '1px solid #000',
     boxShadow: 24,
@@ -44,25 +44,21 @@ const style = {
     //borderRadius: 4
 };
 
-export const EditPilier = ({ handleClose, isOpen, data }) => {
+export const EditDefisEn = ({ handleClose, isOpen, data }) => {
 
     const formik = useFormik({
         initialValues: {
-            libelleFr: data.libelleFr,
-            definitionFr: data.definitionFr,
+            libelleEn: data.libelleEn,
             submit: null
         },
         validationSchema: Yup.object({
-            libelleFr: Yup
+            libelleEn: Yup
                 .string()
                 .max(255)
-                .required("Le libellé en français est requis"),
-            definitionFr: Yup
-                .string()
-                .required("La definition en français est requise")
+                .required("Le libellé en anglais est requis")
         }),
         onSubmit: async (values, helpers) => {
-            updatePilier(values, data.id)
+            updateDefisEn(values, data.id)
                 .then(() => {
                     helpers.resetForm();
                     handleClose();
@@ -94,52 +90,30 @@ export const EditPilier = ({ handleClose, isOpen, data }) => {
                         <Card>
                             <CardHeader
                                 //subheader="catégorie"
-                                title="Modifier Pilier"
+                                title="Modifier Défis"
                             />
                             <Divider />
                             <CardContent>
                                 <Stack
                                     direction={'column'}
                                     spacing={3}
-                                    sx={{ maxWidth: 800 }}
+                                    sx={{ maxWidth: 400 }}
                                 >
-                                    <Stack
-                                        direction={'row'}
-                                        spacing={3}
-                                        sx={{ maxWidth: 800 }}
-                                    >
-                                        <TextField
-                                            error={!!(formik.touched.libelleFr && formik.errors.libelleFr)}
-                                            fullWidth
-                                            helperText={formik.touched.libelleFr && formik.errors.libelleFr}
-                                            label="Libellé en français"
-                                            name="libelleFr"
-                                            onBlur={formik.handleBlur}
-                                            onChange={formik.handleChange}
-                                            type="text"
-                                            value={formik.values.libelleFr}
-                                        />
-
-                                        
-                                    </Stack>
-
-
+                                    
 
                                     <TextField
-                                        error={!!(formik.touched.definitionFr && formik.errors.definitionFr)}
+                                        error={!!(formik.touched.libelleEn && formik.errors.libelleEn)}
                                         fullWidth
-                                        helperText={formik.touched.definitionFr && formik.errors.definitionFr}
-                                        label="Définition en français"
-                                        name="definitionFr"
+                                        helperText={formik.touched.libelleEn && formik.errors.libelleEn}
+                                        label="Libellé en anglais"
+                                        name="libelleEn"
                                         onBlur={formik.handleBlur}
                                         onChange={formik.handleChange}
                                         type="text"
-                                        value={formik.values.definitionFr}
+                                        value={formik.values.libelleEn}
                                     />
 
                                     
-
-
                                 </Stack>
 
                                 {formik.errors.submit && (

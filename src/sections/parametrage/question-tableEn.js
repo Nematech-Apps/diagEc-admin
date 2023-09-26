@@ -33,7 +33,7 @@ import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
 import { SvgIcon } from '@mui/material';
 
 import { EditAnswer } from './edit-answer';
-import { EditQuestion } from './edit-question';
+import { EditQuestionEn } from './edit-questionEn';
 import { deleteQuestion } from 'src/firebase/firebaseServices';
 import ToastComponent from '../../components/toast';
 
@@ -195,7 +195,7 @@ export const QuestionTableEn = (props) => {
                                                 {getInitials(customer.name)}
                                             </Avatar> */}
                                             <Typography variant="subtitle2">
-                                                {question.pilier.libelleFr}
+                                                {question.pilier.libelleEn}
                                             </Typography>
                                             {/* <Typography variant="subtitle2">
                                                 {question.pilier.libelleEn}
@@ -231,7 +231,7 @@ export const QuestionTableEn = (props) => {
                                     <TableCell>
                                         {createdAt}
                                     </TableCell> */}
-                                    {isModalOpen && modalData && <EditQuestion data={modalData}
+                                    {isModalOpen && modalData && <EditQuestionEn data={modalData}
                                         isOpen={isModalOpen}
                                         handleClose={() => setIsModalOpen(false)} />}
                                 </TableRow>

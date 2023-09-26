@@ -1,5 +1,5 @@
 import {
-    db, storage, Ref, UploadBytes, UploadBytesResumable, GetDownloadURL, DeleteObject, Collection, AddDoc, Doc, SetDoc, GetDoc, GetDocs, OnSnapshot, UpdateDoc, DeleteDoc, Query, Where, auth, signin, signupUser, signout
+    db, storage, Ref, UploadBytes, UploadBytesResumable, GetDownloadURL, DeleteObject, Collection, AddDoc, Doc, SetDoc, GetDoc, GetDocs, OnSnapshot, UpdateDoc, DeleteDoc, DeleteField, Query, Where, auth, signin, signupUser, signout
     , SendPasswordResetEmail
 }
     from './firebaseConfig';
@@ -121,7 +121,7 @@ export const checkCompaniesInSecteur = async (secteurId) => {
     // }
 }
 
-export const deleteSecteur = async(docId) => {
+export const deleteSecteur = async (docId) => {
     const collectionRef = Doc(db, 'secteurs', docId);
 
     return DeleteDoc(collectionRef);
@@ -300,7 +300,42 @@ export const updateQuestion = async (data, docId) => {
     const docData = {
         ...snapshot.data(),
         libelleFr: data.libelleFr,
+        answers: data.answers,
+        categories: data.categories,
+        //categorie: JSON.parse(data.categorie),
+        poids: data.poids,
+        pilier: JSON.parse(data.pilier),
+        defi: JSON.parse(data.defi)
+    };
+
+    return UpdateDoc(collectionRef, docData)
+}
+
+export const updateQuestionEn = async (data, docId) => {
+    const collectionRef = Doc(db, 'questions', docId);
+    const snapshot = await GetDoc(collectionRef);
+
+    const docData = {
+        ...snapshot.data(),
         libelleEn: data.libelleEn,
+        answers: data.answers,
+        categories: data.categories,
+        //categorie: JSON.parse(data.categorie),
+        poids: data.poids,
+        pilier: JSON.parse(data.pilier),
+        defi: JSON.parse(data.defi)
+    };
+
+    return UpdateDoc(collectionRef, docData)
+}
+
+
+export const updateQuestionIt = async (data, docId) => {
+    const collectionRef = Doc(db, 'questions', docId);
+    const snapshot = await GetDoc(collectionRef);
+
+    const docData = {
+        ...snapshot.data(),
         libelleIt: data.libelleIt,
         answers: data.answers,
         categories: data.categories,
@@ -348,28 +383,107 @@ export const updatePilier = async (data, docId) => {
     const docData = {
         ...snapshot.data(),
         libelleFr: data.libelleFr,
+        definitionFr: data.definitionFr
+    };
+
+    return UpdateDoc(collectionRef, docData)
+}
+
+
+
+export const updatePilierEn = async (data, docId) => {
+    const collectionRef = Doc(db, 'piliers', docId);
+    const snapshot = await GetDoc(collectionRef);
+
+    const docData = {
+        ...snapshot.data(),
         libelleEn: data.libelleEn,
+        definitionEn: data.definitionEn
+    };
+
+    return UpdateDoc(collectionRef, docData)
+}
+
+
+export const updatePilierIt = async (data, docId) => {
+    const collectionRef = Doc(db, 'piliers', docId);
+    const snapshot = await GetDoc(collectionRef);
+
+    const docData = {
+        ...snapshot.data(),
         libelleIt: data.libelleIt,
-        definitionFr: data.definitionFr,
-        definitionEn: data.definitionEn,
         definitionIt: data.definitionIt
     };
 
     return UpdateDoc(collectionRef, docData)
 }
 
-
 export const addMotCleToPilier = async (data, docId) => {
     const collectionRef = Doc(db, 'piliers', docId);
 
     const docData = {
-        motClesFr: data.motClesFr,
-        motClesEn: data.motClesEn,
+        motClesFr: data.motClesFr
+    };
+
+    return UpdateDoc(collectionRef, docData)
+}
+
+export const deleteMotCle = (docId) => {
+    const collectionRef = Doc(db, 'piliers', docId);
+    
+
+    const docData = {
+        motClesFr: DeleteField()
+    };
+
+    return UpdateDoc(collectionRef, docData)
+}
+
+
+export const addMotCleToPilierEn = async (data, docId) => {
+    const collectionRef = Doc(db, 'piliers', docId);
+
+    const docData = {
+        motClesEn: data.motClesEn
+    };
+
+    return UpdateDoc(collectionRef, docData)
+}
+
+
+export const deleteMotCleEn = (docId) => {
+    const collectionRef = Doc(db, 'piliers', docId);
+    
+
+    const docData = {
+        motClesEn: DeleteField()
+    };
+
+    return UpdateDoc(collectionRef, docData)
+}
+
+
+export const addMotCleToPilierIt = async (data, docId) => {
+    const collectionRef = Doc(db, 'piliers', docId);
+
+    const docData = {
         motClesIt: data.motClesIt
     };
 
     return UpdateDoc(collectionRef, docData)
 }
+
+export const deleteMotCleIt = (docId) => {
+    const collectionRef = Doc(db, 'piliers', docId);
+    
+
+    const docData = {
+        motClesIt: DeleteField()
+    };
+
+    return UpdateDoc(collectionRef, docData)
+}
+
 
 export const checkQuestionsInPilier = async (pilierId) => {
     const collectionRef = Collection(db, 'questions');
@@ -408,8 +522,31 @@ export const updateDefis = async (data, docId) => {
 
     const docData = {
         ...snapshot.data(),
-        libelleFr: data.libelleFr,
-        libelleEn: data.libelleEn,
+        libelleFr: data.libelleFr
+    };
+
+    return UpdateDoc(collectionRef, docData)
+}
+
+
+export const updateDefisEn = async (data, docId) => {
+    const collectionRef = Doc(db, 'defis', docId);
+    const snapshot = await GetDoc(collectionRef);
+
+    const docData = {
+        ...snapshot.data(),
+        libelleEn: data.libelleEn
+    };
+
+    return UpdateDoc(collectionRef, docData)
+}
+
+export const updateDefisIt = async (data, docId) => {
+    const collectionRef = Doc(db, 'defis', docId);
+    const snapshot = await GetDoc(collectionRef);
+
+    const docData = {
+        ...snapshot.data(),
         libelleIt: data.libelleIt
     };
 
@@ -558,6 +695,42 @@ export const getCompanyListBySecteur = async () => {
     }
 }
 
+//settings
+
+export const updateSettings = async (data) => {
+    const collectionRef = Collection(db, 'settings');
+    const snapshot = await GetDocs(collectionRef);
+
+    let newData = null;
+
+    snapshot.forEach((doc) => {
+        newData = doc.data();
+    });
+
+    if (newData) {
+        newData.maintenanceMode = data.maintenanceMode;
+
+        // Mettez à jour le document dans la collection 'settings'
+        return UpdateDoc(Doc(collectionRef, newData.id), newData);
+    } else {
+        console.error('Aucun document trouvé dans la collection "settings"');
+    }
+};
+
+
+export const getSettingsList = () => {
+    const collectionRef = Collection(db, 'settings');
+
+    return collectionRef;
+}
+
+//deviceTokens
+
+export const getDeviceTokensList = () => {
+    const collectionRef = Collection(db, 'deviceTokens');
+
+    return collectionRef;
+}
 
 function timeStampToDateString(timestamp) {
     // Convert the timestamp (in seconds) to milliseconds since JavaScript Date works with milliseconds.

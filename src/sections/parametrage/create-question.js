@@ -32,7 +32,14 @@ import { getAnswerList } from 'src/firebase/firebaseServices';
 import { getCategoriesList } from 'src/firebase/firebaseServices';
 import { getPilierList } from 'src/firebase/firebaseServices';
 import { getDefisList } from 'src/firebase/firebaseServices';
+import { getDeviceTokensList } from 'src/firebase/firebaseServices';
 import { OnSnapshot } from 'src/firebase/firebaseConfig';
+
+
+import NotificationService from 'src/notificationsService/notificationService';
+
+const baseURL = 'https://fcm.googleapis.com/fcm/send';
+const notificationService = new NotificationService(baseURL);
 
 
 const ITEM_HEIGHT = 48;
@@ -47,6 +54,9 @@ const MenuProps = {
 };
 
 export const CreateQuestion = () => {
+
+    const [dataToken, setDataToken] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     const [answers, setAnswers] = useState([]);
 
@@ -172,12 +182,30 @@ export const CreateQuestion = () => {
             }
         );
 
+
+        const unsubscribe5 = OnSnapshot(
+            getDeviceTokensList(),
+            (snapshot) => {
+                const fetchedData = snapshot.docs.map((doc) => ({
+                    ...doc.data(),
+                    id: doc.id
+                }));
+                setDataToken(fetchedData);
+                setIsLoading(false);
+            },
+            (error) => {
+                console.log('Error fetching data:', error);
+                setIsLoading(false);
+            }
+        );
+
         return () => {
             // Clean up the listener when the component unmounts
             unsubscribe1();
             unsubscribe2();
             unsubscribe3();
             unsubscribe4();
+            unsubscribe5();
         };
     }, []);
 
@@ -291,6 +319,26 @@ export const CreateQuestion = () => {
                         UpdateDoc(collectionRef, docData)
                             .then(() => {
                                 helpers.resetForm();
+                                //notify users
+                                const authToken = 'AAAAn_0BcwE:APA91bGwDIQfUGwNFze-sBenguSvoIti8XW8kuYvrhbcXDJ6X9ZWP8rVETtQoRGJAyJT_9wpHlg02Lrd1PsJEsnhEBkvrp5yy3GJ4wSPEJTT7LP1azAE3SD_3m6OwAjijwkksvUK2f-I';
+                                notificationService.setAuthorizationToken(authToken);
+                                if (isLoading == false) {
+                                    dataToken.forEach(async (elt) => {
+                                        notificationService.post('', {
+                                            "data": {
+                                                "title": "Nouvelle question ajoutée",
+                                                "message": "Un nouveau question vient d'être ajoutée"
+                                            },
+                                            "to": elt.token
+                                        }
+                                        ).then((data) => {
+                                            console.log('Données récupérées avec succès :', data);
+                                        }).catch((error) => {
+                                            console.error('Erreur lors de la récupération des données :', error);
+                                        });
+                                    })
+
+                                }
                                 return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
                             })
                             .catch((err) => {

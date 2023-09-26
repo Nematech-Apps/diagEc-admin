@@ -2,13 +2,14 @@ import Head from 'next/head';
 import { Box, Container, Stack, Typography } from '@mui/material';
 import { SettingsNotifications } from 'src/sections/settings/settings-notifications';
 import { SettingsPassword } from 'src/sections/settings/settings-password';
+import { ListStatusApp } from 'src/sections/settings/list-appStatus';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 
 const Page = () => (
   <>
     <Head>
       <title>
-        Settings | Devias Kit
+        Paramètres | Diag'Ec
       </title>
     </Head>
     <Box
@@ -21,10 +22,10 @@ const Page = () => (
       <Container maxWidth="lg">
         <Stack spacing={3}>
           <Typography variant="h4">
-            Settings
+            Paramètres
           </Typography>
           <SettingsNotifications />
-          <SettingsPassword />
+          <ListStatusApp />
         </Stack>
       </Container>
     </Box>

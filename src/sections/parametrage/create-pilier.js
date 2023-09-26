@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import {
     Button,
     Card,
@@ -20,7 +20,45 @@ import { addPilier } from 'src/firebase/firebaseServices';
 import { db, GetDoc, Doc, UpdateDoc } from 'src/firebase/firebaseConfig';
 import ToastComponent from '../../components/toast';
 
+import { getDeviceTokensList } from 'src/firebase/firebaseServices';
+import { OnSnapshot } from 'src/firebase/firebaseConfig';
+
+
+import NotificationService from 'src/notificationsService/notificationService';
+
+const baseURL = 'https://fcm.googleapis.com/fcm/send';
+const notificationService = new NotificationService(baseURL);
+
 export const CreatePilier = () => {
+
+    const [dataToken, setDataToken] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+
+
+    useEffect(() => {
+        const unsubscribe = OnSnapshot(
+            getDeviceTokensList(),
+            (snapshot) => {
+                const fetchedData = snapshot.docs.map((doc) => ({
+                    ...doc.data(),
+                    id: doc.id
+                }));
+                setDataToken(fetchedData);
+                setIsLoading(false);
+            },
+            (error) => {
+                console.log('Error fetching data:', error);
+                setIsLoading(false);
+            }
+        );
+
+        return () => {
+            // Clean up the listener when the component unmounts
+            unsubscribe();
+        };
+
+    }, []);
 
     const formik = useFormik({
         initialValues: {
@@ -70,6 +108,26 @@ export const CreatePilier = () => {
                     UpdateDoc(collectionRef, docData)
                         .then(() => {
                             helpers.resetForm();
+                            //notify users
+                            const authToken = 'AAAAn_0BcwE:APA91bGwDIQfUGwNFze-sBenguSvoIti8XW8kuYvrhbcXDJ6X9ZWP8rVETtQoRGJAyJT_9wpHlg02Lrd1PsJEsnhEBkvrp5yy3GJ4wSPEJTT7LP1azAE3SD_3m6OwAjijwkksvUK2f-I';
+                            notificationService.setAuthorizationToken(authToken);
+                            if (isLoading == false) {
+                                dataToken.forEach(async (elt) => {
+                                    notificationService.post('', {
+                                        "data": {
+                                            "title": "Nouveau pilier ajouté",
+                                            "message": "Un nouveau pilier vient d'être ajouté"
+                                        },
+                                        "to": elt.token
+                                    }
+                                    ).then((data) => {
+                                        console.log('Données récupérées avec succès :', data);
+                                    }).catch((error) => {
+                                        console.error('Erreur lors de la récupération des données :', error);
+                                    });
+                                })
+
+                            }
                             return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
                         })
                         .catch((err) => {

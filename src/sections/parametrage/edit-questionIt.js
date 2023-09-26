@@ -34,7 +34,7 @@ import ToastComponent from '../../components/toast';
 
 import { updateNiveau } from 'src/firebase/firebaseServices';
 import { updateAnswer } from 'src/firebase/firebaseServices';
-import { updateQuestion } from 'src/firebase/firebaseServices';
+import { updateQuestionIt } from 'src/firebase/firebaseServices';
 
 import { getAnswerList } from 'src/firebase/firebaseServices';
 import { getCategoriesList } from 'src/firebase/firebaseServices';
@@ -67,7 +67,7 @@ const MenuProps = {
     },
 };
 
-export const EditQuestion = ({ handleClose, isOpen, data }) => {
+export const EditQuestionIt = ({ handleClose, isOpen, data }) => {
 
     const [answers, setAnswers] = useState([]);
 
@@ -99,7 +99,7 @@ export const EditQuestion = ({ handleClose, isOpen, data }) => {
         if (answerLibelle.length != 0 && answers.length != 0) {
             answerLibelle.map((item) => {
                 answers.map((elt) => {
-                    if (elt.libelleFr == item) {
+                    if (elt.libelleIt == item) {
                         const obj = elt;
                         arr.push(obj);
                     }
@@ -202,7 +202,7 @@ export const EditQuestion = ({ handleClose, isOpen, data }) => {
 
     const formik = useFormik({
         initialValues: {
-            libelleFr: data.libelleFr,
+            libelleIt: data.libelleIt,
             poids: data.poids,
             // categorie: '',
             pilier: '',
@@ -210,10 +210,10 @@ export const EditQuestion = ({ handleClose, isOpen, data }) => {
             submit: null
         },
         validationSchema: Yup.object({
-            libelleFr: Yup
+            libelleIt: Yup
                 .string()
                 .max(255)
-                .required("Le libellé en français est requis"),
+                .required("Le libellé en italien est requis"),
             poids: Yup
                 .number()
                 .required("Le poids est requis"),
@@ -231,7 +231,7 @@ export const EditQuestion = ({ handleClose, isOpen, data }) => {
         onSubmit: async (values, helpers) => {
             if (answerLibelle.length != 0 && categLibelle.length != 0) {
                 const datas = {
-                    libelleFr: values.libelleFr,
+                    libelleIt: values.libelleIt,
                     answers: objectList,
                     categories: objectListCateg,
                     //categorie: values.categorie,
@@ -240,7 +240,7 @@ export const EditQuestion = ({ handleClose, isOpen, data }) => {
                     defi: values.defi
                 }
 
-                updateQuestion(datas, data.id)
+                updateQuestionIt(datas, data.id)
                     .then(() => {
                         helpers.resetForm();
                         handleClose();
@@ -314,7 +314,7 @@ export const EditQuestion = ({ handleClose, isOpen, data }) => {
                                                 </MenuItem>
                                                 {piliers.map((pilier, index) => {
                                                     return (<MenuItem value={JSON.stringify(pilier)}
-                                                        key={index}>{pilier.libelleFr}</MenuItem>)
+                                                        key={index}>{pilier.libelleIt}</MenuItem>)
                                                 })}
 
                                             </Select>
@@ -345,7 +345,7 @@ export const EditQuestion = ({ handleClose, isOpen, data }) => {
                                                 </MenuItem>
                                                 {defis.map((defi, index) => {
                                                     return (<MenuItem value={JSON.stringify(defi)}
-                                                        key={index}>{defi.libelleFr}</MenuItem>)
+                                                        key={index}>{defi.libelleIt}</MenuItem>)
                                                 })}
 
                                             </Select>
@@ -364,19 +364,19 @@ export const EditQuestion = ({ handleClose, isOpen, data }) => {
                                         sx={{ maxWidth: 1500 }}
                                     >
 
+                                        
+
                                         <TextField
-                                            error={!!(formik.touched.libelleFr && formik.errors.libelleFr)}
+                                            error={!!(formik.touched.libelleIt && formik.errors.libelleIt)}
                                             fullWidth
-                                            helperText={formik.touched.libelleFr && formik.errors.libelleFr}
-                                            label="Libellé en français"
-                                            name="libelleFr"
+                                            helperText={formik.touched.libelleIt && formik.errors.libelleIt}
+                                            label="Libellé en italien"
+                                            name="libelleIt"
                                             onBlur={formik.handleBlur}
                                             onChange={formik.handleChange}
                                             type="text"
-                                            value={formik.values.libelleFr}
+                                            value={formik.values.libelleIt}
                                         />
-
-                                        
 
                                     </Stack>
 
@@ -403,9 +403,9 @@ export const EditQuestion = ({ handleClose, isOpen, data }) => {
                                             >
                                                 {answers.map((answer, index) => (
                                                     <MenuItem key={index}
-                                                        value={answer.libelleFr}>
-                                                        <Checkbox checked={answerLibelle.indexOf(answer.libelleFr) > -1} />
-                                                        <ListItemText primary={answer.libelleFr} />
+                                                        value={answer.libelleIt}>
+                                                        <Checkbox checked={answerLibelle.indexOf(answer.libelleIt) > -1} />
+                                                        <ListItemText primary={answer.libelleIt} />
                                                     </MenuItem>
                                                 ))}
                                             </Select>

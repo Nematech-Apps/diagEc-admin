@@ -29,7 +29,7 @@ import {
 
 import PencilIcon from '@heroicons/react/24/solid/PencilIcon';
 import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
-import DocumentIcon from '@heroicons/react/24/solid/DocumentIcon';
+import EyeIcon from '@heroicons/react/24/solid/EyeIcon';
 
 import { SvgIcon } from '@mui/material';
 
@@ -37,6 +37,7 @@ import { EditDefis } from './edit-defis';
 import { DisplayFicheReflexe } from './display-fiche-reflexe';
 import { deleteDefis, deleteFicheReflexeInStorage } from 'src/firebase/firebaseServices';
 import { checkQuestionsInDefi } from 'src/firebase/firebaseServices';
+import { ReplaceFiche } from './replaceFiche';
 import ToastComponent from '../../components/toast';
 
 import swal from 'sweetalert';
@@ -68,6 +69,9 @@ export const DefisTable = (props) => {
     const [isDisplayFileModalOpen, setIsDisplayFileModalOpen] = useState(false);
     const [displayFileModalData, setDisplayFileModalData] = useState(null);
 
+    const [isReplaceFicheModalOpen, setIsReplaceFicheModalOpen] = useState(false);
+    const [replaceFicheModalData, setReplaceFicheModalData] = useState(null);
+
 
     const handleEditClick = (event, defis) => {
         setModalData(defis);
@@ -79,15 +83,10 @@ export const DefisTable = (props) => {
         setIsDisplayFileModalOpen(true);
     }
 
-    const handleShowFicheEn = (event, defis) => {
-        setDisplayFileModalData(defis.ficheReflexeEn);
-        setIsDisplayFileModalOpen(true);
-    }
-
-    const handleShowFicheIt = (event, defis) => {
-        setDisplayFileModalData(defis.ficheReflexeIt);
-        setIsDisplayFileModalOpen(true);
-    }
+    const handleReplaceFicheClick = (event, defis) => {
+        setReplaceFicheModalData(defis);
+        setIsReplaceFicheModalOpen(true);
+    };
 
     const handleDeleteClick = async (event, defis) => {
         confirmAlert({
@@ -172,7 +171,7 @@ export const DefisTable = (props) => {
                                 }}
                             />
                         </TableCell> */}
-                        
+
                         <TableCell>
                             Libellé
                         </TableCell>
@@ -211,7 +210,7 @@ export const DefisTable = (props) => {
                                             }}
                                         />
                                     </TableCell> */}
-                                    
+
                                     <TableCell>
                                         <Stack
                                             alignItems="flex-start"
@@ -222,7 +221,7 @@ export const DefisTable = (props) => {
                                                 {getInitials(customer.name)}
                                             </Avatar> */}
                                             <Typography variant="subtitle2">
-                                            {defis.libelleFr}
+                                                {defis.libelleFr}
                                             </Typography>
                                             {/* <Typography variant="subtitle2">
                                                 {defis.libelleEn}
@@ -241,10 +240,24 @@ export const DefisTable = (props) => {
                                         >
                                             {
                                                 defis.ficheReflexeFr &&
-                                                <Button variant="outlined"
-                                                    onClick={(event) => handleShowFicheFr(event, defis)}>Voir fiche en français</Button>
+                                                <Fab variant="extended" color="primary" size="medium"
+                                                    onClick={(event) => handleShowFicheFr(event, defis)}>
+                                                    
+                                                    Fiche 
+                                                    <SvgIcon sx={{ ml: 1 }}>
+                                                        <EyeIcon />
+                                                    </SvgIcon>
+                                                </Fab>
+                                                // <Button variant="text"
+                                                //     onClick={(event) => handleShowFicheFr(event, defis)}>Voir fiche en français</Button>
                                             }
+
                                             
+                                            {
+                                                defis.ficheReflexeFr &&
+                                                <Button variant="outlined"
+                                                    onClick={(event) => handleReplaceFicheClick(event, defis)}>Remplacer</Button>
+                                            }
                                         </Stack>
                                     </TableCell>
                                     <TableCell>
@@ -278,9 +291,14 @@ export const DefisTable = (props) => {
                                     {isModalOpen && modalData && <EditDefis data={modalData}
                                         isOpen={isModalOpen}
                                         handleClose={() => setIsModalOpen(false)} />}
+                                    
                                     {isDisplayFileModalOpen && displayFileModalData && <DisplayFicheReflexe fileUrl={displayFileModalData}
                                         isOpen={isDisplayFileModalOpen}
                                         handleClose={() => setIsDisplayFileModalOpen(false)} />}
+                                    
+                                    {isReplaceFicheModalOpen && replaceFicheModalData && <ReplaceFiche data={replaceFicheModalData}
+                                        isOpen={isReplaceFicheModalOpen}
+                                        handleClose={() => setIsReplaceFicheModalOpen(false)} />}
                                 </TableRow>
                             );
                         }) :

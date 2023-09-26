@@ -33,7 +33,7 @@ import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
 import { SvgIcon } from '@mui/material';
 
 import { EditAnswer } from './edit-answer';
-import { EditQuestion } from './edit-question';
+import { EditQuestionIt } from './edit-questionIt';
 import { deleteQuestion } from 'src/firebase/firebaseServices';
 import ToastComponent from '../../components/toast';
 
@@ -223,7 +223,7 @@ export const QuestionTableIt = (props) => {
                                     <TableCell>
                                         {createdAt}
                                     </TableCell> */}
-                                    {isModalOpen && modalData && <EditQuestion data={modalData}
+                                    {isModalOpen && modalData && <EditQuestionIt data={modalData}
                                         isOpen={isModalOpen}
                                         handleClose={() => setIsModalOpen(false)} />}
                                 </TableRow>

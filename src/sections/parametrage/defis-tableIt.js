@@ -29,14 +29,15 @@ import {
 
 import PencilIcon from '@heroicons/react/24/solid/PencilIcon';
 import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
-import DocumentIcon from '@heroicons/react/24/solid/DocumentIcon';
+import EyeIcon from '@heroicons/react/24/solid/EyeIcon';
 
 import { SvgIcon } from '@mui/material';
 
-import { EditDefis } from './edit-defis';
+import { EditDefisIt } from './edit-defisIt';
 import { DisplayFicheReflexe } from './display-fiche-reflexe';
 import { deleteDefis, deleteFicheReflexeInStorage } from 'src/firebase/firebaseServices';
 import { checkQuestionsInDefi } from 'src/firebase/firebaseServices';
+import { ReplaceFicheIt } from './replaceFicheIt';
 import ToastComponent from '../../components/toast';
 
 import swal from 'sweetalert';
@@ -69,20 +70,19 @@ export const DefisTableIt = (props) => {
     const [displayFileModalData, setDisplayFileModalData] = useState(null);
 
 
+    const [isReplaceFicheModalOpen, setIsReplaceFicheModalOpen] = useState(false);
+    const [replaceFicheModalData, setReplaceFicheModalData] = useState(null);
+
+
     const handleEditClick = (event, defis) => {
         setModalData(defis);
         setIsModalOpen(true);
     };
 
-    const handleShowFicheFr = (event, defis) => {
-        setDisplayFileModalData(defis.ficheReflexeFr);
-        setIsDisplayFileModalOpen(true);
-    }
-
-    const handleShowFicheEn = (event, defis) => {
-        setDisplayFileModalData(defis.ficheReflexeEn);
-        setIsDisplayFileModalOpen(true);
-    }
+    const handleReplaceFicheClick = (event, defis) => {
+        setReplaceFicheModalData(defis);
+        setIsReplaceFicheModalOpen(true);
+    };
 
     const handleShowFicheIt = (event, defis) => {
         setDisplayFileModalData(defis.ficheReflexeIt);
@@ -172,7 +172,7 @@ export const DefisTableIt = (props) => {
                                 }}
                             />
                         </TableCell> */}
-                        
+
                         <TableCell>
                             Libellé
                         </TableCell>
@@ -211,7 +211,7 @@ export const DefisTableIt = (props) => {
                                             }}
                                         />
                                     </TableCell> */}
-                                    
+
                                     <TableCell>
                                         <Stack
                                             alignItems="flex-start"
@@ -222,7 +222,7 @@ export const DefisTableIt = (props) => {
                                                 {getInitials(customer.name)}
                                             </Avatar> */}
                                             <Typography variant="subtitle2">
-                                            {defis.libelleIt}
+                                                {defis.libelleIt}
                                             </Typography>
                                             {/* <Typography variant="subtitle2">
                                                 {defis.libelleEn}
@@ -239,11 +239,25 @@ export const DefisTableIt = (props) => {
                                             direction="column"
                                             spacing={2}
                                         >
-                                            
+
+                                            {
+                                                defis.ficheReflexeIt &&
+                                                <Fab variant="extended" color="primary" size="medium"
+                                                    onClick={(event) => handleShowFicheIt(event, defis)}>
+
+                                                    Fiche
+                                                    <SvgIcon sx={{ ml: 1 }}>
+                                                        <EyeIcon />
+                                                    </SvgIcon>
+                                                </Fab>
+                                                // <Button variant="outlined"
+                                                //     onClick={(event) => handleShowFicheIt(event, defis)}>Voir fiche en italien</Button>
+                                            }
+
                                             {
                                                 defis.ficheReflexeIt &&
                                                 <Button variant="outlined"
-                                                    onClick={(event) => handleShowFicheIt(event, defis)}>Voir fiche en italien</Button>
+                                                    onClick={(event) => handleReplaceFicheClick(event, defis)}>Remplacer</Button>
                                             }
                                         </Stack>
                                     </TableCell>
@@ -275,12 +289,18 @@ export const DefisTableIt = (props) => {
                                     <TableCell>
                                         {createdAt}
                                     </TableCell> */}
-                                    {isModalOpen && modalData && <EditDefis data={modalData}
+                                    {isModalOpen && modalData && <EditDefisIt data={modalData}
                                         isOpen={isModalOpen}
                                         handleClose={() => setIsModalOpen(false)} />}
+
+
                                     {isDisplayFileModalOpen && displayFileModalData && <DisplayFicheReflexe fileUrl={displayFileModalData}
                                         isOpen={isDisplayFileModalOpen}
                                         handleClose={() => setIsDisplayFileModalOpen(false)} />}
+
+                                    {isReplaceFicheModalOpen && replaceFicheModalData && <ReplaceFicheIt data={replaceFicheModalData}
+                                        isOpen={isReplaceFicheModalOpen}
+                                        handleClose={() => setIsReplaceFicheModalOpen(false)} />}
                                 </TableRow>
                             );
                         }) :
