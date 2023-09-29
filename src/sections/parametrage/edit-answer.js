@@ -47,6 +47,10 @@ const style = {
 
 export const EditAnswer = ({ handleClose, isOpen, data }) => {
 
+    function convertirEnMajuscules(texte) {
+        return texte.toUpperCase();
+    }
+
     const formik = useFormik({
         initialValues: {
             libelleFr: data.libelleFr,
@@ -74,7 +78,13 @@ export const EditAnswer = ({ handleClose, isOpen, data }) => {
 
         }),
         onSubmit: async (values, helpers) => {
-            updateAnswer(values, data.id)
+            const dataToUpdate = {
+                libelleFr: convertirEnMajuscules(values.libelleFr),
+                libelleEn: convertirEnMajuscules(values.libelleEn),
+                libelleIt: convertirEnMajuscules(values.libelleIt),
+                point: values.point
+            }
+            updateAnswer(dataToUpdate, data.id)
                 .then(() => {
                     helpers.resetForm();
                     handleClose();

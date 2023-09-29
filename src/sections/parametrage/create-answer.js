@@ -60,6 +60,10 @@ export const CreateAnswer = () => {
 
   }, []);
 
+  function convertirEnMajuscules(texte) {
+    return texte.toUpperCase();
+  }
+
   const formik = useFormik({
     initialValues: {
       libelleFr: '',
@@ -94,7 +98,13 @@ export const CreateAnswer = () => {
       //   helpers.setSubmitting(false);
       //   return ToastComponent({message: err.message, type: 'error'});
       // }
-      addAnswer(values)
+      const data = {
+        libelleFr: convertirEnMajuscules(values.libelleFr),
+        libelleEn: convertirEnMajuscules(values.libelleEn),
+        libelleIt: convertirEnMajuscules(values.libelleIt),
+        point: values.point
+      }
+      addAnswer(data)
         .then(async (doc) => {
           const collectionRef = Doc(db, 'answers', doc.id);
           const snapshot = await GetDoc(collectionRef);
