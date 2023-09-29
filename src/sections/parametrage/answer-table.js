@@ -137,6 +137,10 @@ export const AnswerTable = (props) => {
                         </TableCell>
 
                         <TableCell>
+                            Point
+                        </TableCell>
+
+                        <TableCell>
                             Actions
                         </TableCell>
 
@@ -205,6 +209,20 @@ export const AnswerTable = (props) => {
                                             </Avatar> */}
                                             <Typography variant="subtitle2">
                                                 {answer.libelleIt}
+                                            </Typography>
+                                        </Stack>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Stack
+                                            alignItems="center"
+                                            direction="row"
+                                            spacing={2}
+                                        >
+                                            {/* <Avatar src={customer.avatar}>
+                                                {getInitials(customer.name)}
+                                            </Avatar> */}
+                                            <Typography variant="subtitle2">
+                                                {answer?.point}
                                             </Typography>
                                         </Stack>
                                     </TableCell>

@@ -52,6 +52,7 @@ export const EditAnswer = ({ handleClose, isOpen, data }) => {
             libelleFr: data.libelleFr,
             libelleEn: data.libelleEn,
             libelleIt: data.libelleIt,
+            point: data.point,
             submit: null
         },
         validationSchema: Yup.object({
@@ -67,6 +68,9 @@ export const EditAnswer = ({ handleClose, isOpen, data }) => {
                 .string()
                 .max(255)
                 .required("Le libellé en italien est requis"),
+            point: Yup
+                .number()
+                .required("Le point est requis"),
 
         }),
         onSubmit: async (values, helpers) => {
@@ -149,7 +153,7 @@ export const EditAnswer = ({ handleClose, isOpen, data }) => {
                                         value={formik.values.libelleIt}
                                     />
 
-                                    {/* <TextField
+                                    <TextField
                                         error={!!(formik.touched.point && formik.errors.point)}
                                         fullWidth
                                         helperText={formik.touched.point && formik.errors.point}
@@ -159,7 +163,7 @@ export const EditAnswer = ({ handleClose, isOpen, data }) => {
                                         onChange={formik.handleChange}
                                         type="number"
                                         value={formik.values.point}
-                                    /> */}
+                                    />
 
 
                                 </Stack>

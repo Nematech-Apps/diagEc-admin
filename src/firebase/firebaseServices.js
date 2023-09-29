@@ -241,7 +241,8 @@ export const addAnswer = async (data) => {
     const docData = {
         libelleFr: data.libelleFr,
         libelleEn: data.libelleEn,
-        libelleIt: data.libelleIt
+        libelleIt: data.libelleIt,
+        point: data.point
     }
 
     return AddDoc(collectionRef, docData);
@@ -256,6 +257,7 @@ export const updateAnswer = async (data, docId) => {
         libelleFr: data.libelleFr,
         libelleEn: data.libelleEn,
         libelleIt: data.libelleIt,
+        point: data.point
     };
 
     return UpdateDoc(collectionRef, docData)

@@ -65,6 +65,7 @@ export const CreateAnswer = () => {
       libelleFr: '',
       libelleEn: '',
       libelleIt: '',
+      point: 0,
       submit: null
     },
     validationSchema: Yup.object({
@@ -80,6 +81,9 @@ export const CreateAnswer = () => {
         .string()
         .max(255)
         .required("Le libellé en italien est requis"),
+      point: Yup
+        .number()
+        .required("Le point est requis"),
     }),
     onSubmit: async (values, helpers) => {
       // try{
@@ -193,7 +197,7 @@ export const CreateAnswer = () => {
               value={formik.values.libelleIt}
             />
 
-            {/* <TextField
+            <TextField
               error={!!(formik.touched.point && formik.errors.point)}
               fullWidth
               helperText={formik.touched.point && formik.errors.point}
@@ -203,7 +207,7 @@ export const CreateAnswer = () => {
               onChange={formik.handleChange}
               type="number"
               value={formik.values.point}
-            /> */}
+            />
           </Stack>
           {formik.errors.submit && (
             <Typography
@@ -218,7 +222,7 @@ export const CreateAnswer = () => {
         <Divider />
         <CardActions sx={{ justifyContent: 'flex-end' }}>
           <Button variant="contained"
-type='submit'>
+            type='submit'>
             Créer
           </Button>
         </CardActions>
