@@ -135,6 +135,14 @@ export const QuestionTableIt = (props) => {
                         </TableCell>
 
                         <TableCell>
+                            Défi
+                        </TableCell>
+
+                        <TableCell>
+                            Poids
+                        </TableCell>
+
+                        <TableCell>
                             Actions
                         </TableCell>
 
@@ -195,6 +203,46 @@ export const QuestionTableIt = (props) => {
                                             <Typography variant="subtitle2">
                                                 {question.pilier.libelleIt}
                                             </Typography>
+                                        </Stack>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Stack
+                                            alignItems="flex-start"
+                                            direction="column"
+                                            spacing={2}
+                                        >
+                                            {/* <Avatar src={customer.avatar}>
+                                                {getInitials(customer.name)}
+                                            </Avatar> */}
+                                            <Typography variant="subtitle2">
+                                                {question.defi.libelleIt}
+                                            </Typography>
+                                            {/* <Typography variant="subtitle2">
+                                                {question.pilier.libelleEn}
+                                            </Typography>
+                                            <Typography variant="subtitle2">
+                                                {question.pilier.libelleIt}
+                                            </Typography> */}
+                                        </Stack>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Stack
+                                            alignItems="flex-start"
+                                            direction="column"
+                                            spacing={2}
+                                        >
+                                            {/* <Avatar src={customer.avatar}>
+                                                {getInitials(customer.name)}
+                                            </Avatar> */}
+                                            <Typography variant="subtitle2">
+                                                {question.poids}
+                                            </Typography>
+                                            {/* <Typography variant="subtitle2">
+                                                {question.pilier.libelleEn}
+                                            </Typography>
+                                            <Typography variant="subtitle2">
+                                                {question.pilier.libelleIt}
+                                            </Typography> */}
                                         </Stack>
                                     </TableCell>
                                     <TableCell>
