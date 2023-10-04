@@ -142,34 +142,6 @@ export const DisplayStatsPdf = ({ handleClose, isOpen }) => {
     }, []);
 
 
-
-    const data = {
-        tertiaire: [
-            {
-                id: 1,
-                name: 'enterprise1'
-            },
-            {
-                id: 2,
-                name: 'enterprise2'
-            },
-            {
-                id: 3,
-                name: 'enterprise3'
-            }
-        ],
-        production: [
-            {
-                id: 1,
-                name: 'enterprise1'
-            },
-            {
-                id: 2,
-                name: 'enterprise2'
-            },
-        ]
-    }
-
     return (
         <div>
             <Modal
@@ -240,7 +212,7 @@ export const DisplayStatsPdf = ({ handleClose, isOpen }) => {
                                 {
                                     Object.keys(retrievedData2).map((secteur, secteurIndex) => {
                                         return (
-                                            <div key={secteurIndex} >
+                                            <div key={secteurIndex} style={{borderStyle: 'solid', borderWidth: 1, borderColor: 'black'}}>
                                                 <Typography fontSize={15} variant='h4' sx={{ margin: 2 }}>{secteur}</Typography>
                                                 {
                                                     retrievedData2[secteur].length !== 0 ?
@@ -311,7 +283,7 @@ export const DisplayStatsPdf = ({ handleClose, isOpen }) => {
                                 {
                                     Object.keys(retrievedData1).map((niveau, niveauIndex) => {
                                         return (
-                                            <div key={niveauIndex} >
+                                            <div key={niveauIndex} style={{borderStyle: 'solid', borderWidth: 1, borderColor: 'black'}}>
                                                 <Typography fontSize={15} variant='h4' sx={{ margin: 2 }}>{niveau}</Typography>
                                                 {
                                                     retrievedData1[niveau].length !== 0 ?
