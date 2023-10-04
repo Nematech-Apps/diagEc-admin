@@ -160,7 +160,10 @@ export const SecteurTable = (props) => {
                 </TableHead>
                 <TableBody>
                     {
-                        items.length != 0 ? items.map((secteur) => {
+                        items.length != 0 ? 
+                        items
+                        .sort((a, b) => a.libelleFr.localeCompare(b.libelleFr))
+                        .map((secteur) => {
                             const isSelected = selected.includes(secteur.id);
                             //const createdAt = format(customer.createdAt, 'dd/MM/yyyy');
 
@@ -182,7 +185,7 @@ export const SecteurTable = (props) => {
                                             }}
                                         />
                                     </TableCell> */}
-                                    <TableCell>
+                                    <TableCell >
                                         <Stack
                                             alignItems="center"
                                             direction="row"
@@ -196,7 +199,7 @@ export const SecteurTable = (props) => {
                                             </Typography>
                                         </Stack>
                                     </TableCell>
-                                    <TableCell>
+                                    <TableCell >
                                         <Stack
                                             alignItems="center"
                                             direction="row"
@@ -210,7 +213,7 @@ export const SecteurTable = (props) => {
                                             </Typography>
                                         </Stack>
                                     </TableCell>
-                                    <TableCell>
+                                    <TableCell >
                                         <Stack
                                             alignItems="center"
                                             direction="row"

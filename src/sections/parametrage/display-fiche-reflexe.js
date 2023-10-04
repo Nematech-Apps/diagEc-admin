@@ -62,7 +62,7 @@ export const DisplayFicheReflexe = ({ handleClose, isOpen, fileUrl }) => {
             >
 
                 <Box sx={style}>
-                    
+
                     {!iframeLoaded && (
                         <Typography variant="body1" align="center">
                             Chargement...

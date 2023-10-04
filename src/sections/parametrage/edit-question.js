@@ -200,6 +200,7 @@ export const EditQuestion = ({ handleClose, isOpen, data }) => {
     }, []);
 
 
+
     const formik = useFormik({
         initialValues: {
             libelleFr: data.libelleFr,
@@ -309,12 +310,13 @@ export const EditQuestion = ({ handleClose, isOpen, data }) => {
                                                 label="Pilier"
                                                 fullWidth
                                             >
-                                                <MenuItem value="">
+                                                {/* <MenuItem value="">
                                                     <em>Aucune sélection</em>
-                                                </MenuItem>
+                                                </MenuItem> */}
                                                 {piliers.map((pilier, index) => {
+                                                    console.log(`${data.pilier.id} == ${pilier.id}`)
                                                     return (<MenuItem value={JSON.stringify(pilier)}
-                                                        key={index}>{pilier.libelleFr}</MenuItem>)
+                                                        key={index} selected={data.pilier.id === pilier.id}>{pilier.libelleFr}</MenuItem>)
                                                 })}
 
                                             </Select>
@@ -376,7 +378,7 @@ export const EditQuestion = ({ handleClose, isOpen, data }) => {
                                             value={formik.values.libelleFr}
                                         />
 
-                                        
+
 
                                     </Stack>
 
