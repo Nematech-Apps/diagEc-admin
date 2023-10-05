@@ -139,8 +139,11 @@ export const AuthProvider = (props) => {
         return ToastComponent({ message: 'Informations de connexion invalides!', type: 'error' });
       } else if (error.code === 'auth/wrong-password') {
         return ToastComponent({ message: 'Mot de passe invalide!', type: 'error' });
+      } else if (error.code === 'auth/user-disabled') {
+        return ToastComponent({ message: 'Utilisateur désactivé!', type: 'error' });
       }
-      return ToastComponent({ message: error.message, type: 'error' });
+      //error.message
+      return ToastComponent({ message: "Tentative de connexion échouée", type: 'error' });
     }
   };
 

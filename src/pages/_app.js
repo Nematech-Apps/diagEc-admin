@@ -11,6 +11,10 @@ import { createTheme } from 'src/theme';
 import { createEmotionCache } from 'src/utils/create-emotion-cache';
 import 'simplebar-react/dist/simplebar.min.css';
 import { ToastContainer } from 'react-toastify';
+import { useEffect } from 'react';
+
+import { logout } from 'src/firebase/firebaseServices';
+import { auth } from 'src/firebase/firebaseConfig';
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -24,6 +28,9 @@ const App = (props) => {
   const getLayout = Component.getLayout ?? ((page) => page);
 
   const theme = createTheme();
+
+
+
 
   return (
     <CacheProvider value={emotionCache}>
