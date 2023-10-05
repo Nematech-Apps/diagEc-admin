@@ -103,7 +103,7 @@ export const DisplayStatsPdf = ({ handleClose, isOpen }) => {
         return formattedDateTime;
     }
 
-    const { toPDF, targetRef } = usePDF({ filename: `DiagEC_stats_${getCurrentDateTime()}.pdf` });
+    const { toPDF, targetRef } = usePDF({ filename: `DiagEC_stats_company_${getCurrentDateTime()}.pdf` });
 
     const [retrievedData1, setRetrievedData1] = useState({});
     const [isLoading1, setIsLoading1] = useState(true);
@@ -163,7 +163,7 @@ export const DisplayStatsPdf = ({ handleClose, isOpen }) => {
                             }}
                         >
                             <Button size="small" color="success" variant='contained' sx={{ marginRight: 3 }}
-                                onClick={() => toPDF()}>
+                                onClick={() => {toPDF(); handleClose();}}>
                                 <SvgIcon fontSize="small">
                                     <ArrowDownOnSquareIcon />
                                 </SvgIcon>
