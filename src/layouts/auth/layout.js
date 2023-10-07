@@ -4,7 +4,7 @@ import { Box, Typography, Unstable_Grid2 as Grid } from '@mui/material';
 import { Logo } from 'src/components/logo';
 
 import LottieAnimation from 'src/components/lottieAnimation';
-import animationData from 'src/animations/welcome.json';
+import animationData from 'src/animations/w4.json';
 
 // TODO: Change subtitle text
 
@@ -100,14 +100,26 @@ export const Layout = (props) => {
               }}
               variant="h4"
             >
-              Cette plateforme permet de créer des données qui seront utilisées par l'application mobile et 
-              l'application web Diag'Ec, d'administrer les données produites par ces deux applications.
+              {/* Cette plateforme permet de créer des données qui seront utilisées par l'application mobile et 
+              l'application web Diag'Ec, d'administrer les données produites par ces deux applications. */}
             </Typography>
             {/* <img
               alt=""
               src="/assets/ecologie-industrielle_terre.png"
             /> */}
             <LottieAnimation animationData={animationData} />
+
+            <Typography
+              align="center"
+              sx={{ 
+                mb: 3,
+                fontSize: '10px',
+                lineHeight: '32px', 
+              }}
+              variant="h4"
+            >
+              Développé par Ohana Entreprise &copy; {new Date().getFullYear()}, Tous droits réservés.
+            </Typography>
           </Box>
         </Grid>
       </Grid>
