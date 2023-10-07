@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import NextLink from 'next/link';
-import { Box, Typography, Unstable_Grid2 as Grid } from '@mui/material';
+import { Box, Typography, Unstable_Grid2 as Grid, Paper } from '@mui/material';
 import { Logo } from 'src/components/logo';
 
 import LottieAnimation from 'src/components/lottieAnimation';
@@ -43,17 +43,19 @@ export const Layout = (props) => {
               width: '100%'
             }}
           >
-            <Box
-              component={NextLink}
-              href="/"
-              sx={{
-                display: 'inline-flex',
-                height: 32,
-                width: 32
-              }}
-            >
-              <Logo />
-            </Box>
+            <Paper elevation={16} sx={{width: '7%', borderRadius: 2}} variant='elevation' >
+              <Box
+                component={NextLink}
+                href="/"
+                sx={{
+                  display: 'inline-flex',
+                  height: 32,
+                  width: 32,
+                }}
+              >
+                <Logo />
+              </Box>
+            </Paper>
           </Box>
           {children}
         </Grid>
@@ -88,15 +90,15 @@ export const Layout = (props) => {
                 sx={{ color: '#15B79E' }}
                 target="_blank"
               >
-                
+
               </Box>
             </Typography>
             <Typography
               align="center"
-              sx={{ 
+              sx={{
                 mb: 3,
                 fontSize: '10px',
-                lineHeight: '32px', 
+                lineHeight: '32px',
               }}
               variant="h4"
             >
@@ -111,10 +113,10 @@ export const Layout = (props) => {
 
             <Typography
               align="center"
-              sx={{ 
+              sx={{
                 mb: 3,
                 fontSize: '10px',
-                lineHeight: '32px', 
+                lineHeight: '32px',
               }}
               variant="h4"
             >
