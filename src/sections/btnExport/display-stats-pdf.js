@@ -141,6 +141,24 @@ export const DisplayStatsPdf = ({ handleClose, isOpen }) => {
         fetchData2();
     }, []);
 
+    function arrondirA2Decimales(nombre) {
+        return Math.round(nombre * 100) / 100;
+    }
+
+    function getLevel(nombre) {
+        if(nombre < 20) {
+            return "Débutant(e)";
+        } else if(nombre < 50) {
+            return "Intermédiaire";
+        } else if(nombre < 70) {
+            return "Confirmé(e)";
+        } else if(nombre < 99) {
+            return "Avancé(e)";
+        } else if(nombre == 100) {
+            return "Expert(e)";
+        }
+    }
+
 
     return (
         <div>
@@ -163,7 +181,7 @@ export const DisplayStatsPdf = ({ handleClose, isOpen }) => {
                             }}
                         >
                             <Button size="small" color="success" variant='contained' sx={{ marginRight: 3 }}
-                                onClick={() => {toPDF(); handleClose();}}>
+                                onClick={() => { toPDF(); handleClose(); }}>
                                 <SvgIcon fontSize="small">
                                     <ArrowDownOnSquareIcon />
                                 </SvgIcon>
@@ -183,7 +201,7 @@ export const DisplayStatsPdf = ({ handleClose, isOpen }) => {
                         <hr />
 
                         <div ref={targetRef}>
-                            <Stack direction={'column'}>
+                            <Stack direction={'column'} spacing={4}>
                                 <Box
                                     sx={{
                                         display: 'flex',
@@ -212,7 +230,7 @@ export const DisplayStatsPdf = ({ handleClose, isOpen }) => {
                                 {
                                     Object.keys(retrievedData2).map((secteur, secteurIndex) => {
                                         return (
-                                            <div key={secteurIndex} style={{borderStyle: 'solid', borderWidth: 1, borderColor: 'black'}}>
+                                            <div key={secteurIndex} style={{ borderStyle: 'solid', borderWidth: 1, borderColor: 'black' }}>
                                                 <Typography fontSize={15} variant='h4' sx={{ margin: 2 }}>{secteur}</Typography>
                                                 {
                                                     retrievedData2[secteur].length !== 0 ?
@@ -226,6 +244,8 @@ export const DisplayStatsPdf = ({ handleClose, isOpen }) => {
                                                                             <TableCell align="right">Nombre de salariés</TableCell>
                                                                             <TableCell align="right">Poste</TableCell>
                                                                             <TableCell align="right">Adresse</TableCell>
+                                                                            <TableCell align="right">Score EC</TableCell>
+                                                                            <TableCell align="right">Progression</TableCell>
                                                                         </TableRow>
                                                                     </TableHead>
                                                                     <TableBody>
@@ -241,6 +261,8 @@ export const DisplayStatsPdf = ({ handleClose, isOpen }) => {
                                                                                 <TableCell align="right">{company.nbreSalaries}</TableCell>
                                                                                 <TableCell align="right">{company.poste}</TableCell>
                                                                                 <TableCell align="right">{company.adresse}</TableCell>
+                                                                                <TableCell align="right">{company.score != null ? (isNaN(arrondirA2Decimales(company.score)) ? `0%` : `${arrondirA2Decimales(company.score)}%`) : `0%`}</TableCell>
+                                                                                <TableCell align="right">{getLevel(company.score != null ? (isNaN(arrondirA2Decimales(company.score)) ? 0 : arrondirA2Decimales(company.score)) : 0)}</TableCell>
                                                                             </TableRow>
                                                                         ))}
                                                                     </TableBody>
@@ -283,7 +305,7 @@ export const DisplayStatsPdf = ({ handleClose, isOpen }) => {
                                 {
                                     Object.keys(retrievedData1).map((niveau, niveauIndex) => {
                                         return (
-                                            <div key={niveauIndex} style={{borderStyle: 'solid', borderWidth: 1, borderColor: 'black'}}>
+                                            <div key={niveauIndex} style={{ borderStyle: 'solid', borderWidth: 1, borderColor: 'black' }}>
                                                 <Typography fontSize={15} variant='h4' sx={{ margin: 2 }}>{niveau}</Typography>
                                                 {
                                                     retrievedData1[niveau].length !== 0 ?
@@ -297,6 +319,8 @@ export const DisplayStatsPdf = ({ handleClose, isOpen }) => {
                                                                             <TableCell align="right">Nombre de salariés</TableCell>
                                                                             <TableCell align="right">Poste</TableCell>
                                                                             <TableCell align="right">Adresse</TableCell>
+                                                                            <TableCell align="right">Score EC</TableCell>
+                                                                            <TableCell align="right">Progression</TableCell>
                                                                         </TableRow>
                                                                     </TableHead>
                                                                     <TableBody>
@@ -312,6 +336,8 @@ export const DisplayStatsPdf = ({ handleClose, isOpen }) => {
                                                                                 <TableCell align="right">{company.nbreSalaries}</TableCell>
                                                                                 <TableCell align="right">{company.poste}</TableCell>
                                                                                 <TableCell align="right">{company.adresse}</TableCell>
+                                                                                <TableCell align="right">{company.score != null ? (isNaN(arrondirA2Decimales(company.score)) ? `0%` : `${arrondirA2Decimales(company.score)}%`) : `0%`}</TableCell>
+                                                                                <TableCell align="right">{getLevel(company.score != null ? (isNaN(arrondirA2Decimales(company.score)) ? 0 : arrondirA2Decimales(company.score)) : 0)}</TableCell>
                                                                             </TableRow>
                                                                         ))}
                                                                     </TableBody>
@@ -346,16 +372,18 @@ export const DisplayStatsPdf = ({ handleClose, isOpen }) => {
                                 }
 
 
-                                <Typography fontSize={18} variant='h4' sx={{ marginY: 6, marginLeft: 2 }} color={'cornflowerblue'}>Graphiques</Typography>
+                                <div style={{marginTop : 100}}>
+                                    <Typography fontSize={18} variant='h4' sx={{ marginY: 2, marginLeft: 2 }} color={'cornflowerblue'}>Graphiques</Typography>
 
-                                <Stack direction={'row'} spacing={3}>
-                                    <OverviewTraffic2
-                                        sx={{ height: '100%' }}
-                                    />
-                                    <OverviewTraffic
-                                        sx={{ height: '100%' }}
-                                    />
-                                </Stack>
+                                    <Stack direction={'row'} spacing={3}>
+                                        <OverviewTraffic2
+                                            sx={{ height: '100%' }}
+                                        />
+                                        <OverviewTraffic
+                                            sx={{ height: '100%' }}
+                                        />
+                                    </Stack>
+                                </div>
 
 
                             </Stack>

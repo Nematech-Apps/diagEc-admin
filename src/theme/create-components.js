@@ -266,7 +266,8 @@ export function createComponents(config) {
     MuiTableCell: {
       styleOverrides: {
         root: {
-          borderBottomColor: palette.divider,
+          // borderBottomColor: palette.divider,
+          borderBottomColor: "black",
           padding: '15px 16px'
         }
       }
@@ -276,9 +277,12 @@ export function createComponents(config) {
         root: {
           borderBottom: 'none',
           [`& .${tableCellClasses.root}`]: {
-            borderBottom: 'none',
-            backgroundColor: palette.neutral[50],
-            color: palette.neutral[700],
+            // borderBottom: 'none',
+            borderBottomColor: "black",
+            // backgroundColor: palette.neutral[50],
+            backgroundColor: "black",
+            // color: palette.neutral[700],
+            color: "white",
             fontSize: 12,
             fontWeight: 600,
             lineHeight: 1,

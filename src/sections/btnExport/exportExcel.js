@@ -41,11 +41,29 @@ export const ExportEXCEL = (props) => {
 
     const processExport = async (excelData , cas) => {
         const ws = XLSX.utils.json_to_sheet(excelData);;
-        XLSX.utils.sheet_add_aoa(ws, [["Raison sociale", "Email", "Secteur", "Nombre de salariés","Poste","Adresse"]], { origin: "A1",  });
+        XLSX.utils.sheet_add_aoa(ws, [["Raison sociale", "Email", "Secteur", "Nombre de salariés","Poste","Adresse","Score EC","Progression"]], { origin: "A1",  });
         const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
         const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
         const data = new Blob([excelBuffer], { type: fileType });
         FileSaver.saveAs(data, `${fileName}${cas}_${getCurrentDateTime()}${fileExtension}`);
+    }
+
+    function arrondirA2Decimales(nombre) {
+        return Math.round(nombre * 100) / 100;
+    }
+
+    function getLevel(nombre) {
+        if(nombre < 20) {
+            return "Débutant(e)";
+        } else if(nombre < 50) {
+            return "Intermédiaire";
+        } else if(nombre < 70) {
+            return "Confirmé(e)";
+        } else if(nombre < 99) {
+            return "Avancé(e)";
+        } else if(nombre == 100) {
+            return "Expert(e)";
+        }
     }
 
 
@@ -71,7 +89,9 @@ export const ExportEXCEL = (props) => {
                             niveau : elt.niveauAppartenance.libelleFr,
                             nbreSalaries : elt.nbreSalaries,
                             poste : elt.poste,
-                            adresse : elt.adresse
+                            adresse : elt.adresse,
+                            score : elt.score != null ? (isNaN(arrondirA2Decimales(elt.score)) ? `0%` : `${arrondirA2Decimales(elt.score)}%`) : `0%`,
+                            progression : getLevel(elt.score != null ? (isNaN(arrondirA2Decimales(elt.score)) ? 0 : arrondirA2Decimales(elt.score)) : 0)
                         }
                         arr.push(obj)
                     })
@@ -97,7 +117,9 @@ export const ExportEXCEL = (props) => {
                             secteur : elt.secteurAppartenance.libelleFr,
                             nbreSalaries : elt.nbreSalaries,
                             poste : elt.poste,
-                            adresse : elt.adresse
+                            adresse : elt.adresse,
+                            score : elt.score != null ? (isNaN(arrondirA2Decimales(elt.score)) ? `0%` : `${arrondirA2Decimales(elt.score)}%`) : `0%`,
+                            progression : getLevel(elt.score != null ? (isNaN(arrondirA2Decimales(elt.score)) ? 0 : arrondirA2Decimales(elt.score)) : 0)
                         }
                         arr.push(obj)
                     })

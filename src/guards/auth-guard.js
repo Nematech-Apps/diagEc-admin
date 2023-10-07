@@ -6,12 +6,41 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { auth } from '../firebase/firebaseConfig';
 import { useAuth } from 'src/hooks/use-auth';
 
+import swal from 'sweetalert';
+
+
 export const AuthGuard = (props) => {
   const { children } = props;
   const router = useRouter();
   const { isAuthenticated } = useAuthContext();
   const ignore = useRef(false);
   const [checked, setChecked] = useState(false);
+
+  const [snackBarOpen, setSnackBarOpen] = useState(false);
+
+  const handleCloseSnackBar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackBarOpen(false);
+  };
+
+  const afficherAlerte = (action) => {
+    // alert(`Votre session a expiré! Vous allez être déconnecté.`);
+    swal(
+      {
+        text : "Votre session a expiré! Vous allez être déconnecté.",
+        buttons : {
+          confirm: {
+            text: "OK",
+            value: true,
+            visible: true,
+            closeModal: true
+          }
+        }
+      }
+    );
+  }
 
   const authHook = useAuth();
 
@@ -30,14 +59,19 @@ export const AuthGuard = (props) => {
         // Ajoute ici le code à exécuter après l'action
       }, remainingTime);
 
+
       // Retourne l'ID du timer pour permettre l'annulation ultérieure
       return timerId;
     }
   }
 
   const Delay = {
-    20 : 20000,
-    uneHeure : 60 * 60 * 1000
+    vingtSecondes: 20000,
+    soixanteSecondes: 60000,
+    deuxMinutes: 2 * 60000,
+    uneHeure: 60 * 60 * 1000,
+    deuxHeures: 2 * 60 * 60 * 1000,
+    vingtQuatreHeures: 24 * 60 * 60 * 1000
   }
 
   useEffect(() => {
@@ -45,9 +79,10 @@ export const AuthGuard = (props) => {
 
     if (auth.currentUser != null) {
       const timerId = startTimerAndPerformAction(startTime, Delay.uneHeure, () => {
-        console.clear();
-        authHook.signOut();
-        console.log('Vous avez été déconnecté');
+        afficherAlerte();
+        setTimeout(() => {
+          authHook.signOut();
+        }, 4000);
       });
 
       // Nettoyage du timer lorsque le composant est démonté
