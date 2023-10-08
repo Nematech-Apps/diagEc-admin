@@ -146,15 +146,15 @@ export const DisplayStatsPdf = ({ handleClose, isOpen }) => {
     }
 
     function getLevel(nombre) {
-        if(nombre < 20) {
+        if (nombre < 20) {
             return "Débutant(e)";
-        } else if(nombre < 50) {
+        } else if (nombre < 50) {
             return "Intermédiaire";
-        } else if(nombre < 70) {
+        } else if (nombre < 70) {
             return "Confirmé(e)";
-        } else if(nombre < 99) {
+        } else if (nombre < 99) {
             return "Avancé(e)";
-        } else if(nombre == 100) {
+        } else if (nombre == 100) {
             return "Expert(e)";
         }
     }
@@ -230,62 +230,59 @@ export const DisplayStatsPdf = ({ handleClose, isOpen }) => {
                                 {
                                     Object.keys(retrievedData2).map((secteur, secteurIndex) => {
                                         return (
-                                            <div key={secteurIndex} style={{ borderStyle: 'solid', borderWidth: 1, borderColor: 'black' }}>
+                                            <div key={secteurIndex} style={{ borderStyle: 'solid', borderWidth: 1, borderColor: 'black', marginBottom: 200 }}>
                                                 <Typography fontSize={15} variant='h4' sx={{ margin: 2 }}>{secteur}</Typography>
                                                 {
                                                     retrievedData2[secteur].length !== 0 ?
                                                         (
-                                                            <TableContainer component={Paper}>
-                                                                <Table stickyHeader sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                                                                    <TableHead >
-                                                                        <TableRow>
-                                                                            <TableCell>Raison sociale</TableCell>
-                                                                            <TableCell align="right">Email</TableCell>
-                                                                            <TableCell align="right">Nombre de salariés</TableCell>
-                                                                            <TableCell align="right">Poste</TableCell>
-                                                                            <TableCell align="right">Adresse</TableCell>
-                                                                            <TableCell align="right">Score EC</TableCell>
-                                                                            <TableCell align="right">Progression</TableCell>
-                                                                        </TableRow>
-                                                                    </TableHead>
-                                                                    <TableBody>
+                                                            <div>
+                                                                <table style={{ minWidth: 650, borderCollapse: 'collapse' }} className="custom-table">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th style={{ border: '1px solid black' }}>Raison sociale</th>
+                                                                            <th style={{ border: '1px solid black' }}>Email</th>
+                                                                            <th style={{ border: '1px solid black' }}>Nombre de salariés</th>
+                                                                            <th style={{ border: '1px solid black' }}>Poste</th>
+                                                                            <th style={{ border: '1px solid black' }}>Adresse</th>
+                                                                            <th style={{ border: '1px solid black' }}>Score EC</th>
+                                                                            <th style={{ border: '1px solid black' }}>Progression</th>
+                                                                            <th style={{ border: '1px solid black' }}>Niveau</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
                                                                         {retrievedData2[secteur].map((company, companyIndex) => (
-                                                                            <TableRow
-                                                                                key={companyIndex}
-                                                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                                            >
-                                                                                <TableCell component="th" scope="row">
-                                                                                    {company.raisonSociale}
-                                                                                </TableCell>
-                                                                                <TableCell align="right">{company.email}</TableCell>
-                                                                                <TableCell align="right">{company.nbreSalaries}</TableCell>
-                                                                                <TableCell align="right">{company.poste}</TableCell>
-                                                                                <TableCell align="right">{company.adresse}</TableCell>
-                                                                                <TableCell align="right">{company.score != null ? (isNaN(arrondirA2Decimales(company.score)) ? `0%` : `${arrondirA2Decimales(company.score)}%`) : `0%`}</TableCell>
-                                                                                <TableCell align="right">{getLevel(company.score != null ? (isNaN(arrondirA2Decimales(company.score)) ? 0 : arrondirA2Decimales(company.score)) : 0)}</TableCell>
-                                                                            </TableRow>
+                                                                            <tr key={companyIndex}>
+                                                                                <td style={{ border: '1px solid black' }}>{company.raisonSociale}</td>
+                                                                                <td style={{ border: '1px solid black' }} align="right">{company.email}</td>
+                                                                                <td style={{ border: '1px solid black' }} align="right">{company.nbreSalaries}</td>
+                                                                                <td style={{ border: '1px solid black' }} align="right">{company.poste}</td>
+                                                                                <td style={{ border: '1px solid black' }} align="right">{company.adresse}</td>
+                                                                                <td style={{ border: '1px solid black' }} align="right">{company.score != null ? (isNaN(arrondirA2Decimales(company.score)) ? `0%` : `${arrondirA2Decimales(company.score)}%`) : `0%`}</td>
+                                                                                <td style={{ border: '1px solid black' }} align="right">{getLevel(company.score != null ? (isNaN(arrondirA2Decimales(company.score)) ? 0 : arrondirA2Decimales(company.score)) : 0)}</td>
+                                                                                <td style={{ border: '1px solid black' }} align="right">{company.niveauAppartenance.libelleFr}</td>
+                                                                            </tr>
                                                                         ))}
-                                                                    </TableBody>
-                                                                </Table>
-                                                            </TableContainer>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
                                                         )
                                                         : (
-                                                            <Box
-                                                                sx={{
-                                                                    display: 'flex',
-                                                                    flexDirection: 'row',
-                                                                    justifyContent: 'center',
-                                                                    padding: 2,
-                                                                }}
-                                                            >
+                                                            <div style={{
+                                                                display: 'flex',
+                                                                flexDirection: 'row',
+                                                                justifyContent: 'center',
+                                                                padding: 2,
+                                                            }}>
                                                                 <Typography fontSize={12} variant='h2'>Aucune donnée pour le moment</Typography>
-                                                            </Box>
+                                                            </div>
                                                         )
                                                 }
                                             </div>
                                         );
                                     })
                                 }
+
+
 
 
                                 {
@@ -302,7 +299,7 @@ export const DisplayStatsPdf = ({ handleClose, isOpen }) => {
 
 
 
-                                {
+                                {/* {
                                     Object.keys(retrievedData1).map((niveau, niveauIndex) => {
                                         return (
                                             <div key={niveauIndex} style={{ borderStyle: 'solid', borderWidth: 1, borderColor: 'black' }}>
@@ -369,10 +366,10 @@ export const DisplayStatsPdf = ({ handleClose, isOpen }) => {
                                             <Skeleton variant="rectangular" width={210} height={118} />
                                         </Box>
                                     )
-                                }
+                                } */}
 
 
-                                <div style={{marginTop : 100}}>
+                                <div style={{ marginTop: 100 }}>
                                     <Typography fontSize={18} variant='h4' sx={{ marginY: 2, marginLeft: 2 }} color={'cornflowerblue'}>Graphiques</Typography>
 
                                     <Stack direction={'row'} spacing={3}>

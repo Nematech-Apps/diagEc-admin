@@ -3,7 +3,7 @@ import { Button, SvgIcon } from '@mui/material';
 import ArrowDownTrayIcon from '@heroicons/react/24/solid/ArrowDownTrayIcon';
 
 
-import * as FileSaver from 'file-saver';
+import FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 
 
@@ -15,8 +15,8 @@ import { OnSnapshot, Query } from 'src/firebase/firebaseConfig';
 export const ExportEXCEL = (props) => {
 
     const Case = {
-        SECTEUR: 'secteur',
-        NIVEAU: 'niveau',
+        SECTEUR: 'Secteur',
+        NIVEAU: 'Niveau',
     };
 
 
@@ -37,15 +37,16 @@ export const ExportEXCEL = (props) => {
 
     const fileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
     const fileExtension = '.xlsx';
-    const fileName = `DiagEC_stats_company_by_`;
+    const fileName = `DiagEC_stats_company`;
 
     const processExport = async (excelData , cas) => {
-        const ws = XLSX.utils.json_to_sheet(excelData);;
-        XLSX.utils.sheet_add_aoa(ws, [["Raison sociale", "Email", "Secteur", "Nombre de salariés","Poste","Adresse","Score EC","Progression"]], { origin: "A1",  });
+        const ws = XLSX.utils.json_to_sheet(excelData);
+        XLSX.utils.sheet_add_aoa(ws, [["Raison sociale", "Email", cas, "Nombre de salariés","Poste","Adresse","Score EC","Progression","Niveau"]], { origin: "A1" });
         const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+        // XLSX.utils.book_append_sheet(wb,ws,"autres");
         const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
         const data = new Blob([excelBuffer], { type: fileType });
-        FileSaver.saveAs(data, `${fileName}${cas}_${getCurrentDateTime()}${fileExtension}`);
+        FileSaver.saveAs(data, `${fileName}_${getCurrentDateTime()}${fileExtension}`);
     }
 
     function arrondirA2Decimales(nombre) {
@@ -80,6 +81,7 @@ export const ExportEXCEL = (props) => {
             try {
                 const arr = []
                 const groupedData = await getCompanyListByNiveau();
+                console.clear();
                 console.log(`groupedDataNiveau : ${JSON.stringify(groupedData)}`)
                 Object.keys(groupedData).map((objK) => {
                     groupedData[objK].map((elt) => {
@@ -108,6 +110,7 @@ export const ExportEXCEL = (props) => {
             try {
                 const arr = []
                 const groupedData = await getCompanyListBySecteur();
+                console.clear();
                 console.log(`groupedDataSecteur : ${JSON.stringify(groupedData)}`)
                 Object.keys(groupedData).map((objK) => {
                     groupedData[objK].map((elt) => {
@@ -119,7 +122,8 @@ export const ExportEXCEL = (props) => {
                             poste : elt.poste,
                             adresse : elt.adresse,
                             score : elt.score != null ? (isNaN(arrondirA2Decimales(elt.score)) ? `0%` : `${arrondirA2Decimales(elt.score)}%`) : `0%`,
-                            progression : getLevel(elt.score != null ? (isNaN(arrondirA2Decimales(elt.score)) ? 0 : arrondirA2Decimales(elt.score)) : 0)
+                            progression : getLevel(elt.score != null ? (isNaN(arrondirA2Decimales(elt.score)) ? 0 : arrondirA2Decimales(elt.score)) : 0),
+                            niveau : elt.niveauAppartenance.libelleFr
                         }
                         arr.push(obj)
                     })
@@ -139,7 +143,7 @@ export const ExportEXCEL = (props) => {
     const execProcessExport = () => {
         if(isLoading1 == false && isLoading2 == false) {
             processExport(retrievedData2, Case.SECTEUR);
-            processExport(retrievedData1, Case.NIVEAU);
+            // processExport(retrievedData1, Case.NIVEAU);
         }
     }
 

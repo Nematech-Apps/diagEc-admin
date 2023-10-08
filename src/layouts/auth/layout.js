@@ -19,10 +19,12 @@ export const Layout = (props) => {
         flex: '1 1 auto'
       }}
     >
+      
       <Grid
         container
         sx={{ flex: '1 1 auto' }}
       >
+        
         <Grid
           xs={12}
           lg={6}
@@ -38,12 +40,12 @@ export const Layout = (props) => {
             sx={{
               left: 0,
               p: 3,
-              position: 'fixed',
+              position: 'absolute',
               top: 0,
               width: '100%'
             }}
           >
-            <Paper elevation={16} sx={{width: '7%', borderRadius: 2}} variant='elevation' >
+             <Paper elevation={16} sx={{width: '20%', height: '100%', borderRadius: 2, p: 2}} variant='elevation' >
               <Box
                 component={NextLink}
                 href="/"
@@ -56,7 +58,9 @@ export const Layout = (props) => {
                 <Logo />
               </Box>
             </Paper>
+          
           </Box>
+         
           {children}
         </Grid>
         <Grid
