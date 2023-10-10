@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Button, SvgIcon } from '@mui/material';
+import { Button, SvgIcon, Modal, Box, CircularProgress, Typography } from '@mui/material';
 import ArrowDownTrayIcon from '@heroicons/react/24/solid/ArrowDownTrayIcon';
 
 
@@ -39,30 +39,96 @@ export const ExportEXCEL = (props) => {
     const fileExtension = '.xlsx';
     const fileName = `DiagEC_stats_company`;
 
-    const processExport = async (excelData , cas) => {
-        const ws = XLSX.utils.json_to_sheet(excelData);
-        XLSX.utils.sheet_add_aoa(ws, [["Raison sociale", "Email", cas, "Nombre de salariés","Poste","Adresse","Score EC","Progression","Niveau"]], { origin: "A1" });
+    // const processExport = async (excelData , cas) => {
+    //     const ws = XLSX.utils.json_to_sheet(excelData);
+    //     XLSX.utils.sheet_add_aoa(ws, [["Raison sociale", "Email", cas, "Nombre de salariés","Poste","Adresse","Score EC","Progression","Niveau"]], { origin: "A1" });
+    //     const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+    //     // XLSX.utils.book_append_sheet(wb,ws,"autres");
+    //     const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    //     const data = new Blob([excelBuffer], { type: fileType });
+    //     FileSaver.saveAs(data, `${fileName}_${getCurrentDateTime()}${fileExtension}`);
+    // }
+
+    const [isExportStart, setIsExportStart] = useState(false);
+
+    const processExport = async (excelData) => {
+        setIsExportStart(true);
+
+        const ws = XLSX.utils.aoa_to_sheet([[]]); // Créer une feuille de calcul vide
+
+        // Extraire tous les libellés de Pilier uniques
+        const uniquePilierLabels = Array.from(
+            new Set(excelData.flatMap((item) => item.pilierScores?.map((pilierScore) => pilierScore.pilier.libelleFr)))
+        );
+
+        // Ajouter l'en-tête à la feuille de calcul
+        const headers = ["Raison sociale", "Email", "Secteur", "Nombre de salariés", "Poste", "Adresse", "Score EC", "Progression", "Niveau", ...uniquePilierLabels];
+        XLSX.utils.sheet_add_aoa(ws, [headers], { origin: "A1" });
+
+        // Boucle pour insérer les données dans la feuille de calcul
+        excelData.forEach((data, rowIndex) => {
+            // Initialiser la ligne avec des valeurs vides
+            const rowData = Array(headers.length).fill("");
+
+            const headers2 = ["raisonSociale", "email", "secteur", "nbreSalaries", "poste", "adresse", "score", "progression", "niveau", ...uniquePilierLabels];
+
+            // Remplir les valeurs de base (Raison sociale, Email, etc.)
+            headers2.forEach((header, colIndex) => {
+                switch (header) {
+                    case "raisonSociale":
+                    case "email":
+                    case "nbreSalaries":
+                    case "poste":
+                    case "adresse":
+                    case "score":
+                    case "progression":
+                    case "niveau":
+                    case "secteur":
+                        rowData[colIndex] = data[header] || ""; // Assure-toi que la valeur existe ou est une chaîne vide
+                        break;
+                    default:
+                        break;
+                }
+            });
+
+            // Remplir les scores de Pilier
+            data.pilierScores?.forEach((pilierScore) => {
+                const pilierIndex = headers.indexOf(pilierScore.pilier.libelleFr);
+                if (pilierIndex !== -1) {
+                    // rowData[pilierIndex] = pilierScore.score;
+                    rowData[pilierIndex] = pilierScore.score != null ? (isNaN(arrondirA2Decimales(pilierScore.score)) ? `0%` : `${arrondirA2Decimales(pilierScore.score)}%`) : `0%`;
+                }
+            });
+
+            // Insérer la ligne de données dans la feuille de calcul
+            XLSX.utils.sheet_add_aoa(ws, [rowData], { origin: { r: rowIndex + 2, c: 0 } });
+        });
+
         const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
-        // XLSX.utils.book_append_sheet(wb,ws,"autres");
+
         const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
         const data = new Blob([excelBuffer], { type: fileType });
-        FileSaver.saveAs(data, `${fileName}_${getCurrentDateTime()}${fileExtension}`);
-    }
+        setTimeout(() => {
+            setIsExportStart(false);
+            FileSaver.saveAs(data, `${fileName}_${getCurrentDateTime()}${fileExtension}`);
+        }, 2000);
+    };
+
 
     function arrondirA2Decimales(nombre) {
         return Math.round(nombre * 100) / 100;
     }
 
     function getLevel(nombre) {
-        if(nombre < 20) {
+        if (nombre < 20) {
             return "Débutant(e)";
-        } else if(nombre < 50) {
+        } else if (nombre < 50) {
             return "Intermédiaire";
-        } else if(nombre < 70) {
+        } else if (nombre < 70) {
             return "Confirmé(e)";
-        } else if(nombre < 99) {
+        } else if (nombre < 99) {
             return "Avancé(e)";
-        } else if(nombre == 100) {
+        } else if (nombre == 100) {
             return "Expert(e)";
         }
     }
@@ -86,14 +152,15 @@ export const ExportEXCEL = (props) => {
                 Object.keys(groupedData).map((objK) => {
                     groupedData[objK].map((elt) => {
                         const obj = {
-                            raisonSociale : elt.raisonSociale,
-                            email : elt.email,
-                            niveau : elt.niveauAppartenance.libelleFr,
-                            nbreSalaries : elt.nbreSalaries,
-                            poste : elt.poste,
-                            adresse : elt.adresse,
-                            score : elt.score != null ? (isNaN(arrondirA2Decimales(elt.score)) ? `0%` : `${arrondirA2Decimales(elt.score)}%`) : `0%`,
-                            progression : getLevel(elt.score != null ? (isNaN(arrondirA2Decimales(elt.score)) ? 0 : arrondirA2Decimales(elt.score)) : 0)
+                            raisonSociale: elt.raisonSociale,
+                            email: elt.email,
+                            niveau: elt.niveauAppartenance.libelleFr,
+                            nbreSalaries: elt.nbreSalaries,
+                            poste: elt.poste,
+                            adresse: elt.adresse,
+                            score: elt.score != null ? (isNaN(arrondirA2Decimales(elt.score)) ? `0%` : `${arrondirA2Decimales(elt.score)}%`) : `0%`,
+                            progression: getLevel(elt.score != null ? (isNaN(arrondirA2Decimales(elt.score)) ? 0 : arrondirA2Decimales(elt.score)) : 0),
+                            pilierScores: elt.pilierScores
                         }
                         arr.push(obj)
                     })
@@ -115,15 +182,16 @@ export const ExportEXCEL = (props) => {
                 Object.keys(groupedData).map((objK) => {
                     groupedData[objK].map((elt) => {
                         const obj = {
-                            raisonSociale : elt.raisonSociale,
-                            email : elt.email,
-                            secteur : elt.secteurAppartenance.libelleFr,
-                            nbreSalaries : elt.nbreSalaries,
-                            poste : elt.poste,
-                            adresse : elt.adresse,
-                            score : elt.score != null ? (isNaN(arrondirA2Decimales(elt.score)) ? `0%` : `${arrondirA2Decimales(elt.score)}%`) : `0%`,
-                            progression : getLevel(elt.score != null ? (isNaN(arrondirA2Decimales(elt.score)) ? 0 : arrondirA2Decimales(elt.score)) : 0),
-                            niveau : elt.niveauAppartenance.libelleFr
+                            raisonSociale: elt.raisonSociale,
+                            email: elt.email,
+                            secteur: elt.secteurAppartenance.libelleFr,
+                            nbreSalaries: elt.nbreSalaries,
+                            poste: elt.poste,
+                            adresse: elt.adresse,
+                            score: elt.score != null ? (isNaN(arrondirA2Decimales(elt.score)) ? `0%` : `${arrondirA2Decimales(elt.score)}%`) : `0%`,
+                            progression: getLevel(elt.score != null ? (isNaN(arrondirA2Decimales(elt.score)) ? 0 : arrondirA2Decimales(elt.score)) : 0),
+                            niveau: elt.niveauAppartenance.libelleFr,
+                            pilierScores: elt.pilierScores
                         }
                         arr.push(obj)
                     })
@@ -140,9 +208,12 @@ export const ExportEXCEL = (props) => {
         fetchData2();
     }, []);
 
+
+
+
     const execProcessExport = () => {
-        if(isLoading1 == false && isLoading2 == false) {
-            processExport(retrievedData2, Case.SECTEUR);
+        if (isLoading1 == false && isLoading2 == false) {
+            processExport(retrievedData2);
             // processExport(retrievedData1, Case.NIVEAU);
         }
     }
@@ -151,13 +222,20 @@ export const ExportEXCEL = (props) => {
     return (
         <Button variant="contained" color='warning'
             endIcon={
-                <SvgIcon>
-                    <ArrowDownTrayIcon />
-                </SvgIcon>
+                !isExportStart && (
+                    <SvgIcon>
+                        <ArrowDownTrayIcon />
+                    </SvgIcon>
+                )
             }
             onClick={() => execProcessExport()}
+            disabled={isExportStart}
         >
-            Exporter les données statistiques en EXCEL
+
+            {isExportStart ?
+                (<><CircularProgress size={24} color="warning" sx={{mr: 2}}/> <Typography>Exportation en cours...</Typography></>) :
+                'Exporter les données statistiques en EXCEL'
+            }
         </Button>
     );
 };

@@ -67,19 +67,19 @@ export const SideNav = (props) => {
               >
                 Diag'EC 
               </Typography>
-              <Typography
+              {/* <Typography
                 color="neutral.400"
                 variant="body2"
               >
                 Administration
-              </Typography>
+              </Typography> */}
             </div>
-            {/* <SvgIcon
+            <SvgIcon
               fontSize="small"
               sx={{ color: 'neutral.500' }}
             >
               <ChevronUpDownIcon />
-            </SvgIcon> */}
+            </SvgIcon>
           </Box>
         </Box>
         <Divider sx={{ borderColor: 'neutral.700' }} />

@@ -69,20 +69,20 @@ export const TopNav = (props) => {
               </IconButton>
             )}
 
-<LogoTopNav />
-            
+            <LogoTopNav />
+
           </Stack>
           <Stack
             alignItems="center"
             direction="row"
             spacing={2}
           >
-            
+
             <Tooltip title="DiagEc-Web">
               <IconButton href='https://diagec.ohana-entreprise.com/' target='_blank'>
-                  <SvgIcon fontSize="small">
-                    <GlobeAltIcon />
-                  </SvgIcon>
+                <SvgIcon fontSize="small">
+                  <GlobeAltIcon />
+                </SvgIcon>
               </IconButton>
             </Tooltip>
             <Avatar

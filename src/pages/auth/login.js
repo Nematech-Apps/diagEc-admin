@@ -14,7 +14,9 @@ import {
   Tab,
   Tabs,
   TextField,
-  Typography
+  Typography,
+  CircularProgress,
+  Paper
 } from '@mui/material';
 import { useAuth } from 'src/hooks/use-auth';
 import { Layout as AuthLayout } from 'src/layouts/auth/layout';
@@ -26,6 +28,7 @@ const Page = () => {
   const auth = useAuth();
   const { isAuthenticated } = useAuthContext();
   const [method, setMethod] = useState('email');
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     console.log(isAuthenticated);
@@ -52,13 +55,19 @@ const Page = () => {
         .required('Mot de passe est requis')
     }),
     onSubmit: async (values, helpers) => {
+      setLoading(true);
       try {
         await auth.signIn(values.email, values.password);
         console.log(isAuthenticated)
         if (isAuthenticated) {
+          setLoading(false);
           router.push('/');
         }
+        setTimeout(() => {
+          setLoading(false);
+        }, 2000);
       } catch (err) {
+        setLoading(false);
         helpers.setStatus({ success: false });
         helpers.setErrors({ submit: err.message });
         helpers.setSubmitting(false);
@@ -184,15 +193,38 @@ const Page = () => {
                   {formik.errors.submit}
                 </Typography>
               )}
+              {/* {
+                isLoading ?
+                  (
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mt: 4 }}>
+                      <CircularProgress />
+                    </Box>
+                  ) :
+                  (
+                    <Button
+                      fullWidth
+                      size="large"
+                      sx={{ mt: 3 }}
+                      type="submit"
+                      variant="contained"
+                    >
+                      Connexion
+                    </Button>
+                  )
+              } */}
+
               <Button
                 fullWidth
                 size="large"
                 sx={{ mt: 3 }}
                 type="submit"
                 variant="contained"
+                disabled={isLoading} 
               >
-                Connexion
+                {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Connexion'}
               </Button>
+
+
               {/* <Button
                   fullWidth
                   size="large"
