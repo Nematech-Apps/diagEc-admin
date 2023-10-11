@@ -49,6 +49,8 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 800,
+    maxHeight: 500,
+    overflow: 'auto',
     bgcolor: 'background.paper',
     border: '1px solid #000',
     boxShadow: 24,
@@ -84,6 +86,12 @@ export const EditQuestion = ({ handleClose, isOpen, data }) => {
     const [categLibelle, setCategLibelle] = useState([]);
 
     const [objectListCateg, setObjectListCateg] = useState([]);
+
+    const [defiLibelle, setDefiLibelle] = useState([]);
+
+    const [objectListDefi, setObjectListDefi] = useState([]);
+
+
 
     const handleChange = (event) => {
         setAnswerLibelle(
@@ -132,6 +140,34 @@ export const EditQuestion = ({ handleClose, isOpen, data }) => {
             setObjectListCateg(arr);
         }
     }, [categLibelle])
+
+
+    const handleChangeDefi = (event) => {
+        setDefiLibelle(
+            // On autofill we get a stringified value.
+            typeof event.target.value === 'string' ? value.split(',') : event.target.value,
+        );
+
+    };
+
+
+    useEffect(() => {
+        const arr = [];
+        if (defiLibelle.length != 0 && defis.length != 0) {
+            defiLibelle.map((item) => {
+                defis.map((elt) => {
+                    if (elt.libelleFr == item) {
+                        const obj = elt;
+                        arr.push(obj);
+                    }
+                })
+            })
+            setObjectListDefi(arr);
+        }
+    }, [defiLibelle])
+
+
+
 
     useEffect(() => {
         const unsubscribe1 = OnSnapshot(
@@ -207,7 +243,7 @@ export const EditQuestion = ({ handleClose, isOpen, data }) => {
             poids: data.poids,
             // categorie: '',
             pilier: '',
-            defi: '',
+            // defi: '',
             submit: null
         },
         validationSchema: Yup.object({
@@ -224,13 +260,13 @@ export const EditQuestion = ({ handleClose, isOpen, data }) => {
             pilier: Yup
                 .string()
                 .required("Le pilier est requis"),
-            defi: Yup
-                .string()
-                .required("Le defis est requis"),
+            // defi: Yup
+            //     .string()
+            //     .required("Le defis est requis"),
 
         }),
         onSubmit: async (values, helpers) => {
-            if (answerLibelle.length != 0 && categLibelle.length != 0) {
+            if (answerLibelle.length != 0 && categLibelle.length != 0 && defiLibelle.length != 0) {
                 const datas = {
                     libelleFr: values.libelleFr,
                     answers: objectList,
@@ -238,7 +274,8 @@ export const EditQuestion = ({ handleClose, isOpen, data }) => {
                     //categorie: values.categorie,
                     poids: values.poids,
                     pilier: values.pilier,
-                    defi: values.defi
+                    // defi: values.defi
+                    defis: objectListDefi
                 }
 
                 updateQuestion(datas, data.id)
@@ -288,77 +325,112 @@ export const EditQuestion = ({ handleClose, isOpen, data }) => {
                                     spacing={3}
                                     sx={{ maxWidth: 900 }}
                                 >
-                                    {/* <ImagePicker /> */}
 
 
-                                    <Stack
-                                        direction={'row'}
-                                        spacing={3}
-                                        sx={{ maxWidth: 1500 }}
-                                    >
-                                        <FormControl variant="filled"
-                                            sx={{ width: 500 }}>
-                                            <InputLabel id="pilier">Pilier</InputLabel>
-                                            <Select
-                                                labelId="pilier"
-                                                id="pilier"
-                                                name="pilier"
-                                                error={!!(formik.touched.pilier && formik.errors.pilier)}
-                                                value={formik.values.pilier}
-                                                onBlur={formik.handleBlur}
-                                                onChange={formik.handleChange}
-                                                label="Pilier"
-                                                fullWidth
-                                            >
-                                                {/* <MenuItem value="">
-                                                    <em>Aucune sélection</em>
-                                                </MenuItem> */}
-                                                {piliers.map((pilier, index) => {
-                                                    console.log(`${data.pilier.id} == ${pilier.id}`)
-                                                    return (<MenuItem value={JSON.stringify(pilier)}
-                                                        key={index} selected={data.pilier.id === pilier.id}>{pilier.libelleFr}</MenuItem>)
-                                                })}
+                                    <FormControl variant="filled"
+                                        fullWidth>
+                                        <InputLabel id="pilier">Pilier</InputLabel>
+                                        <Select
+                                            labelId="pilier"
+                                            id="pilier"
+                                            name="pilier"
+                                            error={!!(formik.touched.pilier && formik.errors.pilier)}
+                                            value={formik.values.pilier}
+                                            onBlur={formik.handleBlur}
+                                            onChange={formik.handleChange}
+                                            label="Pilier"
+                                            fullWidth
+                                        >
+                                            <MenuItem value="">
+                                                <em>Aucune sélection</em>
+                                            </MenuItem>
+                                            {piliers.map((pilier, index) => {
+                                                return (<MenuItem value={JSON.stringify(pilier)}
+                                                    key={index}>{pilier.libelleFr}</MenuItem>)
+                                            })}
 
-                                            </Select>
-                                            {formik.touched.pilier && formik.errors.pilier && (
-                                                <Typography color="error"
-                                                    variant="caption">
-                                                    {formik.errors.pilier}
-                                                </Typography>
-                                            )}
-                                        </FormControl>
+                                        </Select>
+                                        {formik.touched.pilier && formik.errors.pilier && (
+                                            <Typography color="error"
+                                                variant="caption">
+                                                {formik.errors.pilier}
+                                            </Typography>
+                                        )}
+                                    </FormControl>
 
-                                        <FormControl variant="filled"
-                                            sx={{ width: 500 }}>
-                                            <InputLabel id="defi">Défis</InputLabel>
-                                            <Select
-                                                labelId="defi"
-                                                id="defi"
-                                                name="defi"
-                                                error={!!(formik.touched.defi && formik.errors.defi)}
-                                                value={formik.values.defi}
-                                                onBlur={formik.handleBlur}
-                                                onChange={formik.handleChange}
-                                                label="Défis"
-                                                fullWidth
-                                            >
-                                                <MenuItem value="">
-                                                    <em>Aucune sélection</em>
-                                                </MenuItem>
-                                                {defis.map((defi, index) => {
-                                                    return (<MenuItem value={JSON.stringify(defi)}
-                                                        key={index}>{defi.libelleFr}</MenuItem>)
-                                                })}
+                                    {/* <FormControl variant="filled"
+                                sx={{ width: 500 }}>
+                                <InputLabel id="defi">Défis</InputLabel>
+                                <Select
+                                    labelId="defi"
+                                    id="defi"
+                                    name="defi"
+                                    error={!!(formik.touched.defi && formik.errors.defi)}
+                                    value={formik.values.defi}
+                                    onBlur={formik.handleBlur}
+                                    onChange={formik.handleChange}
+                                    label="Défis"
+                                    fullWidth
+                                >
+                                    <MenuItem value="">
+                                        <em>Aucune sélection</em>
+                                    </MenuItem>
+                                    {defis.map((defi, index) => {
+                                        return (<MenuItem value={JSON.stringify(defi)}
+                                            key={index}>{defi.libelleFr}</MenuItem>)
+                                    })}
 
-                                            </Select>
-                                            {formik.touched.defi && formik.errors.defi && (
-                                                <Typography color="error"
-                                                    variant="caption">
-                                                    {formik.errors.defi}
-                                                </Typography>
-                                            )}
-                                        </FormControl>
-                                    </Stack>
+                                </Select>
+                                {formik.touched.defi && formik.errors.defi && (
+                                    <Typography color="error"
+                                        variant="caption">
+                                        {formik.errors.defi}
+                                    </Typography>
+                                )}
+                            </FormControl> */}
+
+
+
+                                    <FormControl variant="filled" fullWidth>
+                                        <InputLabel id="demo-multiple-checkbox-label">Défis</InputLabel>
+                                        <Select
+                                            labelId="demo-multiple-checkbox-label"
+                                            id="demo-multiple-checkbox"
+                                            multiple
+                                            error={defiLibelle.length == 0}
+                                            value={defiLibelle}
+                                            onChange={handleChangeDefi}
+                                            input={<OutlinedInput label="Défis" />}
+                                            renderValue={(selected) => selected.join(', ')}
+                                            MenuProps={MenuProps}
+                                        >
+                                            {formik.touched.pilier && formik.values.pilier != "" ?
+                                                defis.filter(item => item.pilier?.id == JSON.parse(formik.values.pilier).id).map((defi, index) => (
+                                                    <MenuItem key={index}
+                                                        value={defi.libelleFr}>
+                                                        <Checkbox checked={defiLibelle.indexOf(defi.libelleFr) > -1} />
+                                                        <ListItemText primary={defi.libelleFr} />
+                                                    </MenuItem>
+                                                )) :
+                                                defis.map((defi, index) => (
+                                                    <MenuItem key={index}
+                                                        value={defi.libelleFr}>
+                                                        <Checkbox checked={defiLibelle.indexOf(defi.libelleFr) > -1} />
+                                                        <ListItemText primary={defi.libelleFr} />
+                                                    </MenuItem>
+                                                ))
+                                            }
+                                        </Select>
+
+
+                                        {defiLibelle.length == 0 && (
+                                            <Typography color="error"
+                                                variant="caption">
+                                                Veuillez sélectionner un défi
+                                            </Typography>
+                                        )}
+                                    </FormControl>
+
 
                                     <Stack
                                         direction={'row'}
@@ -503,9 +575,9 @@ export const EditQuestion = ({ handleClose, isOpen, data }) => {
                                                     defaultValue={20}
                                                     getAriaValueText={valuetext}
                                                     valueLabelDisplay="auto"
-                                                    step={10}
+                                                    step={5}
                                                     marks
-                                                    min={10}
+                                                    min={0}
                                                     max={100}
                                                     error={!!(formik.touched.poids && formik.errors.poids)}
                                                     value={formik.values.poids}

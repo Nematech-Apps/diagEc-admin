@@ -74,6 +74,9 @@ export const DefisTableIt = (props) => {
     const [replaceFicheModalData, setReplaceFicheModalData] = useState(null);
 
 
+    
+
+
     const handleEditClick = (event, defis) => {
         setModalData(defis);
         setIsModalOpen(true);
@@ -173,8 +176,15 @@ export const DefisTableIt = (props) => {
                             />
                         </TableCell> */}
 
+
+                        
+
                         <TableCell>
                             Libellé
+                        </TableCell>
+
+                        <TableCell>
+                            Pilier
                         </TableCell>
 
                         <TableCell>
@@ -212,6 +222,8 @@ export const DefisTableIt = (props) => {
                                         />
                                     </TableCell> */}
 
+                                    
+
                                     <TableCell>
                                         <Stack
                                             alignItems="flex-start"
@@ -233,6 +245,22 @@ export const DefisTableIt = (props) => {
 
                                         </Stack>
                                     </TableCell>
+
+                                    <TableCell>
+                                        <Stack
+                                            alignItems="flex-start"
+                                            direction="column"
+                                            spacing={2}
+                                        >
+
+                                            <Typography variant="subtitle2">
+                                                {defis.pilier?.libelleIt}
+                                            </Typography>
+
+
+                                        </Stack>
+                                    </TableCell>
+                                    
                                     <TableCell>
                                         <Stack
                                             alignItems="flex-start"

@@ -289,7 +289,8 @@ export const addQuestion = async (data) => {
         //categorie: JSON.parse(data.categorie),
         poids: data.poids,
         pilier: JSON.parse(data.pilier),
-        defi: JSON.parse(data.defi)
+        // defi: JSON.parse(data.defi)
+        defis: data.defis
     }
 
     return AddDoc(collectionRef, docData);
@@ -307,7 +308,8 @@ export const updateQuestion = async (data, docId) => {
         //categorie: JSON.parse(data.categorie),
         poids: data.poids,
         pilier: JSON.parse(data.pilier),
-        defi: JSON.parse(data.defi)
+        // defi: JSON.parse(data.defi)
+        defis: data.defis
     };
 
     return UpdateDoc(collectionRef, docData)
@@ -325,7 +327,8 @@ export const updateQuestionEn = async (data, docId) => {
         //categorie: JSON.parse(data.categorie),
         poids: data.poids,
         pilier: JSON.parse(data.pilier),
-        defi: JSON.parse(data.defi)
+        // defi: JSON.parse(data.defi)
+        defis: data.defis
     };
 
     return UpdateDoc(collectionRef, docData)
@@ -344,7 +347,8 @@ export const updateQuestionIt = async (data, docId) => {
         //categorie: JSON.parse(data.categorie),
         poids: data.poids,
         pilier: JSON.parse(data.pilier),
-        defi: JSON.parse(data.defi)
+        // defi: JSON.parse(data.defi)
+        defis: data.defis
     };
 
     return UpdateDoc(collectionRef, docData)
@@ -510,6 +514,7 @@ export const addDefis = async (data) => {
     const collectionRef = Collection(db, 'defis');
 
     const docData = {
+        pilier: JSON.parse(data.pilier),
         libelleFr: data.libelleFr,
         libelleEn: data.libelleEn,
         libelleIt: data.libelleIt
@@ -524,6 +529,7 @@ export const updateDefis = async (data, docId) => {
 
     const docData = {
         ...snapshot.data(),
+        pilier: JSON.parse(data.pilier),
         libelleFr: data.libelleFr
     };
 
@@ -537,6 +543,7 @@ export const updateDefisEn = async (data, docId) => {
 
     const docData = {
         ...snapshot.data(),
+        pilier: JSON.parse(data.pilier),
         libelleEn: data.libelleEn
     };
 
@@ -549,6 +556,7 @@ export const updateDefisIt = async (data, docId) => {
 
     const docData = {
         ...snapshot.data(),
+        pilier: JSON.parse(data.pilier),
         libelleIt: data.libelleIt
     };
 
@@ -636,6 +644,13 @@ export const getDefisList = () => {
     const collectionRef = Collection(db, 'defis');
 
     return collectionRef;
+}
+
+export const getDefisListInPilier = async (pilier) => {
+    const collectionRef = Collection(db, 'defis');
+    const q = Query(collectionRef, Where('pilier.id', '==', pilier.id));
+    const querySnapshot = await GetDocs(q);
+    return querySnapshot;
 }
 
 //Companies

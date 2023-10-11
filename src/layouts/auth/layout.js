@@ -45,14 +45,17 @@ export const Layout = (props) => {
               width: '100%'
             }}
           >
-             <Paper elevation={16} sx={{width: '20%', height: '100%', borderRadius: 2, p: 2}} variant='elevation' >
+             <Paper elevation={16} sx={{width: '20%', height: '100%', borderRadius: 2}} variant='elevation' >
               <Box
                 component={NextLink}
                 href="/"
                 sx={{
-                  display: 'inline-flex',
-                  height: 32,
-                  width: 32,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  p: 4,
+                  height: 100,
+                  width: 100,
                 }}
               >
                 <Logo />
@@ -61,7 +64,9 @@ export const Layout = (props) => {
           
           </Box>
          
+          <div style={{marginTop: 100}}>
           {children}
+          </div>
         </Grid>
         <Grid
           xs={12}

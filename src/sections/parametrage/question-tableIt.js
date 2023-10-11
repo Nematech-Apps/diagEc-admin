@@ -33,6 +33,7 @@ import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
 import { SvgIcon } from '@mui/material';
 
 import { EditAnswer } from './edit-answer';
+import { QuestionsDefisModal } from './questions-defis-modal';
 import { EditQuestionIt } from './edit-questionIt';
 import { deleteQuestion } from 'src/firebase/firebaseServices';
 import ToastComponent from '../../components/toast';
@@ -66,6 +67,15 @@ export const QuestionTableIt = (props) => {
     const handleEditClick = (event, answer) => {
         setModalData(answer);
         setIsModalOpen(true);
+    };
+
+
+    const [isModal2Open, setIsModal2Open] = useState(false);
+    const [modal2Data, setModal2Data] = useState(null);
+
+    const handleShowDefisClick = (event, answer) => {
+        setModal2Data(answer);
+        setIsModal2Open(true);
     };
 
     const handleDeleteClick = (event, question) => {
@@ -135,7 +145,7 @@ export const QuestionTableIt = (props) => {
                         </TableCell>
 
                         <TableCell>
-                            Défi
+                            Défis
                         </TableCell>
 
                         <TableCell>
@@ -215,14 +225,11 @@ export const QuestionTableIt = (props) => {
                                                 {getInitials(customer.name)}
                                             </Avatar> */}
                                             <Typography variant="subtitle2">
-                                                {question.defi.libelleIt}
+                                                {question?.defi?.libelleIt}
                                             </Typography>
-                                            {/* <Typography variant="subtitle2">
-                                                {question.pilier.libelleEn}
-                                            </Typography>
-                                            <Typography variant="subtitle2">
-                                                {question.pilier.libelleIt}
-                                            </Typography> */}
+                                            
+                                            <Button variant="outlined"
+                                                onClick={(event) => handleShowDefisClick(event, question)}>voir défis</Button>
                                         </Stack>
                                     </TableCell>
                                     <TableCell>
@@ -274,6 +281,11 @@ export const QuestionTableIt = (props) => {
                                     {isModalOpen && modalData && <EditQuestionIt data={modalData}
                                         isOpen={isModalOpen}
                                         handleClose={() => setIsModalOpen(false)} />}
+                                    
+
+                                    {isModal2Open && modal2Data && <QuestionsDefisModal data={modal2Data}
+                                        isOpen={isModal2Open}
+                                        handleClose={() => setIsModal2Open(false)} />}
                                 </TableRow>
                             );
                         }) :

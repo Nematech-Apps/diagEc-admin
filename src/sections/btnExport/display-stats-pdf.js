@@ -188,7 +188,7 @@ export const DisplayStatsPdf = ({ handleClose, isOpen }) => {
                                 Exporter
                             </Button>
 
-                            <Button size="small" color="error" variant='contained'
+                            <Button size="small" color="inherit" variant='contained'
                                 onClick={handleClose}>
                                 <SvgIcon fontSize="small">
                                     <XCircleIcon />

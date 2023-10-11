@@ -33,13 +33,14 @@ import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
 import { SvgIcon } from '@mui/material';
 
 import { EditAnswer } from './edit-answer';
+import { QuestionsDefisModal } from './questions-defis-modal';
 import { EditQuestion } from './edit-question';
 import { deleteQuestion } from 'src/firebase/firebaseServices';
 import ToastComponent from '../../components/toast';
 
 import swal from 'sweetalert';
 
-import { confirmAlert } from 'react-confirm-alert'; 
+import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
 export const QuestionTable = (props) => {
@@ -63,9 +64,18 @@ export const QuestionTable = (props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalData, setModalData] = useState(null);
 
-    const handleEditClick = (event, answer) => {
-        setModalData(answer);
+    const handleEditClick = (event, question) => {
+        setModalData(question);
         setIsModalOpen(true);
+    };
+
+
+    const [isModal2Open, setIsModal2Open] = useState(false);
+    const [modal2Data, setModal2Data] = useState(null);
+
+    const handleShowDefisClick = (event, answer) => {
+        setModal2Data(answer);
+        setIsModal2Open(true);
     };
 
     const handleDeleteClick = (event, question) => {
@@ -125,7 +135,7 @@ export const QuestionTable = (props) => {
                                 }}
                             />
                         </TableCell> */}
-                        
+
                         <TableCell>
                             Libellé
                         </TableCell>
@@ -135,7 +145,7 @@ export const QuestionTable = (props) => {
                         </TableCell>
 
                         <TableCell>
-                            Défi
+                            Défis
                         </TableCell>
 
                         <TableCell>
@@ -172,7 +182,7 @@ export const QuestionTable = (props) => {
                                             }}
                                         />
                                     </TableCell> */}
-                                    
+
                                     <TableCell>
                                         <Stack
                                             alignItems="flex-start"
@@ -183,7 +193,7 @@ export const QuestionTable = (props) => {
                                                 {getInitials(customer.name)}
                                             </Avatar> */}
                                             <Typography variant="subtitle2">
-                                            {question.libelleFr}
+                                                {question.libelleFr}
                                             </Typography>
                                             {/* <Typography variant="subtitle2">
                                                 {question.libelleEn}
@@ -219,18 +229,13 @@ export const QuestionTable = (props) => {
                                             direction="column"
                                             spacing={2}
                                         >
-                                            {/* <Avatar src={customer.avatar}>
-                                                {getInitials(customer.name)}
-                                            </Avatar> */}
+
                                             <Typography variant="subtitle2">
-                                                {question.defi.libelleFr}
+                                                {question?.defi?.libelleFr}
                                             </Typography>
-                                            {/* <Typography variant="subtitle2">
-                                                {question.pilier.libelleEn}
-                                            </Typography>
-                                            <Typography variant="subtitle2">
-                                                {question.pilier.libelleIt}
-                                            </Typography> */}
+
+                                            <Button variant="outlined"
+                                                onClick={(event) => handleShowDefisClick(event, question)}>voir défis</Button>
                                         </Stack>
                                     </TableCell>
                                     <TableCell>
@@ -282,6 +287,10 @@ export const QuestionTable = (props) => {
                                     {isModalOpen && modalData && <EditQuestion data={modalData}
                                         isOpen={isModalOpen}
                                         handleClose={() => setIsModalOpen(false)} />}
+
+                                    {isModal2Open && modal2Data && <QuestionsDefisModal data={modal2Data}
+                                        isOpen={isModal2Open}
+                                        handleClose={() => setIsModal2Open(false)} />}
                                 </TableRow>
                             );
                         }) :

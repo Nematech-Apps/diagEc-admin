@@ -10,7 +10,11 @@ import {
     TextField,
     Typography,
     Input,
-    SvgIcon
+    SvgIcon,
+    FormControl,
+    Select,
+    InputLabel,
+    MenuItem
 } from '@mui/material';
 import DocumentIcon from '@heroicons/react/24/solid/DocumentIcon';
 
@@ -20,7 +24,7 @@ import FilePicker from 'src/components/file-picker';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 ;
-import { addDefis, uploadFicheReflexe, updateFicheReflexionCollection } from 'src/firebase/firebaseServices';
+import { addDefis, uploadFicheReflexe, updateFicheReflexionCollection, getPilierList } from 'src/firebase/firebaseServices';
 import { db, GetDoc, Doc, UpdateDoc } from 'src/firebase/firebaseConfig';
 import ToastComponent from '../../components/toast';
 
@@ -38,10 +42,14 @@ export const CreateDefis = () => {
     const [dataToken, setDataToken] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
+    const [piliers, setPiliers] = useState([]);
+
+
+    const [isOnCreate, setIsOnCreate] = useState(false);
 
 
     useEffect(() => {
-        const unsubscribe = OnSnapshot(
+        const unsubscribe1 = OnSnapshot(
             getDeviceTokensList(),
             (snapshot) => {
                 const fetchedData = snapshot.docs.map((doc) => ({
@@ -57,21 +65,40 @@ export const CreateDefis = () => {
             }
         );
 
+        const unsubscribe2 = OnSnapshot(
+            getPilierList(),
+            (snapshot) => {
+                const fetchedData = snapshot.docs.map((doc) => ({
+                    ...doc.data(),
+                    id: doc.id
+                }));
+                setPiliers(fetchedData);
+            },
+            (error) => {
+                console.log('Error fetching data:', error);
+            }
+        );
+
         return () => {
             // Clean up the listener when the component unmounts
-            unsubscribe();
+            unsubscribe1();
+            unsubscribe2();
         };
 
     }, []);
 
     const formik = useFormik({
         initialValues: {
+            pilier: '',
             libelleFr: '',
             libelleEn: '',
             libelleIt: '',
             submit: null
         },
         validationSchema: Yup.object({
+            pilier: Yup
+                .string()
+                .required("Le pilier est requis"),
             libelleFr: Yup
                 .string()
                 .max(255)
@@ -87,6 +114,7 @@ export const CreateDefis = () => {
         }),
         onSubmit: async (values, helpers) => {
             if (selectedFileFr != null && selectedFileEn != null && selectedFileIt != null) {
+                setIsOnCreate(true);
                 addDefis(values)
                     .then(async (doc) => {
                         const collectionRef = Doc(db, 'defis', doc.id);
@@ -244,6 +272,7 @@ export const CreateDefis = () => {
 
                                                 UpdateDoc(collectionRef, docData)
                                                     .then(() => {
+                                                        setIsOnCreate(false);
                                                         helpers.resetForm();
                                                         setSelectedFileIt(null);
                                                         return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
@@ -278,13 +307,17 @@ export const CreateDefis = () => {
                             })
 
 
+
+
                     })
                     .catch((err) => {
+                        setIsOnCreate(false);
                         helpers.setStatus({ success: false });
                         helpers.setErrors({ submit: err.message });
                         helpers.setSubmitting(false);
                         return ToastComponent({ message: err.message, type: 'error' });
                     })
+                
             }
 
         }
@@ -372,7 +405,7 @@ export const CreateDefis = () => {
             <Card>
                 <CardHeader
                     //subheader="catégorie"
-                    title="Ajouter Défis"
+                    title="Ajouter Défi"
                 />
                 <Divider />
                 <CardContent>
@@ -380,6 +413,38 @@ export const CreateDefis = () => {
                         spacing={3}
                         sx={{ maxWidth: 800 }}
                     >
+
+                        <FormControl variant="filled"
+                            sx={{ width: 800 }} fullWidth>
+                            <InputLabel id="pilier">Pilier</InputLabel>
+                            <Select
+                                labelId="pilier"
+                                id="pilier"
+                                name="pilier"
+                                error={!!(formik.touched.pilier && formik.errors.pilier)}
+                                value={formik.values.pilier}
+                                onBlur={formik.handleBlur}
+                                onChange={formik.handleChange}
+                                label="Pilier"
+                                fullWidth
+                            >
+                                <MenuItem value="">
+                                    <em>Aucune sélection</em>
+                                </MenuItem>
+                                {piliers.map((pilier, index) => {
+                                    return (<MenuItem value={JSON.stringify(pilier)}
+                                        key={index}>{pilier.libelleFr}</MenuItem>)
+                                })}
+
+                            </Select>
+                            {formik.touched.pilier && formik.errors.pilier && (
+                                <Typography color="error"
+                                    variant="caption">
+                                    {formik.errors.pilier}
+                                </Typography>
+                            )}
+                        </FormControl>
+
                         <TextField
                             error={!!(formik.touched.libelleFr && formik.errors.libelleFr)}
                             fullWidth
@@ -433,8 +498,8 @@ export const CreateDefis = () => {
                                         </SvgIcon>
                                     }
                                     component="span"
-                                    sx={{padding: 2}}
-                                    >
+                                    sx={{ padding: 2 }}
+                                >
                                     Choisir la fiche réflexe en français
                                 </Button>
                             </label>
@@ -466,8 +531,8 @@ export const CreateDefis = () => {
                                         </SvgIcon>
                                     }
                                     component="span"
-                                    sx={{padding: 2}}
-                                    >
+                                    sx={{ padding: 2 }}
+                                >
                                     Choisir la fiche réflexe en anglais
                                 </Button>
                             </label>
@@ -498,8 +563,8 @@ export const CreateDefis = () => {
                                         </SvgIcon>
                                     }
                                     component="span"
-                                    sx={{padding: 2}}
-                                    >
+                                    sx={{ padding: 2 }}
+                                >
                                     Choisir la fiche réflexe en italien
                                 </Button>
                             </label>
@@ -541,7 +606,7 @@ export const CreateDefis = () => {
                 <Divider />
                 <CardActions sx={{ justifyContent: 'flex-end' }}>
                     <Button variant="contained"
-                        type='submit'>
+                        type='submit' disabled={isOnCreate}>
                         Créer
                     </Button>
                 </CardActions>

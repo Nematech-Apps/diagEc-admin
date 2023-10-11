@@ -28,8 +28,9 @@ import DocumentIcon from '@heroicons/react/24/solid/DocumentIcon';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-import { addCategorie } from 'src/firebase/firebaseServices';
+import { getPilierList } from 'src/firebase/firebaseServices';
 import { db, GetDoc, Doc, UpdateDoc } from 'src/firebase/firebaseConfig';
+import { OnSnapshot } from 'src/firebase/firebaseConfig';
 import ToastComponent from '../../components/toast';
 
 import { updateDefis } from 'src/firebase/firebaseServices';
@@ -54,12 +55,41 @@ const style = {
 
 export const EditDefis = ({ handleClose, isOpen, data }) => {
 
+
+    const [piliers, setPiliers] = useState([]);
+
+    useEffect(() => {
+        const unsubscribe = OnSnapshot(
+            getPilierList(),
+            (snapshot) => {
+                const fetchedData = snapshot.docs.map((doc) => ({
+                    ...doc.data(),
+                    id: doc.id
+                }));
+                setPiliers(fetchedData);
+            },
+            (error) => {
+                console.log('Error fetching data:', error);
+            }
+        );
+
+        return () => {
+            // Clean up the listener when the component unmounts
+            unsubscribe();
+        };
+
+    }, []);
+
     const formik = useFormik({
         initialValues: {
+            pilier: '',
             libelleFr: data.libelleFr,
             submit: null
         },
         validationSchema: Yup.object({
+            pilier: Yup
+                .string()
+                .required("Le pilier est requis"),
             libelleFr: Yup
                 .string()
                 .max(255)
@@ -83,7 +113,7 @@ export const EditDefis = ({ handleClose, isOpen, data }) => {
     });
 
 
-    
+
 
     return (
         <div>
@@ -108,6 +138,38 @@ export const EditDefis = ({ handleClose, isOpen, data }) => {
                                     spacing={3}
                                     sx={{ maxWidth: 400 }}
                                 >
+
+                                    <FormControl variant="filled"
+                                        sx={{ width: 400 }} fullWidth>
+                                        <InputLabel id="pilier">Pilier</InputLabel>
+                                        <Select
+                                            labelId="pilier"
+                                            id="pilier"
+                                            name="pilier"
+                                            error={!!(formik.touched.pilier && formik.errors.pilier)}
+                                            value={formik.values.pilier}
+                                            onBlur={formik.handleBlur}
+                                            onChange={formik.handleChange}
+                                            label="Pilier"
+                                            fullWidth
+                                        >
+                                            <MenuItem value="">
+                                                <em>Aucune sélection</em>
+                                            </MenuItem>
+                                            {piliers.map((pilier, index) => {
+                                                return (<MenuItem value={JSON.stringify(pilier)}
+                                                    key={index}>{pilier.libelleFr}</MenuItem>)
+                                            })}
+
+                                        </Select>
+                                        {formik.touched.pilier && formik.errors.pilier && (
+                                            <Typography color="error"
+                                                variant="caption">
+                                                {formik.errors.pilier}
+                                            </Typography>
+                                        )}
+                                    </FormControl>
+
 
 
                                     <TextField

@@ -172,8 +172,14 @@ export const DefisTable = (props) => {
                             />
                         </TableCell> */}
 
+                        
+
                         <TableCell>
                             Libellé
+                        </TableCell>
+
+                        <TableCell>
+                            Pilier
                         </TableCell>
 
                         <TableCell>
@@ -211,6 +217,7 @@ export const DefisTable = (props) => {
                                         />
                                     </TableCell> */}
 
+                                    
                                     <TableCell>
                                         <Stack
                                             alignItems="flex-start"
@@ -232,6 +239,23 @@ export const DefisTable = (props) => {
 
                                         </Stack>
                                     </TableCell>
+
+                                    <TableCell>
+                                        <Stack
+                                            alignItems="flex-start"
+                                            direction="column"
+                                            spacing={2}
+                                        >
+
+                                            <Typography variant="subtitle2">
+                                                {defis.pilier?.libelleFr}
+                                            </Typography>
+
+
+                                        </Stack>
+                                    </TableCell>
+
+
                                     <TableCell>
                                         <Stack
                                             alignItems="flex-start"
@@ -242,8 +266,8 @@ export const DefisTable = (props) => {
                                                 defis.ficheReflexeFr &&
                                                 <Fab variant="extended" color="primary" size="medium"
                                                     onClick={(event) => handleShowFicheFr(event, defis)}>
-                                                    
-                                                    Fiche 
+
+                                                    Fiche
                                                     <SvgIcon sx={{ ml: 1 }}>
                                                         <EyeIcon />
                                                     </SvgIcon>
@@ -252,7 +276,7 @@ export const DefisTable = (props) => {
                                                 //     onClick={(event) => handleShowFicheFr(event, defis)}>Voir fiche en français</Button>
                                             }
 
-                                            
+
                                             {
                                                 defis.ficheReflexeFr &&
                                                 <Button variant="outlined"
@@ -291,11 +315,11 @@ export const DefisTable = (props) => {
                                     {isModalOpen && modalData && <EditDefis data={modalData}
                                         isOpen={isModalOpen}
                                         handleClose={() => setIsModalOpen(false)} />}
-                                    
+
                                     {isDisplayFileModalOpen && displayFileModalData && <DisplayFicheReflexe fileUrl={displayFileModalData}
                                         isOpen={isDisplayFileModalOpen}
                                         handleClose={() => setIsDisplayFileModalOpen(false)} />}
-                                    
+
                                     {isReplaceFicheModalOpen && replaceFicheModalData && <ReplaceFiche data={replaceFicheModalData}
                                         isOpen={isReplaceFicheModalOpen}
                                         handleClose={() => setIsReplaceFicheModalOpen(false)} />}

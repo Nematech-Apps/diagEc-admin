@@ -173,8 +173,14 @@ export const DefisTableEn = (props) => {
                             />
                         </TableCell> */}
 
+                        
+
                         <TableCell>
                             Libellé
+                        </TableCell>
+
+                        <TableCell>
+                            Pilier
                         </TableCell>
 
                         <TableCell>
@@ -212,6 +218,8 @@ export const DefisTableEn = (props) => {
                                         />
                                     </TableCell> */}
 
+                                   
+
                                     <TableCell>
                                         <Stack
                                             alignItems="flex-start"
@@ -233,6 +241,22 @@ export const DefisTableEn = (props) => {
 
                                         </Stack>
                                     </TableCell>
+
+                                    <TableCell>
+                                        <Stack
+                                            alignItems="flex-start"
+                                            direction="column"
+                                            spacing={2}
+                                        >
+
+                                            <Typography variant="subtitle2">
+                                                {defis.pilier?.libelleEn}
+                                            </Typography>
+
+
+                                        </Stack>
+                                    </TableCell>
+
                                     <TableCell>
                                         <Stack
                                             alignItems="flex-start"

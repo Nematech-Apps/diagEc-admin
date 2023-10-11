@@ -92,7 +92,7 @@ export const CompanyModalDetails = ({ handleClose, isOpen, data }) => {
                     <Fab
                         variant="extended"
                         size="small"
-                        color="error"
+                        color="default"
                         aria-label="info"
                         onClick={handleModalClose}
                     >
