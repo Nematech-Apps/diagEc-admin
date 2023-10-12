@@ -34,7 +34,7 @@ export const CreatePilier = () => {
     const [dataToken, setDataToken] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
-
+    const [isOnCreate, setIsOnCreate] = useState(false);
 
     useEffect(() => {
         const unsubscribe = OnSnapshot(
@@ -94,7 +94,7 @@ export const CreatePilier = () => {
                 .required("La definition en italien est requise"),
         }),
         onSubmit: async (values, helpers) => {
-
+            setIsOnCreate(true);
             addPilier(values)
                 .then(async (doc) => {
                     const collectionRef = Doc(db, 'piliers', doc.id);
@@ -128,9 +128,11 @@ export const CreatePilier = () => {
                                 })
 
                             }
+                            setIsOnCreate(false);
                             return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
                         })
                         .catch((err) => {
+                            setIsOnCreate(false);
                             helpers.setStatus({ success: false });
                             helpers.setErrors({ submit: err.message });
                             helpers.setSubmitting(false);
@@ -139,6 +141,7 @@ export const CreatePilier = () => {
 
                 })
                 .catch((err) => {
+                    setIsOnCreate(false);
                     helpers.setStatus({ success: false });
                     helpers.setErrors({ submit: err.message });
                     helpers.setSubmitting(false);
@@ -248,7 +251,7 @@ export const CreatePilier = () => {
                 <Divider />
                 <CardActions sx={{ justifyContent: 'flex-end' }}>
                     <Button variant="contained"
-                        type='submit'>
+                        type='submit' disabled={isOnCreate}>
                         Créer
                     </Button>
                 </CardActions>

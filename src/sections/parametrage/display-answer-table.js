@@ -13,7 +13,7 @@ import Box from '@mui/material/Box';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 
-
+import { AnswerSearchBar } from 'src/components/searchBar/answerSearchBar';
 
 
 export const DisplayAnswerTable = () => {
@@ -36,23 +36,34 @@ export const DisplayAnswerTable = () => {
                 setIsLoading(false);
             }
         );
-    
+
         return () => {
             // Clean up the listener when the component unmounts
             unsubscribe();
         };
     }, []);
 
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const handleSearch = (searchTerm) => {
+        setSearchTerm(searchTerm);
+    };
+
 
     const useAnswers = (page, rowsPerPage) => {
+        const filteredData = data.filter((answer) =>
+            (answer.libelleFr?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+            (answer.libelleEn?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+            (answer.libelleIt?.toLowerCase() || '').includes(searchTerm.toLowerCase())
+        );
         return useMemo(
             () => {
-                return applyPagination(data, page, rowsPerPage);
+                return applyPagination(filteredData, page, rowsPerPage);
             },
-            [data, page, rowsPerPage]
+            [filteredData, page, rowsPerPage]
         );
     };
-    
+
     const useAnswerIds = (answers) => {
         return useMemo(
             () => {
@@ -88,35 +99,38 @@ export const DisplayAnswerTable = () => {
             <Stack spacing={1}>
                 {/* For variant="text", adjust the height via font-size */}
                 <Skeleton variant="text"
-sx={{ fontSize: '1rem' }} />
+                    sx={{ fontSize: '1rem' }} />
                 {/* For other variants, adjust the size with `width` and `height` */}
                 <Skeleton variant="circular"
-width={40}
-height={40} />
+                    width={40}
+                    height={40} />
                 <Skeleton variant="rectangular"
-width={210}
-height={60} />
+                    width={210}
+                    height={60} />
                 <Skeleton variant="rounded"
-width={210}
-height={60} />
+                    width={210}
+                    height={60} />
             </Stack>
         );
     }
 
     return (
-        <AnswerTable
-            count={data?.length}
-            items={answers}
-            onDeselectAll={answersSelection.handleDeselectAll}
-            onDeselectOne={answersSelection.handleDeselectOne}
-            onPageChange={handlePageChange}
-            onRowsPerPageChange={handleRowsPerPageChange}
-            onSelectAll={answersSelection.handleSelectAll}
-            onSelectOne={answersSelection.handleSelectOne}
-            page={page}
-            rowsPerPage={rowsPerPage}
-            selected={answersSelection.selected}
-        />
+        <Stack direction={'column'} spacing={2}>
+            <AnswerSearchBar onSearch={handleSearch} />
+            <AnswerTable
+                count={data?.length}
+                items={answers}
+                onDeselectAll={answersSelection.handleDeselectAll}
+                onDeselectOne={answersSelection.handleDeselectOne}
+                onPageChange={handlePageChange}
+                onRowsPerPageChange={handleRowsPerPageChange}
+                onSelectAll={answersSelection.handleSelectAll}
+                onSelectOne={answersSelection.handleSelectOne}
+                page={page}
+                rowsPerPage={rowsPerPage}
+                selected={answersSelection.selected}
+            />
+        </Stack>
     )
 
 }

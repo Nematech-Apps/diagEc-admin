@@ -14,6 +14,9 @@ import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 
 
+import { SecteurSearchBar } from 'src/components/searchBar/secteurSearchBar';
+
+
 export const DisplaySecteurTable = () => {
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -39,27 +42,27 @@ export const DisplaySecteurTable = () => {
             // Clean up the listener when the component unmounts
             unsubscribe();
         };
-        // getSecteurList()
-        //     .then((snapshot) => {
-        //         const fetchedData = snapshot.docs.map((doc) => ({
-        //             ...doc.data(),
-        //             id: doc.id
-        //         }));
-        //         setData(fetchedData);
-        //         setIsLoading(false); // Data fetching is completed
-        //     })
-        //     .catch((error) => {
-        //         console.log('Error fetching data:', error);
-        //         setIsLoading(false); // Data fetching encountered an error
-        //     });
+        
     }, []);
 
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const handleSearch = (searchTerm) => {
+        setSearchTerm(searchTerm);
+    };
+
+
     const useSecteurs = (page, rowsPerPage) => {
+        const filteredData = data.filter((secteur) => 
+            (secteur.libelleFr?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+            (secteur.libelleEn?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+            (secteur.libelleIt?.toLowerCase() || '').includes(searchTerm.toLowerCase()) 
+        );
         return useMemo(
             () => {
-                return applyPagination(data, page, rowsPerPage);
+                return applyPagination(filteredData, page, rowsPerPage);
             },
-            [data, page, rowsPerPage]
+            [filteredData, page, rowsPerPage]
         );
     };
 
@@ -114,7 +117,9 @@ export const DisplaySecteurTable = () => {
     }
 
     return (
-        <SecteurTable
+        <Stack direction={'column'} spacing={2}>
+            <SecteurSearchBar onSearch={handleSearch}/>
+            <SecteurTable
             count={data?.length}
             items={secteurs}
             onDeselectAll={secteursSelection.handleDeselectAll}
@@ -127,5 +132,6 @@ export const DisplaySecteurTable = () => {
             rowsPerPage={rowsPerPage}
             selected={secteursSelection.selected}
         />
+        </Stack>
     );
 };

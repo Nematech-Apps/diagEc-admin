@@ -105,6 +105,9 @@ export const AnswerTable = (props) => {
 
     };
 
+
+    
+
     return (
         <Card elevation={20}>
             <CardHeader title="Réponses" />
@@ -148,7 +151,8 @@ export const AnswerTable = (props) => {
                 </TableHead>
                 <TableBody>
                     {
-                        items.length != 0 ? items.map((answer) => {
+                        items.length != 0 ? 
+                        items.map((answer) => {
                             const isSelected = selected.includes(answer.id);
                             //const createdAt = format(customer.createdAt, 'dd/MM/yyyy');
 

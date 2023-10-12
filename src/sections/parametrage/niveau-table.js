@@ -117,182 +117,185 @@ export const NiveauTable = (props) => {
 
     };
 
+
+
     return (
         <Card elevation={20}>
-            <CardHeader title="Niveaux" />
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        {/* <TableCell padding="checkbox">
-                            <Checkbox
-                                checked={selectedAll}
-                                indeterminate={selectedSome}
-                                onChange={(event) => {
-                                    if (event.target.checked) {
-                                        onSelectAll?.();
-                                    } else {
-                                        onDeselectAll?.();
-                                    }
-                                }}
-                            />
-                        </TableCell> */}
-                        <TableCell>
-                            Libellé(Français)
-                        </TableCell>
+        <CardHeader title="Niveaux" />
+        <Table>
+            <TableHead>
+                <TableRow>
+                    {/* <TableCell padding="checkbox">
+                        <Checkbox
+                            checked={selectedAll}
+                            indeterminate={selectedSome}
+                            onChange={(event) => {
+                                if (event.target.checked) {
+                                    onSelectAll?.();
+                                } else {
+                                    onDeselectAll?.();
+                                }
+                            }}
+                        />
+                    </TableCell> */}
+                    <TableCell>
+                        Libellé(Français)
+                    </TableCell>
 
-                        <TableCell>
-                            Libellé(Anglais)
-                        </TableCell>
+                    <TableCell>
+                        Libellé(Anglais)
+                    </TableCell>
 
-                        <TableCell>
-                            Libellé(Italien)
-                        </TableCell>
+                    <TableCell>
+                        Libellé(Italien)
+                    </TableCell>
 
-                        <TableCell>
-                            Actions
-                        </TableCell>
+                    <TableCell>
+                        Actions
+                    </TableCell>
 
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {
-                        items.length != 0 ? items.map((niveau) => {
-                            const isSelected = selected.includes(niveau.id);
-                            //const createdAt = format(customer.createdAt, 'dd/MM/yyyy');
+                </TableRow>
+            </TableHead>
+            <TableBody>
+                {
+                    items.length != 0 ? 
+                    items.map((niveau) => {
+                        const isSelected = selected.includes(niveau.id);
+                        //const createdAt = format(customer.createdAt, 'dd/MM/yyyy');
 
-                            return (
-                                <TableRow
-                                    hover
-                                    key={niveau.id}
-                                    selected={isSelected}
-                                >
-                                    {/* <TableCell padding="checkbox">
-                                        <Checkbox
-                                            checked={isSelected}
-                                            onChange={(event) => {
-                                                if (event.target.checked) {
-                                                    onSelectOne?.(secteur.id);
-                                                } else {
-                                                    onDeselectOne?.(secteur.id);
-                                                }
-                                            }}
-                                        />
-                                    </TableCell> */}
-                                    <TableCell>
-                                        <Stack
-                                            alignItems="center"
-                                            direction="row"
-                                            spacing={2}
-                                        >
-                                            {/* <Avatar src={customer.avatar}>
-                                                {getInitials(customer.name)}
-                                            </Avatar> */}
-                                            <Typography variant="subtitle2">
-                                                {niveau.libelleFr}
-                                            </Typography>
-                                        </Stack>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Stack
-                                            alignItems="center"
-                                            direction="row"
-                                            spacing={2}
-                                        >
-                                            {/* <Avatar src={customer.avatar}>
-                                                {getInitials(customer.name)}
-                                            </Avatar> */}
-                                            <Typography variant="subtitle2">
-                                                {niveau.libelleEn}
-                                            </Typography>
-                                        </Stack>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Stack
-                                            alignItems="center"
-                                            direction="row"
-                                            spacing={2}
-                                        >
-                                            {/* <Avatar src={customer.avatar}>
-                                                {getInitials(customer.name)}
-                                            </Avatar> */}
-                                            <Typography variant="subtitle2">
-                                                {niveau.libelleIt}
-                                            </Typography>
-                                        </Stack>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Stack direction={'row'}
-                                            spacing={2}>
-                                            <Fab size="small"
-                                                //color="secondary"
-                                                aria-label="edit"
-                                                onClick={(event) => handleEditClick(event, niveau)}>
-                                                <SvgIcon fontSize="small">
-                                                    <PencilIcon />
-                                                </SvgIcon>
-                                            </Fab>
-                                            <Fab size="small" color="error" aria-label="delete"
-                                                onClick={(event) => handleDeleteClick(event, niveau)}>
-                                                <SvgIcon fontSize="small">
-                                                    <TrashIcon />
-                                                </SvgIcon>
-                                            </Fab>
-                                        </Stack>
-                                    </TableCell>
-                                    {/* <TableCell>
-                                        {customer.address.city}, {customer.address.state}, {customer.address.country}
-                                    </TableCell>
-                                    <TableCell>
-                                        {customer.phone}
-                                    </TableCell>
-                                    <TableCell>
-                                        {createdAt}
-                                    </TableCell> */}
-                                    {isModalOpen && modalData && <EditNiveau data={modalData}
-                                        isOpen={isModalOpen}
-                                        handleClose={() => setIsModalOpen(false)} />}
-                                </TableRow>
-                            );
-                        }) :
+                        return (
                             <TableRow
                                 hover
+                                key={niveau.id}
+                                selected={isSelected}
                             >
+                                {/* <TableCell padding="checkbox">
+                                    <Checkbox
+                                        checked={isSelected}
+                                        onChange={(event) => {
+                                            if (event.target.checked) {
+                                                onSelectOne?.(secteur.id);
+                                            } else {
+                                                onDeselectOne?.(secteur.id);
+                                            }
+                                        }}
+                                    />
+                                </TableCell> */}
                                 <TableCell>
                                     <Stack
                                         alignItems="center"
                                         direction="row"
                                         spacing={2}
                                     >
+                                        {/* <Avatar src={customer.avatar}>
+                                            {getInitials(customer.name)}
+                                        </Avatar> */}
                                         <Typography variant="subtitle2">
-                                            Aucun élément à afficher
+                                            {niveau.libelleFr}
                                         </Typography>
                                     </Stack>
                                 </TableCell>
-
+                                <TableCell>
+                                    <Stack
+                                        alignItems="center"
+                                        direction="row"
+                                        spacing={2}
+                                    >
+                                        {/* <Avatar src={customer.avatar}>
+                                            {getInitials(customer.name)}
+                                        </Avatar> */}
+                                        <Typography variant="subtitle2">
+                                            {niveau.libelleEn}
+                                        </Typography>
+                                    </Stack>
+                                </TableCell>
+                                <TableCell>
+                                    <Stack
+                                        alignItems="center"
+                                        direction="row"
+                                        spacing={2}
+                                    >
+                                        {/* <Avatar src={customer.avatar}>
+                                            {getInitials(customer.name)}
+                                        </Avatar> */}
+                                        <Typography variant="subtitle2">
+                                            {niveau.libelleIt}
+                                        </Typography>
+                                    </Stack>
+                                </TableCell>
+                                <TableCell>
+                                    <Stack direction={'row'}
+                                        spacing={2}>
+                                        <Fab size="small"
+                                            //color="secondary"
+                                            aria-label="edit"
+                                            onClick={(event) => handleEditClick(event, niveau)}>
+                                            <SvgIcon fontSize="small">
+                                                <PencilIcon />
+                                            </SvgIcon>
+                                        </Fab>
+                                        <Fab size="small" color="error" aria-label="delete"
+                                            onClick={(event) => handleDeleteClick(event, niveau)}>
+                                            <SvgIcon fontSize="small">
+                                                <TrashIcon />
+                                            </SvgIcon>
+                                        </Fab>
+                                    </Stack>
+                                </TableCell>
+                                {/* <TableCell>
+                                    {customer.address.city}, {customer.address.state}, {customer.address.country}
+                                </TableCell>
+                                <TableCell>
+                                    {customer.phone}
+                                </TableCell>
+                                <TableCell>
+                                    {createdAt}
+                                </TableCell> */}
+                                {isModalOpen && modalData && <EditNiveau data={modalData}
+                                    isOpen={isModalOpen}
+                                    handleClose={() => setIsModalOpen(false)} />}
                             </TableRow>
-                    }
+                        );
+                    }) :
+                        <TableRow
+                            hover
+                        >
+                            <TableCell>
+                                <Stack
+                                    alignItems="center"
+                                    direction="row"
+                                    spacing={2}
+                                >
+                                    <Typography variant="subtitle2">
+                                        Aucun élément à afficher
+                                    </Typography>
+                                </Stack>
+                            </TableCell>
 
-                </TableBody>
-            </Table>
-            <Divider />
-            <CardActions sx={{ justifyContent: 'flex-end' }}>
-                <TablePagination
-                    component="div"
-                    count={count}
-                    onPageChange={onPageChange}
-                    onRowsPerPageChange={onRowsPerPageChange}
-                    page={page}
-                    rowsPerPage={rowsPerPage}
-                    rowsPerPageOptions={[5, 10, 25]}
-                    labelDisplayedRows={
-                        ({ from, to, count }) => {
-                            return '' + from + '-' + to + ' sur ' + count
-                        }
+                        </TableRow>
+                }
+
+            </TableBody>
+        </Table>
+        <Divider />
+        <CardActions sx={{ justifyContent: 'flex-end' }}>
+            <TablePagination
+                component="div"
+                count={count}
+                onPageChange={onPageChange}
+                onRowsPerPageChange={onRowsPerPageChange}
+                page={page}
+                rowsPerPage={rowsPerPage}
+                rowsPerPageOptions={[5, 10, 25]}
+                labelDisplayedRows={
+                    ({ from, to, count }) => {
+                        return '' + from + '-' + to + ' sur ' + count
                     }
-                    labelRowsPerPage="Eléments par page"
-                />
-            </CardActions>
-        </Card>
+                }
+                labelRowsPerPage="Eléments par page"
+            />
+        </CardActions>
+    </Card>
     );
 };
 

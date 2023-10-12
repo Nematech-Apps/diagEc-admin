@@ -14,6 +14,7 @@ import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 
 
+import { QuestionFrSearchBar } from 'src/components/searchBar/questionFrSearchBar';
 
 
 export const DisplayQuestionTable = () => {
@@ -43,13 +44,23 @@ export const DisplayQuestionTable = () => {
         };
     }, []);
 
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const handleSearch = (searchTerm) => {
+        setSearchTerm(searchTerm);
+    };
+
 
     const useQuestions = (page, rowsPerPage) => {
+        const filteredData = data.filter((question) =>
+            (question.libelleFr?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+            (question?.pilier?.libelleFr?.toLowerCase() || '').includes(searchTerm.toLowerCase())
+        );
         return useMemo(
             () => {
-                return applyPagination(data, page, rowsPerPage);
+                return applyPagination(filteredData, page, rowsPerPage);
             },
-            [data, page, rowsPerPage]
+            [filteredData, page, rowsPerPage]
         );
     };
 
@@ -104,7 +115,9 @@ export const DisplayQuestionTable = () => {
     }
 
     return (
-        <QuestionTable
+        <Stack direction={'column'} spacing={2}>
+            <QuestionFrSearchBar onSearch={handleSearch}/>
+            <QuestionTable
             count={data?.length}
             items={questions}
             onDeselectAll={questionsSelection.handleDeselectAll}
@@ -117,6 +130,7 @@ export const DisplayQuestionTable = () => {
             rowsPerPage={rowsPerPage}
             selected={questionsSelection.selected}
         />
+        </Stack>
     )
 
 }

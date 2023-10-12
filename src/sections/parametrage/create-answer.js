@@ -34,7 +34,7 @@ export const CreateAnswer = () => {
   const [dataToken, setDataToken] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-
+  const [isOnCreate, setIsOnCreate] = useState(false);
 
   useEffect(() => {
     const unsubscribe = OnSnapshot(
@@ -98,6 +98,7 @@ export const CreateAnswer = () => {
       //   helpers.setSubmitting(false);
       //   return ToastComponent({message: err.message, type: 'error'});
       // }
+      setIsOnCreate(true);
       const data = {
         libelleFr: convertirEnMajuscules(values.libelleFr),
         libelleEn: convertirEnMajuscules(values.libelleEn),
@@ -137,9 +138,11 @@ export const CreateAnswer = () => {
                 })
 
               }
+              setIsOnCreate(false);
               return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
             })
             .catch((err) => {
+              setIsOnCreate(false);
               helpers.setStatus({ success: false });
               helpers.setErrors({ submit: err.message });
               helpers.setSubmitting(false);
@@ -148,6 +151,7 @@ export const CreateAnswer = () => {
 
         })
         .catch((err) => {
+          setIsOnCreate(false);
           helpers.setStatus({ success: false });
           helpers.setErrors({ submit: err.message });
           helpers.setSubmitting(false);
@@ -232,7 +236,7 @@ export const CreateAnswer = () => {
         <Divider />
         <CardActions sx={{ justifyContent: 'flex-end' }}>
           <Button variant="contained"
-            type='submit'>
+            type='submit' disabled={isOnCreate}>
             Créer
           </Button>
         </CardActions>

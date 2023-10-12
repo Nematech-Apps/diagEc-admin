@@ -15,7 +15,7 @@ import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 
 
-
+import { QuestionItSearchBar } from 'src/components/searchBar/questionItSearchBar';
 
 export const DisplayQuestionTableIt = () => {
     const [data, setData] = useState([]);
@@ -44,13 +44,23 @@ export const DisplayQuestionTableIt = () => {
         };
     }, []);
 
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const handleSearch = (searchTerm) => {
+        setSearchTerm(searchTerm);
+    };
+
 
     const useQuestions = (page, rowsPerPage) => {
+        const filteredData = data.filter((question) =>
+            (question.libelleIt?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+            (question?.pilier?.libelleIt?.toLowerCase() || '').includes(searchTerm.toLowerCase())
+        );
         return useMemo(
             () => {
-                return applyPagination(data, page, rowsPerPage);
+                return applyPagination(filteredData, page, rowsPerPage);
             },
-            [data, page, rowsPerPage]
+            [filteredData, page, rowsPerPage]
         );
     };
 
@@ -105,7 +115,9 @@ export const DisplayQuestionTableIt = () => {
     }
 
     return (
-        <QuestionTableIt
+        <Stack direction={'column'} spacing={2}>
+            <QuestionItSearchBar onSearch={handleSearch}/>
+            <QuestionTableIt
             count={data?.length}
             items={questions}
             onDeselectAll={questionsSelection.handleDeselectAll}
@@ -118,6 +130,7 @@ export const DisplayQuestionTableIt = () => {
             rowsPerPage={rowsPerPage}
             selected={questionsSelection.selected}
         />
+        </Stack>
     )
 
 }

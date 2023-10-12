@@ -15,7 +15,7 @@ import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 
 
-
+import { QuestionEnSearchBar } from 'src/components/searchBar/questionEnSearchBar';
 
 export const DisplayQuestionTableEn = () => {
     const [data, setData] = useState([]);
@@ -44,13 +44,23 @@ export const DisplayQuestionTableEn = () => {
         };
     }, []);
 
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const handleSearch = (searchTerm) => {
+        setSearchTerm(searchTerm);
+    };
+
 
     const useQuestions = (page, rowsPerPage) => {
+        const filteredData = data.filter((question) =>
+            (question.libelleEn?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+            (question?.pilier?.libelleEn?.toLowerCase() || '').includes(searchTerm.toLowerCase())
+        );
         return useMemo(
             () => {
-                return applyPagination(data, page, rowsPerPage);
+                return applyPagination(filteredData, page, rowsPerPage);
             },
-            [data, page, rowsPerPage]
+            [filteredData, page, rowsPerPage]
         );
     };
 
@@ -105,7 +115,9 @@ export const DisplayQuestionTableEn = () => {
     }
 
     return (
-        <QuestionTableEn
+        <Stack direction={'column'} spacing={2}>
+            <QuestionEnSearchBar onSearch={handleSearch}/>
+            <QuestionTableEn
             count={data?.length}
             items={questions}
             onDeselectAll={questionsSelection.handleDeselectAll}
@@ -118,6 +130,7 @@ export const DisplayQuestionTableEn = () => {
             rowsPerPage={rowsPerPage}
             selected={questionsSelection.selected}
         />
+        </Stack>
     )
 
 }

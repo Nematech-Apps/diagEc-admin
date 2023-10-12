@@ -33,6 +33,8 @@ export const CreateSecteur = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  const [isOnCreate, setIsOnCreate] = useState(false);
+
   useEffect(() => {
     const unsubscribe = OnSnapshot(
       getDeviceTokensList(),
@@ -88,6 +90,7 @@ export const CreateSecteur = () => {
       //   helpers.setSubmitting(false);
       //   return ToastComponent({message: err.message, type: 'error'});
       // }
+      setIsOnCreate(true);
       addSecteur(values)
         .then(async (doc) => {
           const collectionRef = Doc(db, 'secteurs', doc.id);
@@ -133,9 +136,11 @@ export const CreateSecteur = () => {
                 })
 
               }
+              setIsOnCreate(false);
               return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
             })
             .catch((err) => {
+              setIsOnCreate(false);
               helpers.setStatus({ success: false });
               helpers.setErrors({ submit: err.message });
               helpers.setSubmitting(false);
@@ -144,6 +149,7 @@ export const CreateSecteur = () => {
 
         })
         .catch((err) => {
+          setIsOnCreate(false);
           helpers.setStatus({ success: false });
           helpers.setErrors({ submit: err.message });
           helpers.setSubmitting(false);
@@ -216,7 +222,7 @@ export const CreateSecteur = () => {
         <Divider />
         <CardActions sx={{ justifyContent: 'flex-end' }}>
           <Button variant="contained"
-            type='submit'>
+            type='submit' disabled={isOnCreate}>
             Créer
           </Button>
         </CardActions>

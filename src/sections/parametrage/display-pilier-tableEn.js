@@ -15,7 +15,7 @@ import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 
 
-
+import { PilierEnSearchBar } from 'src/components/searchBar/pilierEnSearchBar';
 
 export const DisplayPilierTableEn = () => {
     const [data, setData] = useState([]);
@@ -44,13 +44,24 @@ export const DisplayPilierTableEn = () => {
         };
     }, []);
 
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const handleSearch = (searchTerm) => {
+        setSearchTerm(searchTerm);
+    };
+
 
     const usePiliers = (page, rowsPerPage) => {
+        const filteredData = data.filter((pilier) =>
+            (pilier.libelleEn?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+            (pilier.definitionEn?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+            (pilier.motClesEn?.find(elt => (elt.toLowerCase() || '').includes(searchTerm.toLowerCase())))
+        );
         return useMemo(
             () => {
-                return applyPagination(data, page, rowsPerPage);
+                return applyPagination(filteredData, page, rowsPerPage);
             },
-            [data, page, rowsPerPage]
+            [filteredData, page, rowsPerPage]
         );
     };
 
@@ -105,7 +116,9 @@ export const DisplayPilierTableEn = () => {
     }
 
     return (
-        <PilierTableEn
+        <Stack direction={'column'} spacing={2}>
+            <PilierEnSearchBar onSearch={handleSearch}/>
+            <PilierTableEn
             count={data?.length}
             items={piliers}
             onDeselectAll={piliersSelection.handleDeselectAll}
@@ -118,6 +131,7 @@ export const DisplayPilierTableEn = () => {
             rowsPerPage={rowsPerPage}
             selected={piliersSelection.selected}
         />
+        </Stack>
     )
 
 }

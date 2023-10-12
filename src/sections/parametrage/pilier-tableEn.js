@@ -45,6 +45,7 @@ import { AddMotCleEn } from './add-motCleEn';
 import { deleteMotCleEn } from 'src/firebase/firebaseServices';
 import ToastComponent from '../../components/toast';
 
+
 import swal from 'sweetalert';
 
 import * as emoji from 'node-emoji';
@@ -108,12 +109,12 @@ export const PilierTableEn = (props) => {
                     },
                     onClick: async () => {
                         deleteMotCleEn(pilier.id)
-                                .then(() => {
-                                    return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
-                                })
-                                .catch((err) => {
-                                    return ToastComponent({ message: err.message, type: 'error' });
-                                });
+                            .then(() => {
+                                return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                            })
+                            .catch((err) => {
+                                return ToastComponent({ message: err.message, type: 'error' });
+                            });
                     }
                 }
             ],
@@ -166,14 +167,16 @@ export const PilierTableEn = (props) => {
 
     };
 
+
+
     return (
         <Card elevation={20}>
-            <CardHeader title="Piliers" />
-            <TableContainer component={Paper}>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            {/* <TableCell padding="checkbox">
+                <CardHeader title="Piliers" />
+                <TableContainer component={Paper}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                {/* <TableCell padding="checkbox">
                             <Checkbox
                                 checked={selectedAll}
                                 indeterminate={selectedSome}
@@ -187,38 +190,39 @@ export const PilierTableEn = (props) => {
                             />
                         </TableCell> */}
 
-                            
-                            <TableCell>
-                                Libellé
-                            </TableCell>
 
-                            <TableCell>
-                                Définition
-                            </TableCell>
+                                <TableCell>
+                                    Libellé
+                                </TableCell>
 
-                            <TableCell>
-                                Mots-clés
-                            </TableCell>
+                                <TableCell>
+                                    Définition
+                                </TableCell>
 
-                            <TableCell>
-                                Actions
-                            </TableCell>
+                                <TableCell>
+                                    Mots-clés
+                                </TableCell>
 
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {
-                            items.length != 0 ? items.map((pilier) => {
-                                const isSelected = selected.includes(pilier.id);
-                                //const createdAt = format(customer.createdAt, 'dd/MM/yyyy');
+                                <TableCell>
+                                    Actions
+                                </TableCell>
 
-                                return (
-                                    <TableRow
-                                        hover
-                                        key={pilier.id}
-                                        selected={isSelected}
-                                    >
-                                        {/* <TableCell padding="checkbox">
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {
+                                items.length != 0 ?
+                                    items.map((pilier) => {
+                                        const isSelected = selected.includes(pilier.id);
+                                        //const createdAt = format(customer.createdAt, 'dd/MM/yyyy');
+
+                                        return (
+                                            <TableRow
+                                                hover
+                                                key={pilier.id}
+                                                selected={isSelected}
+                                            >
+                                                {/* <TableCell padding="checkbox">
                                         <Checkbox
                                             checked={isSelected}
                                             onChange={(event) => {
@@ -230,183 +234,183 @@ export const PilierTableEn = (props) => {
                                             }}
                                         />
                                     </TableCell> */}
-                                        
-                                        <TableCell>
-                                            <Stack
-                                                alignItems="flex-start"
-                                                direction="column"
-                                                spacing={2}
-                                            >
-                                                {/* <Avatar src={customer.avatar}>
+
+                                                <TableCell>
+                                                    <Stack
+                                                        alignItems="flex-start"
+                                                        direction="column"
+                                                        spacing={2}
+                                                    >
+                                                        {/* <Avatar src={customer.avatar}>
                                                 {getInitials(customer.name)}
                                             </Avatar> */}
 
-                                                <Typography variant="subtitle2">
-                                                {pilier.libelleEn}
-                                                </Typography>
-                                                {/* <Typography variant="subtitle2">
+                                                        <Typography variant="subtitle2">
+                                                            {pilier.libelleEn}
+                                                        </Typography>
+                                                        {/* <Typography variant="subtitle2">
                                                 {pilier.libelleEn}
                                             </Typography>
                                             <Typography variant="subtitle2">
                                                 {pilier.libelleIt}
                                             </Typography> */}
-                                            </Stack>
-                                        </TableCell>
-                                        <TableCell>
-                                            <Stack
-                                                alignItems="flex-start"
-                                                direction="column"
-                                                spacing={2}
-                                            >
-                                                {/* <Avatar src={customer.avatar}>
+                                                    </Stack>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Stack
+                                                        alignItems="flex-start"
+                                                        direction="column"
+                                                        spacing={2}
+                                                    >
+                                                        {/* <Avatar src={customer.avatar}>
                                                 {getInitials(customer.name)}
                                             </Avatar> */}
-                                                <Typography variant="subtitle2">
-                                                {pilier.definitionEn}
-                                                </Typography>
-                                                {/* <Typography variant="subtitle2">
+                                                        <Typography variant="subtitle2">
+                                                            {pilier.definitionEn}
+                                                        </Typography>
+                                                        {/* <Typography variant="subtitle2">
                                                 {pilier.definitionEn}
                                             </Typography>
                                             <Typography variant="subtitle2">
                                                 {pilier.definitionIt}
                                             </Typography> */}
-                                            </Stack>
-                                        </TableCell>
-                                        <TableCell>
-                                            <Stack
-                                                alignItems="flex-start"
-                                                direction="column"
-                                                spacing={2}
-                                            >
+                                                    </Stack>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Stack
+                                                        alignItems="flex-start"
+                                                        direction="column"
+                                                        spacing={2}
+                                                    >
 
-                                                
 
-                                                <ul>
-                                                    {
-                                                        pilier.motClesEn != null ? pilier.motClesEn.map((mot, index) => {
-                                                            return (
-                                                                <Chip label={mot} variant="outlined" key={index} />
-                                                            )
-                                                        }) : <Typography variant="subtitle2">
-                                                            Aucun mot clé en anglais ajouté
-                                                        </Typography>
-                                                    }
 
-                                                </ul>
+                                                        <ul>
+                                                            {
+                                                                pilier.motClesEn != null ? pilier.motClesEn.map((mot, index) => {
+                                                                    return (
+                                                                        <Chip label={mot} variant="outlined" key={index} />
+                                                                    )
+                                                                }) : <Typography variant="subtitle2">
+                                                                    Aucun mot clé en anglais ajouté
+                                                                </Typography>
+                                                            }
 
-                                               
+                                                        </ul>
 
-                                            </Stack>
-                                        </TableCell>
-                                        <TableCell>
-                                            <Stack
-                                                alignItems="flex-start"
-                                                direction={'row'}
-                                                spacing={2}>
-                                                <Stack direction={'column'}
-                                                    spacing={2}>
-                                                    {/* <Button variant="outlined"
+
+
+                                                    </Stack>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Stack
+                                                        alignItems="flex-start"
+                                                        direction={'row'}
+                                                        spacing={2}>
+                                                        <Stack direction={'column'}
+                                                            spacing={2}>
+                                                            {/* <Button variant="outlined"
                                                         size="small"
                                                         color='success'
                                                         onClick={(event) => handleAddMotcleClick(event, pilier)}>
                                                         Ajouter mot-clés
                                                     </Button> */}
-                                                    <Button variant="outlined"
-                                                        size="small"
-                                                        color='success'
-                                                        sx={{paddingX: 5}}
-                                                        onClick={(event) => handleAddMotcleClick(event, pilier)}>
-                                                        {/* <SvgIcon sx={{mr: 1}}>
+                                                            <Button variant="outlined"
+                                                                size="small"
+                                                                color='success'
+                                                                sx={{ paddingX: 5 }}
+                                                                onClick={(event) => handleAddMotcleClick(event, pilier)}>
+                                                                {/* <SvgIcon sx={{mr: 1}}>
                                                             <PlusIcon/>
                                                         </SvgIcon> */}
-                                                        Ajouter
-                                                        mot-clés
-                                                    </Button>
-                                                    {/* <Button variant="outlined" size="small" color='error'
+                                                                Ajouter
+                                                                mot-clés
+                                                            </Button>
+                                                            {/* <Button variant="outlined" size="small" color='error'
                                                         onClick={(event) => handleDeleteMotCleclick(event, pilier)}>
                                                         Supprimer mot-clés
                                                     </Button> */}
-                                                    <Button variant="outlined" size="small" color='error' sx={{paddingX: 5}}
-                                                        onClick={(event) => handleDeleteMotCleclick(event, pilier)}>
-                                                        {/* <SvgIcon sx={{mr: 1}}>
+                                                            <Button variant="outlined" size="small" color='error' sx={{ paddingX: 5 }}
+                                                                onClick={(event) => handleDeleteMotCleclick(event, pilier)}>
+                                                                {/* <SvgIcon sx={{mr: 1}}>
                                                             <XCircleIcon/>
                                                         </SvgIcon> */}
-                                                        Supprimer
-                                                        mot-clés
-                                                    </Button>
-                                                </Stack>
+                                                                Supprimer
+                                                                mot-clés
+                                                            </Button>
+                                                        </Stack>
 
-                                                <Stack direction={'column'}
-                                                    spacing={2}>
-                                                    <Fab size="small"
-                                                        //color="secondary"
-                                                        aria-label="edit"
-                                                        onClick={(event) => handleEditClick(event, pilier)}>
-                                                        <SvgIcon fontSize="small">
-                                                            <PencilIcon />
-                                                        </SvgIcon>
-                                                    </Fab>
-                                                    <Fab size="small" color="error" aria-label="delete"
-                                                        onClick={(event) => handleDeleteClick(event, pilier)}>
-                                                        <SvgIcon fontSize="small">
-                                                            <TrashIcon />
-                                                        </SvgIcon>
-                                                    </Fab>
-                                                </Stack>
+                                                        <Stack direction={'column'}
+                                                            spacing={2}>
+                                                            <Fab size="small"
+                                                                //color="secondary"
+                                                                aria-label="edit"
+                                                                onClick={(event) => handleEditClick(event, pilier)}>
+                                                                <SvgIcon fontSize="small">
+                                                                    <PencilIcon />
+                                                                </SvgIcon>
+                                                            </Fab>
+                                                            <Fab size="small" color="error" aria-label="delete"
+                                                                onClick={(event) => handleDeleteClick(event, pilier)}>
+                                                                <SvgIcon fontSize="small">
+                                                                    <TrashIcon />
+                                                                </SvgIcon>
+                                                            </Fab>
+                                                        </Stack>
 
+                                                    </Stack>
+                                                </TableCell>
+
+                                                {isModalOpen && modalData && <EditPilierEn data={modalData}
+                                                    isOpen={isModalOpen}
+                                                    handleClose={() => setIsModalOpen(false)} />}
+                                                {isAddMotCleOpen && addMotCleData && <AddMotCleEn data={addMotCleData}
+                                                    isOpen={isAddMotCleOpen}
+                                                    handleClose={() => setIsAddMotCleOpen(false)} />}
+                                            </TableRow>
+                                        );
+                                    }) :
+                                    <TableRow
+                                        hover
+                                    >
+                                        <TableCell>
+                                            <Stack
+                                                alignItems="center"
+                                                direction="row"
+                                                spacing={2}
+                                            >
+                                                <Typography variant="subtitle2">
+                                                    Aucun élément à afficher
+                                                </Typography>
                                             </Stack>
                                         </TableCell>
 
-                                        {isModalOpen && modalData && <EditPilierEn data={modalData}
-                                            isOpen={isModalOpen}
-                                            handleClose={() => setIsModalOpen(false)} />}
-                                        {isAddMotCleOpen && addMotCleData && <AddMotCleEn data={addMotCleData}
-                                            isOpen={isAddMotCleOpen}
-                                            handleClose={() => setIsAddMotCleOpen(false)} />}
                                     </TableRow>
-                                );
-                            }) :
-                                <TableRow
-                                    hover
-                                >
-                                    <TableCell>
-                                        <Stack
-                                            alignItems="center"
-                                            direction="row"
-                                            spacing={2}
-                                        >
-                                            <Typography variant="subtitle2">
-                                                Aucun élément à afficher
-                                            </Typography>
-                                        </Stack>
-                                    </TableCell>
+                            }
 
-                                </TableRow>
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+
+                <Divider />
+                <CardActions sx={{ justifyContent: 'flex-end' }}>
+                    <TablePagination
+                        component="div"
+                        count={count}
+                        onPageChange={onPageChange}
+                        onRowsPerPageChange={onRowsPerPageChange}
+                        page={page}
+                        rowsPerPage={rowsPerPage}
+                        rowsPerPageOptions={[5, 10, 25]}
+                        labelDisplayedRows={
+                            ({ from, to, count }) => {
+                                return '' + from + '-' + to + ' sur ' + count
+                            }
                         }
-
-                    </TableBody>
-                </Table>
-            </TableContainer>
-
-            <Divider />
-            <CardActions sx={{ justifyContent: 'flex-end' }}>
-                <TablePagination
-                    component="div"
-                    count={count}
-                    onPageChange={onPageChange}
-                    onRowsPerPageChange={onRowsPerPageChange}
-                    page={page}
-                    rowsPerPage={rowsPerPage}
-                    rowsPerPageOptions={[5, 10, 25]}
-                    labelDisplayedRows={
-                        ({ from, to, count }) => {
-                            return '' + from + '-' + to + ' sur ' + count
-                        }
-                    }
-                    labelRowsPerPage="Eléments par page"
-                />
-            </CardActions>
-        </Card>
+                        labelRowsPerPage="Eléments par page"
+                    />
+                </CardActions>
+            </Card>
     );
 };
 

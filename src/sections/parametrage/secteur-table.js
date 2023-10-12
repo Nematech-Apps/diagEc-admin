@@ -44,7 +44,7 @@ import SweetAlert from 'src/components/SweetAlert';
 
 import swal from 'sweetalert';
 
-import { confirmAlert } from 'react-confirm-alert'; 
+import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
 export const SecteurTable = (props) => {
@@ -93,7 +93,7 @@ export const SecteurTable = (props) => {
                         borderColor: 'limegreen',
                         color: 'black'
                     },
-                    onClick: async() => {
+                    onClick: async () => {
                         const hasCategories = await checkCategoriesInSecteur(secteur.id);
                         const hasCompanies = await checkCompaniesInSecteur(secteur.id);
                         if (hasCategories) {
@@ -121,13 +121,14 @@ export const SecteurTable = (props) => {
 
     };
 
+    
     return (
         <Card elevation={20}>
-            <CardHeader title="Secteurs" />
-            <Table >
-                <TableHead>
-                    <TableRow>
-                        {/* <TableCell padding="checkbox">
+                <CardHeader title="Secteurs" />
+                <Table >
+                    <TableHead>
+                        <TableRow>
+                            {/* <TableCell padding="checkbox">
                             <Checkbox
                                 checked={selectedAll}
                                 indeterminate={selectedSome}
@@ -140,40 +141,40 @@ export const SecteurTable = (props) => {
                                 }}
                             />
                         </TableCell> */}
-                        <TableCell>
-                            Libellé(Français)
-                        </TableCell>
+                            <TableCell>
+                                Libellé(Français)
+                            </TableCell>
 
-                        <TableCell>
-                            Libellé(Anglais)
-                        </TableCell>
+                            <TableCell>
+                                Libellé(Anglais)
+                            </TableCell>
 
-                        <TableCell>
-                            Libellé(Italien)
-                        </TableCell>
+                            <TableCell>
+                                Libellé(Italien)
+                            </TableCell>
 
-                        <TableCell>
-                            Actions
-                        </TableCell>
+                            <TableCell>
+                                Actions
+                            </TableCell>
 
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {
-                        items.length != 0 ? 
-                        items
-                        .sort((a, b) => a.libelleFr.localeCompare(b.libelleFr))
-                        .map((secteur) => {
-                            const isSelected = selected.includes(secteur.id);
-                            //const createdAt = format(customer.createdAt, 'dd/MM/yyyy');
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {
+                            items.length != 0 ?
+                            items
+                                    .sort((a, b) => a.libelleFr.localeCompare(b.libelleFr))
+                                    .map((secteur) => {
+                                        const isSelected = selected.includes(secteur.id);
+                                        //const createdAt = format(customer.createdAt, 'dd/MM/yyyy');
 
-                            return (
-                                <TableRow
-                                    hover
-                                    key={secteur.id}
-                                    selected={isSelected}
-                                >
-                                    {/* <TableCell padding="checkbox">
+                                        return (
+                                            <TableRow
+                                                hover
+                                                key={secteur.id}
+                                                selected={isSelected}
+                                            >
+                                                {/* <TableCell padding="checkbox">
                                         <Checkbox
                                             checked={isSelected}
                                             onChange={(event) => {
@@ -185,68 +186,68 @@ export const SecteurTable = (props) => {
                                             }}
                                         />
                                     </TableCell> */}
-                                    <TableCell >
-                                        <Stack
-                                            alignItems="center"
-                                            direction="row"
-                                            spacing={2}
-                                        >
-                                            {/* <Avatar src={customer.avatar}>
+                                                <TableCell >
+                                                    <Stack
+                                                        alignItems="center"
+                                                        direction="row"
+                                                        spacing={2}
+                                                    >
+                                                        {/* <Avatar src={customer.avatar}>
                                                 {getInitials(customer.name)}
                                             </Avatar> */}
-                                            <Typography variant="subtitle2">
-                                                {secteur.libelleFr}
-                                            </Typography>
-                                        </Stack>
-                                    </TableCell>
-                                    <TableCell >
-                                        <Stack
-                                            alignItems="center"
-                                            direction="row"
-                                            spacing={2}
-                                        >
-                                            {/* <Avatar src={customer.avatar}>
+                                                        <Typography variant="subtitle2">
+                                                            {secteur.libelleFr}
+                                                        </Typography>
+                                                    </Stack>
+                                                </TableCell>
+                                                <TableCell >
+                                                    <Stack
+                                                        alignItems="center"
+                                                        direction="row"
+                                                        spacing={2}
+                                                    >
+                                                        {/* <Avatar src={customer.avatar}>
                                                 {getInitials(customer.name)}
                                             </Avatar> */}
-                                            <Typography variant="subtitle2">
-                                                {secteur.libelleEn}
-                                            </Typography>
-                                        </Stack>
-                                    </TableCell>
-                                    <TableCell >
-                                        <Stack
-                                            alignItems="center"
-                                            direction="row"
-                                            spacing={2}
-                                        >
-                                            {/* <Avatar src={customer.avatar}>
+                                                        <Typography variant="subtitle2">
+                                                            {secteur.libelleEn}
+                                                        </Typography>
+                                                    </Stack>
+                                                </TableCell>
+                                                <TableCell >
+                                                    <Stack
+                                                        alignItems="center"
+                                                        direction="row"
+                                                        spacing={2}
+                                                    >
+                                                        {/* <Avatar src={customer.avatar}>
                                                 {getInitials(customer.name)}
                                             </Avatar> */}
-                                            <Typography variant="subtitle2">
-                                                {secteur.libelleIt}
-                                            </Typography>
-                                        </Stack>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Stack direction={'row'}
-                                            spacing={2}>
-                                            <Fab size="small"
-                                                //color="secondary"
-                                                aria-label="edit"
-                                                onClick={(event) => handleEditClick(event, secteur)}>
-                                                <SvgIcon fontSize="small">
-                                                    <PencilIcon />
-                                                </SvgIcon>
-                                            </Fab>
-                                            <Fab size="small" color="error" aria-label="delete"
-                                                onClick={(event) => handleDeleteClick(event, secteur)}>
-                                                <SvgIcon fontSize="small">
-                                                    <TrashIcon />
-                                                </SvgIcon>
-                                            </Fab>
-                                        </Stack>
-                                    </TableCell>
-                                    {/* <TableCell>
+                                                        <Typography variant="subtitle2">
+                                                            {secteur.libelleIt}
+                                                        </Typography>
+                                                    </Stack>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Stack direction={'row'}
+                                                        spacing={2}>
+                                                        <Fab size="small"
+                                                            //color="secondary"
+                                                            aria-label="edit"
+                                                            onClick={(event) => handleEditClick(event, secteur)}>
+                                                            <SvgIcon fontSize="small">
+                                                                <PencilIcon />
+                                                            </SvgIcon>
+                                                        </Fab>
+                                                        <Fab size="small" color="error" aria-label="delete"
+                                                            onClick={(event) => handleDeleteClick(event, secteur)}>
+                                                            <SvgIcon fontSize="small">
+                                                                <TrashIcon />
+                                                            </SvgIcon>
+                                                        </Fab>
+                                                    </Stack>
+                                                </TableCell>
+                                                {/* <TableCell>
                                         {customer.address.city}, {customer.address.state}, {customer.address.country}
                                     </TableCell>
                                     <TableCell>
@@ -255,54 +256,54 @@ export const SecteurTable = (props) => {
                                     <TableCell>
                                         {createdAt}
                                     </TableCell> */}
-                                    {isModalOpen && modalData && <EditSecteur data={modalData}
-                                        isOpen={isModalOpen}
-                                        handleClose={() => setIsModalOpen(false)} />}
-                                </TableRow>
-                            );
-                        }) : (
-                            <TableRow
-                                hover
-                            >
-
-                                <TableCell>
-                                    <Stack
-                                        alignItems="center"
-                                        direction="row"
-                                        spacing={2}
+                                                {isModalOpen && modalData && <EditSecteur data={modalData}
+                                                    isOpen={isModalOpen}
+                                                    handleClose={() => setIsModalOpen(false)} />}
+                                            </TableRow>
+                                        );
+                                    }) : (
+                                    <TableRow
+                                        hover
                                     >
 
-                                        <Typography variant="subtitle2">
-                                            Aucun élément à afficher
-                                        </Typography>
-                                    </Stack>
-                                </TableCell>
+                                        <TableCell>
+                                            <Stack
+                                                alignItems="center"
+                                                direction="row"
+                                                spacing={2}
+                                            >
 
-                            </TableRow>
-                        )
-                    }
+                                                <Typography variant="subtitle2">
+                                                    Aucun élément à afficher
+                                                </Typography>
+                                            </Stack>
+                                        </TableCell>
 
-                </TableBody>
-            </Table>
-            <Divider />
-            <CardActions sx={{ justifyContent: 'flex-end' }}>
-                <TablePagination
-                    component="div"
-                    count={count}
-                    onPageChange={onPageChange}
-                    onRowsPerPageChange={onRowsPerPageChange}
-                    page={page}
-                    rowsPerPage={rowsPerPage}
-                    rowsPerPageOptions={[2, 5, 10]}
-                    labelDisplayedRows={
-                        ({ from, to, count }) => {
-                            return '' + from + '-' + to + ' sur ' + count
+                                    </TableRow>
+                                )
                         }
-                    }
-                    labelRowsPerPage="Eléments par page"
-                />
-            </CardActions>
-        </Card>
+
+                    </TableBody>
+                </Table>
+                <Divider />
+                <CardActions sx={{ justifyContent: 'flex-end' }}>
+                    <TablePagination
+                        component="div"
+                        count={count}
+                        onPageChange={onPageChange}
+                        onRowsPerPageChange={onRowsPerPageChange}
+                        page={page}
+                        rowsPerPage={rowsPerPage}
+                        rowsPerPageOptions={[2, 5, 10]}
+                        labelDisplayedRows={
+                            ({ from, to, count }) => {
+                                return '' + from + '-' + to + ' sur ' + count
+                            }
+                        }
+                        labelRowsPerPage="Eléments par page"
+                    />
+                </CardActions>
+            </Card>
     );
 };
 

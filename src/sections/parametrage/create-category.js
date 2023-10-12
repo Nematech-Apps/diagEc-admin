@@ -33,6 +33,8 @@ export const CreateCategory = () => {
   const [secteurs, setSecteurs] = useState([]);
   const [niveaux, setNiveaux] = useState([]);
 
+  const [isOnCreate, setIsOnCreate] = useState(false);
+
   useEffect(() => {
     const unsubscribe1 = OnSnapshot(
       getSecteurList(),
@@ -90,7 +92,7 @@ export const CreateCategory = () => {
         .required("Le niveau d'appartenance est requis"),
     }),
     onSubmit: async (values, helpers) => {
-
+      setIsOnCreate(true);
       addCategorie(values)
         .then(async (doc) => {
           const collectionRef = Doc(db, 'categories', doc.id);
@@ -104,9 +106,11 @@ export const CreateCategory = () => {
           UpdateDoc(collectionRef, docData)
             .then(() => {
               helpers.resetForm();
+              setIsOnCreate(false);
               return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
             })
             .catch((err) => {
+              setIsOnCreate(false);
               helpers.setStatus({ success: false });
               helpers.setErrors({ submit: err.message });
               helpers.setSubmitting(false);
@@ -115,6 +119,7 @@ export const CreateCategory = () => {
 
         })
         .catch((err) => {
+          setIsOnCreate(false);
           helpers.setStatus({ success: false });
           helpers.setErrors({ submit: err.message });
           helpers.setSubmitting(false);
@@ -226,7 +231,7 @@ export const CreateCategory = () => {
         <Divider />
         <CardActions sx={{ justifyContent: 'flex-end' }}>
           <Button variant="contained"
-            type='submit'>
+            type='submit' disabled={isOnCreate}>
             Créer
           </Button>
         </CardActions>

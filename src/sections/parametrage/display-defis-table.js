@@ -14,7 +14,7 @@ import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 
 
-
+import { DefiFrSearchBar } from 'src/components/searchBar/defiFrSearchBar';
 
 export const DisplayDefisTable = () => {
     const [data, setData] = useState([]);
@@ -44,12 +44,23 @@ export const DisplayDefisTable = () => {
     }, []);
 
 
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const handleSearch = (searchTerm) => {
+        setSearchTerm(searchTerm);
+    };
+
+
     const useDefis = (page, rowsPerPage) => {
+        const filteredData = data.filter((defi) =>
+            (defi.libelleFr?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+            (defi?.pilier?.libelleFr?.toLowerCase() || '').includes(searchTerm.toLowerCase())
+        );
         return useMemo(
             () => {
-                return applyPagination(data, page, rowsPerPage);
+                return applyPagination(filteredData, page, rowsPerPage);
             },
-            [data, page, rowsPerPage]
+            [filteredData, page, rowsPerPage]
         );
     };
 
@@ -83,6 +94,8 @@ export const DisplayDefisTable = () => {
         []
     );
 
+
+
     if (isLoading) {
         return (
             <Stack spacing={1}>
@@ -104,19 +117,22 @@ export const DisplayDefisTable = () => {
     }
 
     return (
-        <DefisTable
-            count={data?.length}
-            items={defis}
-            onDeselectAll={defisSelection.handleDeselectAll}
-            onDeselectOne={defisSelection.handleDeselectOne}
-            onPageChange={handlePageChange}
-            onRowsPerPageChange={handleRowsPerPageChange}
-            onSelectAll={defisSelection.handleSelectAll}
-            onSelectOne={defisSelection.handleSelectOne}
-            page={page}
-            rowsPerPage={rowsPerPage}
-            selected={defisSelection.selected}
-        />
+        <Stack direction={'column'} spacing={2}>
+            <DefiFrSearchBar onSearch={handleSearch}/>
+            <DefisTable
+                count={data?.length}
+                items={defis}
+                onDeselectAll={defisSelection.handleDeselectAll}
+                onDeselectOne={defisSelection.handleDeselectOne}
+                onPageChange={handlePageChange}
+                onRowsPerPageChange={handleRowsPerPageChange}
+                onSelectAll={defisSelection.handleSelectAll}
+                onSelectOne={defisSelection.handleSelectOne}
+                page={page}
+                rowsPerPage={rowsPerPage}
+                selected={defisSelection.selected}
+            />
+        </Stack>
     )
 
 }

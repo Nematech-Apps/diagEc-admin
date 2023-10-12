@@ -34,7 +34,7 @@ export const CreateNiveau = () => {
   const [dataToken, setDataToken] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-
+  const [isOnCreate, setIsOnCreate] = useState(false);
 
   useEffect(() => {
     const unsubscribe = OnSnapshot(
@@ -82,6 +82,7 @@ export const CreateNiveau = () => {
         .required("Le libellé en italien est requis"),
     }),
     onSubmit: async (values, helpers) => {
+      setIsOnCreate(true);
       addNiveau(values)
         .then(async (doc) => {
           const collectionRef = Doc(db, 'niveaux', doc.id);
@@ -115,9 +116,11 @@ export const CreateNiveau = () => {
                 })
 
               }
+              setIsOnCreate(false);
               return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
             })
             .catch((err) => {
+              setIsOnCreate(false);
               helpers.setStatus({ success: false });
               helpers.setErrors({ submit: err.message });
               helpers.setSubmitting(false);
@@ -126,6 +129,7 @@ export const CreateNiveau = () => {
 
         })
         .catch((err) => {
+          setIsOnCreate(false);
           helpers.setStatus({ success: false });
           helpers.setErrors({ submit: err.message });
           helpers.setSubmitting(false);
@@ -198,7 +202,7 @@ export const CreateNiveau = () => {
         <Divider />
         <CardActions sx={{ justifyContent: 'flex-end' }}>
           <Button variant="contained"
-            type='submit'>
+            type='submit' disabled={isOnCreate}>
             Créer
           </Button>
         </CardActions>

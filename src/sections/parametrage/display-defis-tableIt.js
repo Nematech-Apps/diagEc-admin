@@ -15,7 +15,7 @@ import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 
 
-
+import { DefiItSearchBar } from 'src/components/searchBar/defiItSearchBar';
 
 export const DisplayDefisTableIt = () => {
     const [data, setData] = useState([]);
@@ -45,12 +45,23 @@ export const DisplayDefisTableIt = () => {
     }, []);
 
 
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const handleSearch = (searchTerm) => {
+        setSearchTerm(searchTerm);
+    };
+
+
     const useDefis = (page, rowsPerPage) => {
+        const filteredData = data.filter((defi) =>
+            (defi.libelleIt?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+            (defi?.pilier?.libelleIt?.toLowerCase() || '').includes(searchTerm.toLowerCase())
+        );
         return useMemo(
             () => {
-                return applyPagination(data, page, rowsPerPage);
+                return applyPagination(filteredData, page, rowsPerPage);
             },
-            [data, page, rowsPerPage]
+            [filteredData, page, rowsPerPage]
         );
     };
 
@@ -105,7 +116,9 @@ export const DisplayDefisTableIt = () => {
     }
 
     return (
-        <DefisTableIt
+        <Stack direction={'column'} spacing={2}>
+            <DefiItSearchBar onSearch={handleSearch}/>
+            <DefisTableIt
             count={data?.length}
             items={defis}
             onDeselectAll={defisSelection.handleDeselectAll}
@@ -118,6 +131,7 @@ export const DisplayDefisTableIt = () => {
             rowsPerPage={rowsPerPage}
             selected={defisSelection.selected}
         />
+        </Stack>
     )
 
 }

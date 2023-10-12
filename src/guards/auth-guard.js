@@ -37,7 +37,7 @@ export const AuthGuard = (props) => {
             visible: true,
             closeModal: true
           }
-        }
+        },
       }
     );
   }
@@ -45,47 +45,45 @@ export const AuthGuard = (props) => {
   const authHook = useAuth();
 
   function startTimerAndPerformAction(startTime, delay, action) {
-    const currentTime = new Date().getTime();
-    const elapsedTime = currentTime - startTime;
+    const elapsedTime = new Date().getTime() - startTime;
 
     if (elapsedTime >= delay) {
-      // Le temps écoulé dépasse ou est égal au délai, exécuter l'action
+      // Execute the action if elapsed time exceeds or equals the delay
       action();
     } else {
-      // Le temps écoulé n'a pas encore atteint le délai, configurer le timer
+      // Set up the timer if elapsed time hasn't reached the delay yet
       const remainingTime = delay - elapsedTime;
       const timerId = setTimeout(() => {
         action();
-        // Ajoute ici le code à exécuter après l'action
+        // Add code to execute after the action here
       }, remainingTime);
 
-
-      // Retourne l'ID du timer pour permettre l'annulation ultérieure
+      // Return the timer ID to allow cancellation later
       return timerId;
     }
   }
 
   const Delay = {
-    vingtSecondes: 20000,
-    soixanteSecondes: 60000,
-    deuxMinutes: 2 * 60000,
-    uneHeure: 60 * 60 * 1000,
-    deuxHeures: 2 * 60 * 60 * 1000,
-    vingtQuatreHeures: 24 * 60 * 60 * 1000
+    twentySeconds: 20000,
+    sixtySeconds: 60000,
+    twoMinutes: 2 * 60000,
+    oneHour: 60 * 60 * 1000,
+    twoHours: 2 * 60 * 60 * 1000,
+    twentyFourHours: 24 * 60 * 60 * 1000
   }
 
   useEffect(() => {
     const startTime = new Date().getTime();
 
     if (auth.currentUser != null) {
-      const timerId = startTimerAndPerformAction(startTime, Delay.uneHeure, () => {
-        afficherAlerte();
+      const timerId = startTimerAndPerformAction(startTime, Delay.oneHour, () => {
+        showAlert();
         setTimeout(() => {
           authHook.signOut();
         }, 4000);
       });
 
-      // Nettoyage du timer lorsque le composant est démonté
+      // Clean up the timer when the component is unmounted
       return () => {
         clearTimeout(timerId);
       };

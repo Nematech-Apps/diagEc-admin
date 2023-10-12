@@ -15,7 +15,7 @@ import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 
 
-
+import { PilierItSearchBar } from 'src/components/searchBar/pilierItSearchBar';
 
 
 export const DisplayPilierTableIt = () => {
@@ -46,12 +46,24 @@ export const DisplayPilierTableIt = () => {
     }, []);
 
 
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const handleSearch = (searchTerm) => {
+        setSearchTerm(searchTerm);
+    };
+
+
     const usePiliers = (page, rowsPerPage) => {
+        const filteredData = data.filter((pilier) =>
+            (pilier.libelleIt?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+            (pilier.definitionIt?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+            (pilier.motClesIt?.find(elt => (elt.toLowerCase() || '').includes(searchTerm.toLowerCase())))
+        );
         return useMemo(
             () => {
-                return applyPagination(data, page, rowsPerPage);
+                return applyPagination(filteredData, page, rowsPerPage);
             },
-            [data, page, rowsPerPage]
+            [filteredData, page, rowsPerPage]
         );
     };
 
@@ -106,19 +118,22 @@ export const DisplayPilierTableIt = () => {
     }
 
     return (
-        <PilierTableIt
-            count={data?.length}
-            items={piliers}
-            onDeselectAll={piliersSelection.handleDeselectAll}
-            onDeselectOne={piliersSelection.handleDeselectOne}
-            onPageChange={handlePageChange}
-            onRowsPerPageChange={handleRowsPerPageChange}
-            onSelectAll={piliersSelection.handleSelectAll}
-            onSelectOne={piliersSelection.handleSelectOne}
-            page={page}
-            rowsPerPage={rowsPerPage}
-            selected={piliersSelection.selected}
-        />
+        <Stack direction={'column'} spacing={2}>
+            <PilierItSearchBar onSearch={handleSearch}/>
+            <PilierTableIt
+                count={data?.length}
+                items={piliers}
+                onDeselectAll={piliersSelection.handleDeselectAll}
+                onDeselectOne={piliersSelection.handleDeselectOne}
+                onPageChange={handlePageChange}
+                onRowsPerPageChange={handleRowsPerPageChange}
+                onSelectAll={piliersSelection.handleSelectAll}
+                onSelectOne={piliersSelection.handleSelectOne}
+                page={page}
+                rowsPerPage={rowsPerPage}
+                selected={piliersSelection.selected}
+            />
+        </Stack>
     )
 
 }

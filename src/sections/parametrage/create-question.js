@@ -58,6 +58,9 @@ export const CreateQuestion = () => {
     const [dataToken, setDataToken] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
+    const [isOnCreate, setIsOnCreate] = useState(false);
+
+
     const [answers, setAnswers] = useState([]);
 
     const [categories, setCategories] = useState([]);
@@ -332,8 +335,8 @@ export const CreateQuestion = () => {
             // }
 
 
-
             if (answerLibelle.length != 0 && categLibelle.length != 0 && defiLibelle.length != 0) {
+                setIsOnCreate(true);
                 const data = {
                     libelleFr: values.libelleFr,
                     libelleEn: values.libelleEn,
@@ -360,6 +363,9 @@ export const CreateQuestion = () => {
                         UpdateDoc(collectionRef, docData)
                             .then(() => {
                                 helpers.resetForm();
+                                setAnswerLibelle([]);
+                                setCategLibelle([]);
+                                setDefiLibelle([]);
                                 //notify users
                                 const authToken = 'AAAAn_0BcwE:APA91bGwDIQfUGwNFze-sBenguSvoIti8XW8kuYvrhbcXDJ6X9ZWP8rVETtQoRGJAyJT_9wpHlg02Lrd1PsJEsnhEBkvrp5yy3GJ4wSPEJTT7LP1azAE3SD_3m6OwAjijwkksvUK2f-I';
                                 notificationService.setAuthorizationToken(authToken);
@@ -380,9 +386,11 @@ export const CreateQuestion = () => {
                                     })
 
                                 }
+                                setIsOnCreate(false);
                                 return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
                             })
                             .catch((err) => {
+                                setIsOnCreate(false);
                                 helpers.setStatus({ success: false });
                                 helpers.setErrors({ submit: err.message });
                                 helpers.setSubmitting(false);
@@ -391,6 +399,7 @@ export const CreateQuestion = () => {
 
                     })
                     .catch((err) => {
+                        setIsOnCreate(false);
                         helpers.setStatus({ success: false });
                         helpers.setErrors({ submit: err.message });
                         helpers.setSubmitting(false);
@@ -728,7 +737,7 @@ export const CreateQuestion = () => {
                 <Divider />
                 <CardActions sx={{ justifyContent: 'flex-end' }}>
                     <Button variant="contained"
-                        type='submit'>
+                        type='submit' disabled={isOnCreate}>
                         Créer
                     </Button>
                 </CardActions>
