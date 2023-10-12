@@ -29,7 +29,7 @@ export const AuthGuard = (props) => {
     // alert(`Votre session a expiré! Vous allez être déconnecté.`);
     swal(
       {
-        text : "Votre session a expiré! Vous allez être déconnecté.",
+        text : "Votre session a expiré! Veuillez vous reconnecter.",
         buttons : {
           confirm: {
             text: "OK",
