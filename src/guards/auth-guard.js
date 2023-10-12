@@ -16,16 +16,8 @@ export const AuthGuard = (props) => {
   const ignore = useRef(false);
   const [checked, setChecked] = useState(false);
 
-  const [snackBarOpen, setSnackBarOpen] = useState(false);
-
-  const handleCloseSnackBar = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setSnackBarOpen(false);
-  };
-
-  const afficherAlerte = (action) => {
+  
+  const showAlert = (action) => {
     // alert(`Votre session a expiré! Vous allez être déconnecté.`);
     swal(
       {
