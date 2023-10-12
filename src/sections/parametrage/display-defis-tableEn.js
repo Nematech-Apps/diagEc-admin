@@ -46,53 +46,40 @@ export const DisplayDefisTableEn = () => {
 
     const [searchTerm, setSearchTerm] = useState('');
 
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(2);
+
     const handleSearch = (searchTerm) => {
         setSearchTerm(searchTerm);
     };
 
-
-    const useDefis = (page, rowsPerPage) => {
-        const filteredData = data.filter((defi) =>
-            (defi.libelleEn?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-            (defi?.pilier?.libelleEn?.toLowerCase() || '').includes(searchTerm.toLowerCase())
+    const useDefis = useMemo(() => {
+        const filteredData = data.filter(
+            (defi) =>
+                (defi.libelleEn?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+                (defi?.pilier?.libelleEn?.toLowerCase() || '').includes(searchTerm.toLowerCase())
         );
-        return useMemo(
-            () => {
-                return applyPagination(filteredData, page, rowsPerPage);
-            },
-            [filteredData, page, rowsPerPage]
-        );
-    };
-
-    const useDefisIds = (defis) => {
-        return useMemo(
-            () => {
-                return defis?.map((defi) => defi.id);
-            },
-            [defis]
-        );
-    };
+        return applyPagination(filteredData, page, rowsPerPage);
+    }, [data, searchTerm, page, rowsPerPage]);
 
 
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(2);
-    const defis = useDefis(page, rowsPerPage);
-    const defisIds = useDefisIds(defis);
+    const useDefisIds = useMemo(() => {
+        return useDefis?.map((defi) => defi.id);
+    }, [useDefis]);
+
+
+
+    const defis = useDefis;
+    const defisIds = useDefisIds;
     const defisSelection = useSelection(defisIds);
 
-    const handlePageChange = useCallback(
-        (event, value) => {
-            setPage(value);
-        },
-        []
-    );
+    const handlePageChange = useCallback((event, value) => {
+        setPage(value);
+    }, []);
 
-    const handleRowsPerPageChange = useCallback(
-        (event) => {
-            setRowsPerPage(event.target.value);
-        },
-        []
-    );
+    const handleRowsPerPageChange = useCallback((event) => {
+        setRowsPerPage(event.target.value);
+    }, []);
 
     if (isLoading) {
         return (
@@ -116,20 +103,20 @@ export const DisplayDefisTableEn = () => {
 
     return (
         <Stack direction={'column'} spacing={2}>
-            <DefiEnSearchBar onSearch={handleSearch}/>
+            <DefiEnSearchBar onSearch={handleSearch} />
             <DefisTableEn
-            count={data?.length}
-            items={defis}
-            onDeselectAll={defisSelection.handleDeselectAll}
-            onDeselectOne={defisSelection.handleDeselectOne}
-            onPageChange={handlePageChange}
-            onRowsPerPageChange={handleRowsPerPageChange}
-            onSelectAll={defisSelection.handleSelectAll}
-            onSelectOne={defisSelection.handleSelectOne}
-            page={page}
-            rowsPerPage={rowsPerPage}
-            selected={defisSelection.selected}
-        />
+                count={data?.length}
+                items={defis}
+                onDeselectAll={defisSelection.handleDeselectAll}
+                onDeselectOne={defisSelection.handleDeselectOne}
+                onPageChange={handlePageChange}
+                onRowsPerPageChange={handleRowsPerPageChange}
+                onSelectAll={defisSelection.handleSelectAll}
+                onSelectOne={defisSelection.handleSelectOne}
+                page={page}
+                rowsPerPage={rowsPerPage}
+                selected={defisSelection.selected}
+            />
         </Stack>
     )
 

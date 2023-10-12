@@ -46,53 +46,42 @@ export const DisplayQuestionTableEn = () => {
 
     const [searchTerm, setSearchTerm] = useState('');
 
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(2);
+
     const handleSearch = (searchTerm) => {
         setSearchTerm(searchTerm);
     };
 
 
-    const useQuestions = (page, rowsPerPage) => {
-        const filteredData = data.filter((question) =>
-            (question.libelleEn?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-            (question?.pilier?.libelleEn?.toLowerCase() || '').includes(searchTerm.toLowerCase())
+    const useQuestions = useMemo(() => {
+        const filteredData = data.filter(
+            (question) =>
+                (question.libelleEn?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+                (question?.pilier?.libelleEn?.toLowerCase() || '').includes(searchTerm.toLowerCase())
         );
-        return useMemo(
-            () => {
-                return applyPagination(filteredData, page, rowsPerPage);
-            },
-            [filteredData, page, rowsPerPage]
-        );
-    };
-
-    const useQuestionIds = (questions) => {
-        return useMemo(
-            () => {
-                return questions?.map((question) => question.id);
-            },
-            [questions]
-        );
-    };
+        return applyPagination(filteredData, page, rowsPerPage);
+    }, [data, searchTerm, page, rowsPerPage]);
 
 
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(2);
-    const questions = useQuestions(page, rowsPerPage);
-    const questionsIds = useQuestionIds(questions);
+    const useQuestionIds = useMemo(() => {
+        return useQuestions?.map((question) => question.id);
+    }, [useQuestions]);
+
+
+
+    const questions = useQuestions;
+    const questionsIds = useQuestionIds;
     const questionsSelection = useSelection(questionsIds);
 
-    const handlePageChange = useCallback(
-        (event, value) => {
-            setPage(value);
-        },
-        []
-    );
+    const handlePageChange = useCallback((event, value) => {
+        setPage(value);
+    }, []);
 
-    const handleRowsPerPageChange = useCallback(
-        (event) => {
-            setRowsPerPage(event.target.value);
-        },
-        []
-    );
+    const handleRowsPerPageChange = useCallback((event) => {
+        setRowsPerPage(event.target.value);
+    }, []);
+
 
     if (isLoading) {
         return (
@@ -116,20 +105,20 @@ export const DisplayQuestionTableEn = () => {
 
     return (
         <Stack direction={'column'} spacing={2}>
-            <QuestionEnSearchBar onSearch={handleSearch}/>
+            <QuestionEnSearchBar onSearch={handleSearch} />
             <QuestionTableEn
-            count={data?.length}
-            items={questions}
-            onDeselectAll={questionsSelection.handleDeselectAll}
-            onDeselectOne={questionsSelection.handleDeselectOne}
-            onPageChange={handlePageChange}
-            onRowsPerPageChange={handleRowsPerPageChange}
-            onSelectAll={questionsSelection.handleSelectAll}
-            onSelectOne={questionsSelection.handleSelectOne}
-            page={page}
-            rowsPerPage={rowsPerPage}
-            selected={questionsSelection.selected}
-        />
+                count={data?.length}
+                items={questions}
+                onDeselectAll={questionsSelection.handleDeselectAll}
+                onDeselectOne={questionsSelection.handleDeselectOne}
+                onPageChange={handlePageChange}
+                onRowsPerPageChange={handleRowsPerPageChange}
+                onSelectAll={questionsSelection.handleSelectAll}
+                onSelectOne={questionsSelection.handleSelectOne}
+                page={page}
+                rowsPerPage={rowsPerPage}
+                selected={questionsSelection.selected}
+            />
         </Stack>
     )
 

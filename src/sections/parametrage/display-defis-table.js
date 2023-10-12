@@ -46,53 +46,40 @@ export const DisplayDefisTable = () => {
 
     const [searchTerm, setSearchTerm] = useState('');
 
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(2);
+
     const handleSearch = (searchTerm) => {
         setSearchTerm(searchTerm);
     };
 
-
-    const useDefis = (page, rowsPerPage) => {
-        const filteredData = data.filter((defi) =>
-            (defi.libelleFr?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-            (defi?.pilier?.libelleFr?.toLowerCase() || '').includes(searchTerm.toLowerCase())
+    const useDefis = useMemo(() => {
+        const filteredData = data.filter(
+            (defi) =>
+                (defi.libelleFr?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+                (defi?.pilier?.libelleFr?.toLowerCase() || '').includes(searchTerm.toLowerCase())
         );
-        return useMemo(
-            () => {
-                return applyPagination(filteredData, page, rowsPerPage);
-            },
-            [filteredData, page, rowsPerPage]
-        );
-    };
-
-    const useDefisIds = (defis) => {
-        return useMemo(
-            () => {
-                return defis?.map((defi) => defi.id);
-            },
-            [defis]
-        );
-    };
+        return applyPagination(filteredData, page, rowsPerPage);
+    }, [data, searchTerm, page, rowsPerPage]);
 
 
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(2);
-    const defis = useDefis(page, rowsPerPage);
-    const defisIds = useDefisIds(defis);
+    const useDefisIds = useMemo(() => {
+        return useDefis?.map((defi) => defi.id);
+    }, [useDefis]);
+
+
+
+    const defis = useDefis;
+    const defisIds = useDefisIds;
     const defisSelection = useSelection(defisIds);
 
-    const handlePageChange = useCallback(
-        (event, value) => {
-            setPage(value);
-        },
-        []
-    );
+    const handlePageChange = useCallback((event, value) => {
+        setPage(value);
+    }, []);
 
-    const handleRowsPerPageChange = useCallback(
-        (event) => {
-            setRowsPerPage(event.target.value);
-        },
-        []
-    );
+    const handleRowsPerPageChange = useCallback((event) => {
+        setRowsPerPage(event.target.value);
+    }, []);
 
 
 
@@ -118,7 +105,7 @@ export const DisplayDefisTable = () => {
 
     return (
         <Stack direction={'column'} spacing={2}>
-            <DefiFrSearchBar onSearch={handleSearch}/>
+            <DefiFrSearchBar onSearch={handleSearch} />
             <DefisTable
                 count={data?.length}
                 items={defis}

@@ -45,54 +45,44 @@ export const DisplayAnswerTable = () => {
 
     const [searchTerm, setSearchTerm] = useState('');
 
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(2);
+
     const handleSearch = (searchTerm) => {
         setSearchTerm(searchTerm);
     };
 
 
-    const useAnswers = (page, rowsPerPage) => {
-        const filteredData = data.filter((answer) =>
-            (answer.libelleFr?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-            (answer.libelleEn?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-            (answer.libelleIt?.toLowerCase() || '').includes(searchTerm.toLowerCase())
-        );
-        return useMemo(
-            () => {
-                return applyPagination(filteredData, page, rowsPerPage);
-            },
-            [filteredData, page, rowsPerPage]
-        );
-    };
 
-    const useAnswerIds = (answers) => {
-        return useMemo(
-            () => {
-                return answers?.map((answer) => answer.id);
-            },
-            [answers]
+    const useAnswers = useMemo(() => {
+        const filteredData = data.filter(
+            (answer) =>
+                (answer.libelleFr?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+                (answer.libelleEn?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+                (answer.libelleIt?.toLowerCase() || '').includes(searchTerm.toLowerCase())
         );
-    };
+        return applyPagination(filteredData, page, rowsPerPage);
+    }, [data, searchTerm, page, rowsPerPage]);
 
 
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(2);
-    const answers = useAnswers(page, rowsPerPage);
-    const answersIds = useAnswerIds(answers);
+    const useAnswerIds = useMemo(() => {
+        return useAnswers?.map((answer) => answer.id);
+    }, [useAnswers]);
+
+
+
+    const answers = useAnswers;
+    const answersIds = useAnswerIds;
     const answersSelection = useSelection(answersIds);
 
-    const handlePageChange = useCallback(
-        (event, value) => {
-            setPage(value);
-        },
-        []
-    );
+    const handlePageChange = useCallback((event, value) => {
+        setPage(value);
+    }, []);
 
-    const handleRowsPerPageChange = useCallback(
-        (event) => {
-            setRowsPerPage(event.target.value);
-        },
-        []
-    );
+    const handleRowsPerPageChange = useCallback((event) => {
+        setRowsPerPage(event.target.value);
+    }, []);
+
 
     if (isLoading) {
         return (

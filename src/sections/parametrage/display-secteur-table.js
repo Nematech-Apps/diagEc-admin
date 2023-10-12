@@ -47,54 +47,42 @@ export const DisplaySecteurTable = () => {
 
     const [searchTerm, setSearchTerm] = useState('');
 
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(2);
+
     const handleSearch = (searchTerm) => {
         setSearchTerm(searchTerm);
     };
 
 
-    const useSecteurs = (page, rowsPerPage) => {
-        const filteredData = data.filter((secteur) => 
-            (secteur.libelleFr?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-            (secteur.libelleEn?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-            (secteur.libelleIt?.toLowerCase() || '').includes(searchTerm.toLowerCase()) 
+    const useSecteurs = useMemo(() => {
+        const filteredData = data.filter(
+            (secteur) =>
+                (secteur.libelleFr?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+                (secteur.libelleEn?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+                (secteur.libelleIt?.toLowerCase() || '').includes(searchTerm.toLowerCase())
         );
-        return useMemo(
-            () => {
-                return applyPagination(filteredData, page, rowsPerPage);
-            },
-            [filteredData, page, rowsPerPage]
-        );
-    };
-
-    const useSecteurIds = (secteurs) => {
-        return useMemo(
-            () => {
-                return secteurs?.map((secteur) => secteur.id);
-            },
-            [secteurs]
-        );
-    };
+        return applyPagination(filteredData, page, rowsPerPage);
+    }, [data, searchTerm, page, rowsPerPage]);
 
 
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(2);
-    const secteurs = useSecteurs(page, rowsPerPage);
-    const secteursIds = useSecteurIds(secteurs);
+    const useSecteurIds = useMemo(() => {
+        return useSecteurs?.map((secteur) => secteur.id);
+    }, [useSecteurs]);
+
+
+    
+    const secteurs = useSecteurs;
+    const secteursIds = useSecteurIds;
     const secteursSelection = useSelection(secteursIds);
 
-    const handlePageChange = useCallback(
-        (event, value) => {
-            setPage(value);
-        },
-        []
-    );
+    const handlePageChange = useCallback((event, value) => {
+        setPage(value);
+    }, []);
 
-    const handleRowsPerPageChange = useCallback(
-        (event) => {
-            setRowsPerPage(event.target.value);
-        },
-        []
-    );
+    const handleRowsPerPageChange = useCallback((event) => {
+        setRowsPerPage(event.target.value);
+    }, []);
 
     if (isLoading) {
         return (

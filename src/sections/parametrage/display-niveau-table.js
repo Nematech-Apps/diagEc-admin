@@ -46,54 +46,44 @@ export const DisplayNiveauTable = () => {
 
     const [searchTerm, setSearchTerm] = useState('');
 
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(2);
+
     const handleSearch = (searchTerm) => {
         setSearchTerm(searchTerm);
     };
 
 
-    const useNiveaux = (page, rowsPerPage) => {
-        const filteredData = data.filter((niveau) =>
-            (niveau.libelleFr?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-            (niveau.libelleEn?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-            (niveau.libelleIt?.toLowerCase() || '').includes(searchTerm.toLowerCase())
-        );
-        return useMemo(
-            () => {
-                return applyPagination(filteredData, page, rowsPerPage);
-            },
-            [filteredData, page, rowsPerPage]
-        );
-    };
 
-    const useNiveauIds = (niveaux) => {
-        return useMemo(
-            () => {
-                return niveaux?.map((niveau) => niveau.id);
-            },
-            [niveaux]
+    const useNiveaux = useMemo(() => {
+        const filteredData = data.filter(
+            (niveau) =>
+                (niveau.libelleFr?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+                (niveau.libelleEn?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+                (niveau.libelleIt?.toLowerCase() || '').includes(searchTerm.toLowerCase())
         );
-    };
+        return applyPagination(filteredData, page, rowsPerPage);
+    }, [data, searchTerm, page, rowsPerPage]);
 
 
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(2);
-    const niveaux = useNiveaux(page, rowsPerPage);
-    const niveauxIds = useNiveauIds(niveaux);
+    const useNiveauIds = useMemo(() => {
+        return useNiveaux?.map((niveau) => niveau.id);
+    }, [useNiveaux]);
+
+
+
+    const niveaux = useNiveaux;
+    const niveauxIds = useNiveauIds;
     const niveauxSelection = useSelection(niveauxIds);
 
-    const handlePageChange = useCallback(
-        (event, value) => {
-            setPage(value);
-        },
-        []
-    );
+    const handlePageChange = useCallback((event, value) => {
+        setPage(value);
+    }, []);
 
-    const handleRowsPerPageChange = useCallback(
-        (event) => {
-            setRowsPerPage(event.target.value);
-        },
-        []
-    );
+    const handleRowsPerPageChange = useCallback((event) => {
+        setRowsPerPage(event.target.value);
+    }, []);
+
 
     if (isLoading) {
         return (
@@ -117,20 +107,20 @@ export const DisplayNiveauTable = () => {
 
     return (
         <Stack direction={'column'} spacing={2}>
-            <NiveauSearchBar onSearch={handleSearch}/>
+            <NiveauSearchBar onSearch={handleSearch} />
             <NiveauTable
-            count={data?.length}
-            items={niveaux}
-            onDeselectAll={niveauxSelection.handleDeselectAll}
-            onDeselectOne={niveauxSelection.handleDeselectOne}
-            onPageChange={handlePageChange}
-            onRowsPerPageChange={handleRowsPerPageChange}
-            onSelectAll={niveauxSelection.handleSelectAll}
-            onSelectOne={niveauxSelection.handleSelectOne}
-            page={page}
-            rowsPerPage={rowsPerPage}
-            selected={niveauxSelection.selected}
-        />
+                count={data?.length}
+                items={niveaux}
+                onDeselectAll={niveauxSelection.handleDeselectAll}
+                onDeselectOne={niveauxSelection.handleDeselectOne}
+                onPageChange={handlePageChange}
+                onRowsPerPageChange={handleRowsPerPageChange}
+                onSelectAll={niveauxSelection.handleSelectAll}
+                onSelectOne={niveauxSelection.handleSelectOne}
+                page={page}
+                rowsPerPage={rowsPerPage}
+                selected={niveauxSelection.selected}
+            />
         </Stack>
     )
 

@@ -46,54 +46,42 @@ export const DisplayPilierTable = () => {
 
     const [searchTerm, setSearchTerm] = useState('');
 
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(2);
+
     const handleSearch = (searchTerm) => {
         setSearchTerm(searchTerm);
     };
 
 
-    const usePiliers = (page, rowsPerPage) => {
-        const filteredData = data.filter((pilier) =>
-            (pilier.libelleFr?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-            (pilier.definitionFr?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-            (pilier.motClesFr?.find(elt => (elt.toLowerCase() || '').includes(searchTerm.toLowerCase())))
+    const usePiliers = useMemo(() => {
+        const filteredData = data.filter(
+            (pilier) =>
+                (pilier.libelleFr?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+                (pilier.definitionFr?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+                (pilier.motClesFr?.find(elt => (elt.toLowerCase() || '').includes(searchTerm.toLowerCase())))
         );
-        return useMemo(
-            () => {
-                return applyPagination(filteredData, page, rowsPerPage);
-            },
-            [filteredData, page, rowsPerPage]
-        );
-    };
-
-    const usePilierIds = (piliers) => {
-        return useMemo(
-            () => {
-                return piliers?.map((pilier) => pilier.id);
-            },
-            [piliers]
-        );
-    };
+        return applyPagination(filteredData, page, rowsPerPage);
+    }, [data, searchTerm, page, rowsPerPage]);
 
 
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(2);
-    const piliers = usePiliers(page, rowsPerPage);
-    const piliersIds = usePilierIds(piliers);
+    const usePilierIds = useMemo(() => {
+        return usePiliers?.map((pilier) => pilier.id);
+    }, [usePiliers]);
+
+
+
+    const piliers = usePiliers;
+    const piliersIds = usePilierIds;
     const piliersSelection = useSelection(piliersIds);
 
-    const handlePageChange = useCallback(
-        (event, value) => {
-            setPage(value);
-        },
-        []
-    );
+    const handlePageChange = useCallback((event, value) => {
+        setPage(value);
+    }, []);
 
-    const handleRowsPerPageChange = useCallback(
-        (event) => {
-            setRowsPerPage(event.target.value);
-        },
-        []
-    );
+    const handleRowsPerPageChange = useCallback((event) => {
+        setRowsPerPage(event.target.value);
+    }, []);
 
     if (isLoading) {
         return (
@@ -117,7 +105,7 @@ export const DisplayPilierTable = () => {
 
     return (
         <Stack direction={'column'} spacing={2}>
-            <PilierFrSearchBar onSearch={handleSearch}/>
+            <PilierFrSearchBar onSearch={handleSearch} />
             <PilierTable
                 count={data?.length}
                 items={piliers}
