@@ -787,16 +787,17 @@ export const getCompanyListByMonth = async () => {
         const groupedData = {};
         querySnapshot.forEach((doc) => {
             const data = doc.data();
-            console.log(`createdAt: ${data.createdAt}`);
+            // console.log(`createdAt: ${data.createdAt}`);
 
             // Convert the timestamp (in seconds) to a JavaScript Date object.
             const date = new Date(data.createdAt.seconds * 1000);
 
             // Get the month name from the Date object.
             const monthName = date.toLocaleString('default', { month: 'long' });
+            console.log(`monthName : ${monthName}`);
 
             // Use the month name as the key for grouping the data.
-            const groupField = monthName;
+            const groupField = monthName.substring(0,3);
 
             if (!groupedData[groupField]) {
                 groupedData[groupField] = [data];

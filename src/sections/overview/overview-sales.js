@@ -19,7 +19,7 @@ import { Chart } from 'src/components/chart';
 import { getCompanyListByMonth } from 'src/firebase/firebaseServices';
 import { OnSnapshot, Query } from 'src/firebase/firebaseConfig';
 
-const useChartOptions = (theme) => {
+const useChartOptions = (labels, theme) => {
   //const theme = useTheme();
 
   return {
@@ -30,7 +30,7 @@ const useChartOptions = (theme) => {
         show: false
       }
     },
-    colors: [theme.palette.primary.main, alpha(theme.palette.primary.main, 0.25)],
+    colors: [theme.palette?.primary.main],
     dataLabels: {
       enabled: false
     },
@@ -39,7 +39,7 @@ const useChartOptions = (theme) => {
       type: 'solid'
     },
     grid: {
-      borderColor: theme.palette.divider,
+      borderColor: theme.palette?.divider,
       strokeDashArray: 2,
       xaxis: {
         lines: {
@@ -66,44 +66,31 @@ const useChartOptions = (theme) => {
       width: 2
     },
     theme: {
-      mode: theme.palette.mode
+      mode: theme.palette?.mode
     },
     xaxis: {
       axisBorder: {
-        color: theme.palette.divider,
+        color: theme.palette?.divider,
         show: true
       },
       axisTicks: {
-        color: theme.palette.divider,
+        color: theme.palette?.divider,
         show: true
       },
-      categories: [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec'
-      ],
+      categories: labels,
       labels: {
         offsetY: 5,
         style: {
-          colors: theme.palette.text.secondary
+          colors: theme.palette?.text.secondary
         }
       }
     },
     yaxis: {
       labels: {
-        formatter: (value) => (value > 0 ? `${value}K` : `${value}`),
+        formatter: (value) => (value > 0 ? `${value}` : `${value}`),
         offsetX: -10,
         style: {
-          colors: theme.palette.text.secondary
+          colors: theme.palette?.text.secondary
         }
       }
     }
@@ -111,14 +98,14 @@ const useChartOptions = (theme) => {
 };
 
 export const OverviewSales = (props) => {
-  const { chartSeries, sx } = props;
+  const { sx } = props;
   const theme = useTheme();
 
-  const chartOptions = useChartOptions(theme);
+  // const chartOptions = useChartOptions(theme);
 
   
-  //const [chartOptions, setChartOptions] = useState({});
-  //const [chartSeries, setChartSeries] = useState([]);
+  const [chartOptions, setChartOptions] = useState({});
+  const [chartSeries, setChartSeries] = useState([]);
 
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -127,16 +114,22 @@ export const OverviewSales = (props) => {
     const fetchData = async () => {
       try {
         const groupedData = await getCompanyListByMonth();
-        console.log(groupedData);
+        // console.clear();
+        console.log(`groupedDataByMonth : ${JSON.stringify(groupedData)}`);
         const keysArray = Object.keys(groupedData);
         const options = useChartOptions(keysArray,theme);
-        //setChartOptions(options)
-        // const valuesArray = Object.values(groupedData);
-        // const arr = [];
-        // valuesArray.forEach((elt) => {
-        //   arr.push(elt.length)
-        // });
-        // setChartSeries(arr);
+        setChartOptions(options)
+        const valuesArray = Object.values(groupedData);
+        const arr = [];
+        valuesArray.forEach((elt) => {
+          let obj = {
+            name : 'Cette année',
+            data : [elt.length]
+          };
+          arr.push(obj);
+        });
+        console.log(`arr : ${JSON.stringify(arr)}`);
+        setChartSeries(arr);
         setData(groupedData);
         setIsLoading(false);
       } catch (error) {
@@ -160,20 +153,20 @@ export const OverviewSales = (props) => {
   return (
     <Card sx={sx}>
       <CardHeader
-        action={(
-          <Button
-            color="inherit"
-            size="small"
-            startIcon={(
-              <SvgIcon fontSize="small">
-                <ArrowPathIcon />
-              </SvgIcon>
-            )}
-          >
-            Recharger
-          </Button>
-        )}
-        title="Entreprises évaluées"
+        // action={(
+        //   <Button
+        //     color="inherit"
+        //     size="small"
+        //     startIcon={(
+        //       <SvgIcon fontSize="small">
+        //         <ArrowPathIcon />
+        //       </SvgIcon>
+        //     )}
+        //   >
+        //     Recharger
+        //   </Button>
+        // )}
+        title="Entreprises inscrits"
       />
       <CardContent>
         <Chart

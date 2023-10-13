@@ -48,7 +48,7 @@ const initialModalStyle = {
     width: '100%',
     backgroundColor: 'white',
     zIndex: 9999,
-    transition: 'bottom 0.3s ease-in-out', // Update transition property
+    transition: 'bottom 0.6s ease-in-out', // Update transition property
 };
 
 const overlayStyle = {
@@ -175,7 +175,7 @@ export const QuestionsDefisModal = ({ handleClose, isOpen, data }) => {
                                     </SvgIcon>
                                 )}
                                 size="small"
-                                variant="outlined"
+                                variant="contained"
                                 onClick={handlePreviousPage}
                                 disabled={!isFirstPage}
                             >
@@ -189,7 +189,7 @@ export const QuestionsDefisModal = ({ handleClose, isOpen, data }) => {
                                     </SvgIcon>
                                 )}
                                 size="small"
-                                variant="outlined"
+                                variant="contained"
                                 onClick={handleNextPage}
                                 disabled={isLastPage}
                             >
