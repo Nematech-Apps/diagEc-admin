@@ -403,8 +403,8 @@ export const EditQuestionEn = ({ handleClose, isOpen, data }) => {
 
                                     <List>
                                         {
-                                            data.defis?.map((defi) => (
-                                                <ListItem>
+                                            data.defis?.map((defi, index) => (
+                                                <ListItem key={index}>
                                                     <ListItemText>
                                                         <Stack direction={'row'} spacing={1}>
                                                             <Typography variant='subtitle2'>{defi.libelleEn}</Typography>
@@ -488,13 +488,13 @@ export const EditQuestionEn = ({ handleClose, isOpen, data }) => {
 
                                     <Stack direction={'row'} spacing={1}>
                                         {
-                                            data.answers?.map((answer) => (
-                                                <>
+                                            data.answers?.map((answer,index) => (
+                                                <div key={index}>
                                                     <Typography variant='subtitle2'>{answer.libelleEn}</Typography>
                                                     <SvgIcon>
                                                         <CheckBadgeIcon color='green' />
                                                     </SvgIcon> &nbsp;&nbsp; |
-                                                </>
+                                                </div>
                                             ))
                                         }
                                     </Stack>
@@ -539,13 +539,13 @@ export const EditQuestionEn = ({ handleClose, isOpen, data }) => {
 
                                     <Stack direction={'row'} spacing={1}>
                                         {
-                                            data.categories?.map((categ) => (
-                                                <>
+                                            data.categories?.map((categ, index) => (
+                                                <div key={index}>
                                                     <Typography variant='subtitle2'>{categ.libelle}</Typography>
                                                     <SvgIcon>
                                                         <CheckBadgeIcon color='green' />
                                                     </SvgIcon> &nbsp;&nbsp; |
-                                                </>
+                                                </div>
                                             ))
                                         }
                                     </Stack>
