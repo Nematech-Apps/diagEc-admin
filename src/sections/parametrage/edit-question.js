@@ -484,14 +484,16 @@ export const EditQuestion = ({ handleClose, isOpen, data }) => {
 
 
 
-                                    <Stack direction={'row'} spacing={1}>
+                                    <Stack direction={'row'} spacing={2}>
                                         {
                                             data.answers?.map((answer, index) => (
                                                 <div key={index}>
-                                                    <Typography variant='subtitle2'>{answer.libelleFr}</Typography>
-                                                    <SvgIcon>
-                                                        <CheckBadgeIcon color='green' />
-                                                    </SvgIcon> &nbsp;&nbsp; |
+                                                    <Stack direction={'row'} spacing={2}>
+                                                        <Typography variant='subtitle2'>{answer.libelleFr}</Typography>
+                                                        <SvgIcon>
+                                                            <CheckBadgeIcon color='green' />
+                                                        </SvgIcon> &nbsp;&nbsp; |
+                                                    </Stack>
                                                 </div>
                                             ))
                                         }
@@ -534,14 +536,16 @@ export const EditQuestion = ({ handleClose, isOpen, data }) => {
                                     </FormControl>
 
 
-                                    <Stack direction={'row'} spacing={1}>
+                                    <Stack direction={'row'} spacing={2}>
                                         {
                                             data.categories?.map((categ, index) => (
                                                 <div key={index}>
-                                                    <Typography variant='subtitle2'>{categ.libelle}</Typography>
-                                                    <SvgIcon>
-                                                        <CheckBadgeIcon color='green' />
-                                                    </SvgIcon> &nbsp;&nbsp; |
+                                                    <Stack direction={'row'} spacing={2}>
+                                                        <Typography variant='subtitle2'>{categ.libelle}</Typography>
+                                                        <SvgIcon>
+                                                            <CheckBadgeIcon color='green' />
+                                                        </SvgIcon> &nbsp;&nbsp; |
+                                                    </Stack>
                                                 </div>
                                             ))
                                         }
