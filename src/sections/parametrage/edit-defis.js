@@ -25,6 +25,8 @@ import {
 
 import DocumentIcon from '@heroicons/react/24/solid/DocumentIcon';
 
+import CheckBadgeIcon from '@heroicons/react/24/solid/CheckBadgeIcon';
+
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
@@ -138,6 +140,22 @@ export const EditDefis = ({ handleClose, isOpen, data }) => {
                                     spacing={3}
                                     sx={{ maxWidth: 400 }}
                                 >
+
+
+                                    <Stack direction={'row'} spacing={1}>
+                                        {
+                                            data.pilier != null  &&
+                                            (
+                                                <>
+                                                    <Typography variant='subtitle2'>{data.pilier?.libelleFr}</Typography>
+                                                    <SvgIcon>
+                                                        <CheckBadgeIcon color='green' />
+                                                    </SvgIcon>
+                                                </>
+                                            )
+                                        }
+
+                                    </Stack>
 
                                     <FormControl variant="filled"
                                         sx={{ width: 400 }} fullWidth>

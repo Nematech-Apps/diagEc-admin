@@ -22,7 +22,10 @@ import {
     OutlinedInput,
     Slider,
     Checkbox,
-    ListItemText
+    List,
+    ListItem,
+    ListItemText,
+    SvgIcon
 } from '@mui/material';
 
 import { useFormik } from 'formik';
@@ -41,6 +44,9 @@ import { getCategoriesList } from 'src/firebase/firebaseServices';
 import { getPilierList } from 'src/firebase/firebaseServices';
 import { getDefisList } from 'src/firebase/firebaseServices';
 import { OnSnapshot } from 'src/firebase/firebaseConfig';
+
+
+import CheckBadgeIcon from '@heroicons/react/24/solid/CheckBadgeIcon';
 
 
 const style = {
@@ -324,6 +330,13 @@ export const EditQuestionIt = ({ handleClose, isOpen, data }) => {
                                     sx={{ maxWidth: 900 }}
                                 >
 
+                                    <Stack direction={'row'} spacing={1}>
+                                        <Typography variant='subtitle2'>{data.pilier.libelleIt}</Typography>
+                                        <SvgIcon>
+                                            <CheckBadgeIcon color='green' />
+                                        </SvgIcon>
+                                    </Stack>
+
                                     <FormControl variant="filled"
                                         fullWidth>
                                         <InputLabel id="pilier">Pilier</InputLabel>
@@ -385,6 +398,24 @@ export const EditQuestionIt = ({ handleClose, isOpen, data }) => {
                                     </Typography>
                                 )}
                             </FormControl> */}
+
+
+                                    <List>
+                                        {
+                                            data.defis?.map((defi) => (
+                                                <ListItem>
+                                                    <ListItemText>
+                                                        <Stack direction={'row'} spacing={1}>
+                                                            <Typography variant='subtitle2'>{defi.libelleIt}</Typography>
+                                                            <SvgIcon>
+                                                                <CheckBadgeIcon color='green' />
+                                                            </SvgIcon>
+                                                        </Stack>
+                                                    </ListItemText>
+                                                </ListItem>
+                                            ))
+                                        }
+                                    </List>
 
 
 
@@ -452,86 +483,108 @@ export const EditQuestionIt = ({ handleClose, isOpen, data }) => {
 
 
 
+                                    <Stack direction={'row'} spacing={1}>
+                                        {
+                                            data.answers?.map((answer) => (
+                                                <>
+                                                    <Typography variant='subtitle2'>{answer.libelleIt}</Typography>
+                                                    <SvgIcon>
+                                                        <CheckBadgeIcon color='green' />
+                                                    </SvgIcon> &nbsp;&nbsp; |
+                                                </>
+                                            ))
+                                        }
+                                    </Stack>
 
-                                    <Stack
-                                        direction={'row'}
-                                        spacing={3}
-                                        sx={{ maxWidth: 1500 }}
-                                    >
-                                        <FormControl sx={{ m: 1, width: 300 }} variant="filled" >
-                                            <InputLabel id="demo-multiple-checkbox-label">Réponses</InputLabel>
-                                            <Select
-                                                labelId="demo-multiple-checkbox-label"
-                                                id="demo-multiple-checkbox"
-                                                multiple
-                                                error={answerLibelle.length == 0}
-                                                value={answerLibelle}
-                                                onChange={handleChange}
-                                                input={<OutlinedInput label="Réponses" />}
-                                                renderValue={(selected) => selected.join(', ')}
-                                                MenuProps={MenuProps}
-                                            >
-                                                {answers.map((answer, index) => (
-                                                    <MenuItem key={index}
-                                                        value={answer.libelleIt}>
-                                                        <Checkbox checked={answerLibelle.indexOf(answer.libelleIt) > -1} />
-                                                        <ListItemText primary={answer.libelleIt} />
-                                                    </MenuItem>
-                                                ))}
-                                            </Select>
-                                            {/* {answerLibelle.length != answers.length && (
+
+                                    <FormControl variant="filled" fullWidth>
+                                        <InputLabel id="demo-multiple-checkbox-label">Réponses</InputLabel>
+                                        <Select
+                                            labelId="demo-multiple-checkbox-label"
+                                            id="demo-multiple-checkbox"
+                                            multiple
+                                            error={answerLibelle.length == 0}
+                                            value={answerLibelle}
+                                            onChange={handleChange}
+                                            input={<OutlinedInput label="Réponses" />}
+                                            renderValue={(selected) => selected.join(', ')}
+                                            MenuProps={MenuProps}
+                                        >
+                                            {answers.map((answer, index) => (
+                                                <MenuItem key={index}
+                                                    value={answer.libelleIt}>
+                                                    <Checkbox checked={answerLibelle.indexOf(answer.libelleIt) > -1} />
+                                                    <ListItemText primary={answer.libelleIt} />
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                        {/* {answerLibelle.length != answers.length && (
                                     <Typography color="error"
                                         variant="caption">
                                         Toutes les réponses doivent être sélectionnées
                                     </Typography>
                                 )} */}
 
-                                            {answerLibelle.length == 0 && (
-                                                <Typography color="error"
-                                                    variant="caption">
-                                                    Veuillez sélectionner une réponse
-                                                </Typography>
-                                            )}
-                                        </FormControl>
+                                        {answerLibelle.length == 0 && (
+                                            <Typography color="error"
+                                                variant="caption">
+                                                Veuillez sélectionner une réponse
+                                            </Typography>
+                                        )}
+                                    </FormControl>
 
 
-                                        <FormControl sx={{ m: 1, width: 300 }} variant="filled" >
-                                            <InputLabel id="demo-multiple-checkbox-label">Catégories</InputLabel>
-                                            <Select
-                                                labelId="demo-multiple-checkbox-label"
-                                                id="demo-multiple-checkbox"
-                                                multiple
-                                                error={categLibelle.length == 0}
-                                                value={categLibelle}
-                                                onChange={handleChangeCateg}
-                                                input={<OutlinedInput label="Catégories" />}
-                                                renderValue={(selected) => selected.join(', ')}
-                                                MenuProps={MenuProps}
-                                            >
-                                                {categories.map((categ, index) => (
-                                                    <MenuItem key={index}
-                                                        value={categ.libelle}>
-                                                        <Checkbox checked={categLibelle.indexOf(categ.libelle) > -1} />
-                                                        <ListItemText primary={categ.libelle} />
-                                                    </MenuItem>
-                                                ))}
-                                            </Select>
-                                            {/* {answerLibelle.length != answers.length && (
+                                    <Stack direction={'row'} spacing={1}>
+                                        {
+                                            data.categories?.map((categ) => (
+                                                <>
+                                                    <Typography variant='subtitle2'>{categ.libelle}</Typography>
+                                                    <SvgIcon>
+                                                        <CheckBadgeIcon color='green' />
+                                                    </SvgIcon> &nbsp;&nbsp; |
+                                                </>
+                                            ))
+                                        }
+                                    </Stack>
+
+
+                                    <FormControl variant="filled" fullWidth>
+                                        <InputLabel id="demo-multiple-checkbox-label">Catégories</InputLabel>
+                                        <Select
+                                            labelId="demo-multiple-checkbox-label"
+                                            id="demo-multiple-checkbox"
+                                            multiple
+                                            error={categLibelle.length == 0}
+                                            value={categLibelle}
+                                            onChange={handleChangeCateg}
+                                            input={<OutlinedInput label="Catégories" />}
+                                            renderValue={(selected) => selected.join(', ')}
+                                            MenuProps={MenuProps}
+                                        >
+                                            {categories.map((categ, index) => (
+                                                <MenuItem key={index}
+                                                    value={categ.libelle}>
+                                                    <Checkbox checked={categLibelle.indexOf(categ.libelle) > -1} />
+                                                    <ListItemText primary={categ.libelle} />
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                        {/* {answerLibelle.length != answers.length && (
                                     <Typography color="error"
                                         variant="caption">
                                         Toutes les réponses doivent être sélectionnées
                                     </Typography>
                                 )} */}
 
-                                            {categLibelle.length == 0 && (
-                                                <Typography color="error"
-                                                    variant="caption">
-                                                    Veuillez sélectionner une catégorie
-                                                </Typography>
-                                            )}
-                                        </FormControl>
+                                        {categLibelle.length == 0 && (
+                                            <Typography color="error"
+                                                variant="caption">
+                                                Veuillez sélectionner une catégorie
+                                            </Typography>
+                                        )}
+                                    </FormControl>
 
-                                        {/* <FormControl variant="standard"
+                                    {/* <FormControl variant="standard"
                                             sx={{ m: 1, width: 300 }}>
                                             <InputLabel id="demo-simple-select-standard-label">Catégorie</InputLabel>
                                             <Select
@@ -561,36 +614,34 @@ export const EditQuestionIt = ({ handleClose, isOpen, data }) => {
                                             )}
                                         </FormControl> */}
 
-                                        <FormControl variant="standard"
-                                            sx={{ m: 1, width: 300 }}>
-                                            <Stack direction={'column'}
-                                                spacing={4}>
-                                                <InputLabel >Poids</InputLabel>
-                                                <Slider
-                                                    aria-label="Poids"
-                                                    defaultValue={20}
-                                                    getAriaValueText={valuetext}
-                                                    valueLabelDisplay="auto"
-                                                    step={5}
-                                                    marks
-                                                    min={0}
-                                                    max={100}
-                                                    error={!!(formik.touched.poids && formik.errors.poids)}
-                                                    value={formik.values.poids}
-                                                    onBlur={formik.handleBlur}
-                                                    onChange={(event, value) => formik.setFieldValue('poids', value)}
-                                                />
+                                    <FormControl variant="standard"
+                                        fullWidth>
+                                        <Stack direction={'column'}
+                                            spacing={4}>
+                                            <InputLabel >Poids</InputLabel>
+                                            <Slider
+                                                aria-label="Poids"
+                                                defaultValue={20}
+                                                getAriaValueText={valuetext}
+                                                valueLabelDisplay="auto"
+                                                step={5}
+                                                marks
+                                                min={0}
+                                                max={100}
+                                                error={!!(formik.touched.poids && formik.errors.poids)}
+                                                value={formik.values.poids}
+                                                onBlur={formik.handleBlur}
+                                                onChange={(event, value) => formik.setFieldValue('poids', value)}
+                                            />
 
-                                            </Stack>
-                                            {formik.touched.poids && formik.errors.poids && (
-                                                <Typography color="error"
-                                                    variant="caption">
-                                                    {formik.errors.poids}
-                                                </Typography>
-                                            )}
-                                        </FormControl>
-
-                                    </Stack>
+                                        </Stack>
+                                        {formik.touched.poids && formik.errors.poids && (
+                                            <Typography color="error"
+                                                variant="caption">
+                                                {formik.errors.poids}
+                                            </Typography>
+                                        )}
+                                    </FormControl>
 
 
 

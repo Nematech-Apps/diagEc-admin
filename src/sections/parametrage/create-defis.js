@@ -18,6 +18,8 @@ import {
 } from '@mui/material';
 import DocumentIcon from '@heroicons/react/24/solid/DocumentIcon';
 
+import ArrowUpCircleIcon from '@heroicons/react/24/solid/ArrowUpCircleIcon';
+
 import FilePicker from 'src/components/file-picker';
 
 
@@ -491,10 +493,10 @@ export const CreateDefis = () => {
                                 style={{ display: 'none' }}
                             />
                             <label htmlFor="file-inputFr">
-                                <Button variant="outlined" color='info'
-                                    startIcon={
+                                <Button variant="outlined" color='primary'
+                                    endIcon={
                                         <SvgIcon>
-                                            <DocumentIcon />
+                                            <ArrowUpCircleIcon />
                                         </SvgIcon>
                                     }
                                     component="span"
@@ -524,10 +526,10 @@ export const CreateDefis = () => {
                                 style={{ display: 'none' }}
                             />
                             <label htmlFor="file-inputEn">
-                                <Button variant="outlined" color='info'
-                                    startIcon={
+                                <Button variant="outlined" color='primary'
+                                    endIcon={
                                         <SvgIcon>
-                                            <DocumentIcon />
+                                            <ArrowUpCircleIcon />
                                         </SvgIcon>
                                     }
                                     component="span"
@@ -556,10 +558,10 @@ export const CreateDefis = () => {
                                 style={{ display: 'none' }}
                             />
                             <label htmlFor="file-inputIt">
-                                <Button variant="outlined" color='info'
-                                    startIcon={
+                                <Button variant="outlined" color='primary'
+                                    endIcon={
                                         <SvgIcon>
-                                            <DocumentIcon />
+                                            <ArrowUpCircleIcon />
                                         </SvgIcon>
                                     }
                                     component="span"
@@ -593,10 +595,10 @@ export const CreateDefis = () => {
                     {(selectedFileFr == null || selectedFileEn == null || selectedFileIt == null) && (
                         <Typography
                             color="error"
-                            sx={{ mt: 3 }}
+                            sx={{ mt: 3, fontWeight: 'bold' }}
                             variant="body2"
                         >
-                            Vous devez sélectionner un fichier pour les trois langues Français, anglais et italien (Seuls les fichiers PDF sont autorisés)
+                            ⚠ Vous devez sélectionner un fichier pour les trois langues Français, anglais et italien (Seuls les fichiers PDF sont autorisés)
                         </Typography>
                     )}
 

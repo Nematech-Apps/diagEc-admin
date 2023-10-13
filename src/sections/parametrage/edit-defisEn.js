@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 
-import PencilIcon from '@heroicons/react/24/solid/PencilIcon';
-import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
-import FolderIcon from '@heroicons/react/24/solid/FolderIcon';
+import CheckBadgeIcon from '@heroicons/react/24/solid/CheckBadgeIcon';
+
 import {
     Box,
     Button,
@@ -18,7 +17,8 @@ import {
     MenuItem,
     Typography,
     Stack,
-    Modal
+    Modal,
+    SvgIcon
 } from '@mui/material';
 
 import { useFormik } from 'formik';
@@ -127,6 +127,21 @@ export const EditDefisEn = ({ handleClose, isOpen, data }) => {
                                     spacing={3}
                                     sx={{ maxWidth: 400 }}
                                 >
+
+                                    <Stack direction={'row'} spacing={1}>
+                                        {
+                                            data.pilier != null &&
+                                            (
+                                                <>
+                                                    <Typography variant='subtitle2'>{data.pilier?.libelleEn}</Typography>
+                                                    <SvgIcon>
+                                                        <CheckBadgeIcon color='green' />
+                                                    </SvgIcon>
+                                                </>
+                                            )
+                                        }
+
+                                    </Stack>
 
                                     <FormControl variant="filled"
                                         sx={{ width: 400 }} fullWidth>
