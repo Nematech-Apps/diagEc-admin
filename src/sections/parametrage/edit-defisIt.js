@@ -164,7 +164,7 @@ export const EditDefisIt = ({ handleClose, isOpen, data }) => {
                                             </MenuItem>
                                             {piliers.map((pilier, index) => {
                                                 return (<MenuItem value={JSON.stringify(pilier)}
-                                                    key={index}>{pilier.libelleFr}</MenuItem>)
+                                                    key={index}>{pilier.libelleIt}</MenuItem>)
                                             })}
 
                                         </Select>

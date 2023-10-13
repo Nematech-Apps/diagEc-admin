@@ -618,7 +618,7 @@ export const EditQuestion = ({ handleClose, isOpen, data }) => {
                                         </FormControl> */}
 
                                     <FormControl variant="standard"
-                                        sx={{ m: 1, width: 300 }}>
+                                        fullWidth>
                                         <Stack direction={'column'}
                                             spacing={4}>
                                             <InputLabel >Poids</InputLabel>

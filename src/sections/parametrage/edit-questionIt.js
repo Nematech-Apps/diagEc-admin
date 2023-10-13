@@ -162,7 +162,7 @@ export const EditQuestionIt = ({ handleClose, isOpen, data }) => {
         if (defiLibelle.length != 0 && defis.length != 0) {
             defiLibelle.map((item) => {
                 defis.map((elt) => {
-                    if (elt.libelleFr == item) {
+                    if (elt.libelleIt == item) {
                         const obj = elt;
                         arr.push(obj);
                     }
@@ -356,7 +356,7 @@ export const EditQuestionIt = ({ handleClose, isOpen, data }) => {
                                             </MenuItem>
                                             {piliers.map((pilier, index) => {
                                                 return (<MenuItem value={JSON.stringify(pilier)}
-                                                    key={index}>{pilier.libelleFr}</MenuItem>)
+                                                    key={index}>{pilier.libelleIt}</MenuItem>)
                                             })}
 
                                         </Select>
@@ -435,16 +435,16 @@ export const EditQuestionIt = ({ handleClose, isOpen, data }) => {
                                             {formik.touched.pilier && formik.values.pilier != "" ?
                                                 defis.filter(item => item.pilier?.id == JSON.parse(formik.values.pilier).id).map((defi, index) => (
                                                     <MenuItem key={index}
-                                                        value={defi.libelleFr}>
-                                                        <Checkbox checked={defiLibelle.indexOf(defi.libelleFr) > -1} />
-                                                        <ListItemText primary={defi.libelleFr} />
+                                                        value={defi.libelleIt}>
+                                                        <Checkbox checked={defiLibelle.indexOf(defi.libelleIt) > -1} />
+                                                        <ListItemText primary={defi.libelleIt} />
                                                     </MenuItem>
                                                 )) :
                                                 defis.map((defi, index) => (
                                                     <MenuItem key={index}
-                                                        value={defi.libelleFr}>
-                                                        <Checkbox checked={defiLibelle.indexOf(defi.libelleFr) > -1} />
-                                                        <ListItemText primary={defi.libelleFr} />
+                                                        value={defi.libelleIt}>
+                                                        <Checkbox checked={defiLibelle.indexOf(defi.libelleIt) > -1} />
+                                                        <ListItemText primary={defi.libelleIt} />
                                                     </MenuItem>
                                                 ))
                                             }
