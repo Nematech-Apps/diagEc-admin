@@ -10,7 +10,11 @@ import {
   FormControlLabel,
   Stack,
   Typography,
-  Unstable_Grid2 as Grid
+  Unstable_Grid2 as Grid,
+  InputLabel,
+  Select,
+  FormControl,
+  MenuItem
 } from '@mui/material';
 
 import { useFormik } from 'formik';
@@ -28,21 +32,26 @@ export const SettingsNotifications = () => {
     []
   );
 
+  const modes = ["Maintenance", "Production"];
 
   const formik = useFormik({
     initialValues: {
-      maintenanceMode: false,
+      mode: '',
       submit: null
     },
+    validationSchema: Yup.object({
+      mode: Yup
+        .string()
+        .required("Un mode doit être sélectionné")
+    }),
     onSubmit: async (values, helpers) => {
       console.log(values.maintenanceMode);
       const data = {
-        maintenanceMode: values.maintenanceMode == true ? "1" : "0"
+        maintenanceMode: values.mode == "Maintenance" ? "1" : "0"
       }
       updateSettings(data)
         .then(() => {
           helpers.resetForm();
-          formik.setFieldValue('maintenanceMode', false);
           return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
         })
         .catch((err) => {
@@ -51,7 +60,7 @@ export const SettingsNotifications = () => {
           helpers.setSubmitting(false);
           return ToastComponent({ message: err.message, type: 'error' });
         })
-      
+
 
     }
   });
@@ -82,7 +91,7 @@ export const SettingsNotifications = () => {
                 </Typography> */}
                 <Stack>
 
-                  <FormControlLabel
+                  {/* <FormControlLabel
                     control={<Checkbox defaultChecked={formik.values.maintenanceMode} />}
                     label={formik.values.maintenanceMode == false ? "Mettre en mode production" : "Mettre en mode maintenance"}
                     name="maintenanceMode"
@@ -91,7 +100,37 @@ export const SettingsNotifications = () => {
                     onBlur={formik.handleBlur}
                     onChange={formik.handleChange}
                     value={formik.values.maintenanceMode}
-                  />
+                  /> */}
+
+
+                  <FormControl sx={{ m: 1, minWidth: 120, maxWidth: 300 }} variant='filled'>
+                    <InputLabel shrink htmlFor="select-native">
+                      Changer le mode
+                    </InputLabel>
+                    <Select
+                      name="mode"
+                      error={!!(formik.touched.mode && formik.errors.mode)}
+                      value={formik.values.mode}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      label="Native"
+                    >
+                      <MenuItem value="">
+                        <em>Aucune sélection</em>
+                      </MenuItem>
+                      {modes.map((mode, index) => (
+                        <MenuItem key={index} value={mode}>
+                          {mode}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    {formik.touched.mode && formik.errors.mode && (
+                      <Typography color="error"
+                        variant="caption">
+                        {formik.errors.mode}
+                      </Typography>
+                    )}
+                  </FormControl>
 
                   {/* <FormControlLabel
                     control={<Checkbox />}

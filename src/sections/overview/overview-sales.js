@@ -166,7 +166,7 @@ export const OverviewSales = (props) => {
         //     Recharger
         //   </Button>
         // )}
-        title="Entreprises inscrits"
+        title="Entreprises inscrites aucours du temps"
       />
       <CardContent>
         <Chart
