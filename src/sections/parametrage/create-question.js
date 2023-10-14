@@ -738,7 +738,7 @@ export const CreateQuestion = () => {
                 <CardActions sx={{ justifyContent: 'flex-end' }}>
                     <Button variant="contained"
                         type='submit' disabled={isOnCreate}>
-                        Créer
+                        Ajouter
                     </Button>
                 </CardActions>
             </Card>
