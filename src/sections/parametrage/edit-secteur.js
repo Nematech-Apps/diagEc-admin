@@ -100,7 +100,7 @@ export const EditSecteur = ({ handleClose, isOpen, data }) => {
                         <Card>
                             <CardHeader
                                 //subheader="catégorie"
-                                title="Modifier Secteur"
+                                title="Modifier le secteur"
                             />
                             <Divider />
                             <CardContent>

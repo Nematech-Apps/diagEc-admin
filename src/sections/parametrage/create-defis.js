@@ -407,7 +407,7 @@ export const CreateDefis = () => {
             <Card>
                 <CardHeader
                     //subheader="catégorie"
-                    title="Ajouter Défi"
+                    title="Ajouter un défi"
                 />
                 <Divider />
                 <CardContent>

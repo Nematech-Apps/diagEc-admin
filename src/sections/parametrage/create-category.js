@@ -135,7 +135,7 @@ export const CreateCategory = () => {
       <Card>
         <CardHeader
           //subheader="catégorie"
-          title="Ajouter Catégorie"
+          title="Ajouter une catégorie"
         />
         <Divider />
         <CardContent>

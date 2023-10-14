@@ -139,7 +139,7 @@ export const EditCategorie = ({ handleClose, isOpen, data }) => {
                         <Card>
                             <CardHeader
                                 //subheader="catégorie"
-                                title="Modifier Catégorie"
+                                title="Modifier la catégorie"
                             />
                             <Divider />
                             <CardContent>

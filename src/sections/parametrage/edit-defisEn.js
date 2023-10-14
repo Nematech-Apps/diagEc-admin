@@ -118,7 +118,7 @@ export const EditDefisEn = ({ handleClose, isOpen, data }) => {
                         <Card>
                             <CardHeader
                                 //subheader="catégorie"
-                                title="Modifier Défis"
+                                title="Modifier le défi"
                             />
                             <Divider />
                             <CardContent>

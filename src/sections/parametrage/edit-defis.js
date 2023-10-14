@@ -131,7 +131,7 @@ export const EditDefis = ({ handleClose, isOpen, data }) => {
                         <Card sx={{ minHeight: 200 }}>
                             <CardHeader
                                 //subheader="catégorie"
-                                title="Modifier Défis"
+                                title="Modifier le défi"
                             />
                             <Divider />
                             <CardContent>

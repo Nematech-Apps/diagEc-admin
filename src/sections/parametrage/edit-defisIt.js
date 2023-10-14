@@ -120,7 +120,7 @@ export const EditDefisIt = ({ handleClose, isOpen, data }) => {
                         <Card>
                             <CardHeader
                                 //subheader="catégorie"
-                                title="Modifier Défis"
+                                title="Modifier le défi"
                             />
                             <Divider />
                             <CardContent>

@@ -145,7 +145,7 @@ export const CreateNiveau = () => {
       <Card>
         <CardHeader
           //subheader="catégorie"
-          title="Ajouter Niveau de compétence"
+          title="Ajouter un niveau de compétence"
         />
         <Divider />
         <CardContent>

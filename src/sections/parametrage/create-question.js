@@ -425,7 +425,7 @@ export const CreateQuestion = () => {
             <Card>
                 <CardHeader
                     //subheader="catégorie"
-                    title="Ajouter Question"
+                    title="Ajouter une question"
                 />
                 <Divider />
                 <CardContent>

@@ -100,7 +100,7 @@ export const EditNiveau = ({ handleClose, isOpen, data }) => {
                         <Card>
                             <CardHeader
                                 //subheader="catégorie"
-                                title="Modifier Niveau"
+                                title="Modifier le niveau"
                             />
                             <Divider />
                             <CardContent>

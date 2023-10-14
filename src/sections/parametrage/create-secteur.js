@@ -165,7 +165,7 @@ export const CreateSecteur = () => {
       <Card>
         <CardHeader
           //subheader="catégorie"
-          title="Ajouter Secteur d'activité"
+          title="Ajouter un secteur d'activité"
         />
         <Divider />
         <CardContent>

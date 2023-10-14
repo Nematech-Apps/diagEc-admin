@@ -94,7 +94,7 @@ export const EditPilierEn = ({ handleClose, isOpen, data }) => {
                         <Card>
                             <CardHeader
                                 //subheader="catégorie"
-                                title="Modifier Pilier"
+                                title="Modifier le pilier"
                             />
                             <Divider />
                             <CardContent>

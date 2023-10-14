@@ -157,7 +157,7 @@ export const CreatePilier = () => {
             <Card>
                 <CardHeader
                     //subheader="catégorie"
-                    title="Ajouter Pilier"
+                    title="Ajouter un pilier"
                 />
                 <Divider />
                 <CardContent>

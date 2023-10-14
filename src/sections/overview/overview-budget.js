@@ -61,7 +61,7 @@ export const OverviewBudget = (props) => {
               color="text.secondary"
               variant="overline"
             >
-              Questionnaires
+              Questions
             </Typography>
             <Typography variant="h4">
               {data.length}

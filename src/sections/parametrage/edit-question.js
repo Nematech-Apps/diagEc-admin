@@ -321,7 +321,7 @@ export const EditQuestion = ({ handleClose, isOpen, data }) => {
                         <Card>
                             <CardHeader
                                 //subheader="catégorie"
-                                title="Modifier Question"
+                                title="Modifier la question"
                             />
                             <Divider />
                             <CardContent>

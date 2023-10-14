@@ -116,7 +116,7 @@ export const EditAnswer = ({ handleClose, isOpen, data }) => {
                         <Card>
                             <CardHeader
                                 //subheader="catégorie"
-                                title="Modifier Réponse"
+                                title="Modifier la réponse"
                             />
                             <Divider />
                             <CardContent>
