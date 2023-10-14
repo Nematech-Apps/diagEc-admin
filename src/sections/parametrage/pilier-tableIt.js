@@ -35,6 +35,7 @@ import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import XMarkIcon from '@heroicons/react/24/solid/XMarkIcon';
 import XCircleIcon from '@heroicons/react/24/solid/XCircleIcon';
+import ArchiveBoxXMarkIcon from '@heroicons/react/24/solid/ArchiveBoxXMarkIcon';
 
 import { SvgIcon } from '@mui/material';
 
@@ -172,227 +173,238 @@ export const PilierTableIt = (props) => {
 
     return (
         <Card elevation={20}>
-                <CardHeader title="Piliers" />
-                <TableContainer component={Paper}>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                {/* <TableCell padding="checkbox">
-                            <Checkbox
-                                checked={selectedAll}
-                                indeterminate={selectedSome}
-                                onChange={(event) => {
-                                    if (event.target.checked) {
-                                        onSelectAll?.();
-                                    } else {
-                                        onDeselectAll?.();
-                                    }
-                                }}
-                            />
-                        </TableCell> */}
+            <CardHeader title="Piliers" />
+            <TableContainer component={Paper}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell padding="checkbox">
+                                <Checkbox
+                                    checked={selectedAll}
+                                    indeterminate={selectedSome}
+                                    onChange={(event) => {
+                                        if (event.target.checked) {
+                                            onSelectAll?.();
+                                        } else {
+                                            onDeselectAll?.();
+                                        }
+                                    }}
+                                />
+                            </TableCell>
 
 
-                                <TableCell>
-                                    Libellé
-                                </TableCell>
+                            <TableCell>
+                                Libellé
+                            </TableCell>
 
-                                <TableCell>
-                                    Définition
-                                </TableCell>
+                            <TableCell>
+                                Définition
+                            </TableCell>
 
-                                <TableCell>
-                                    Mots-clés
-                                </TableCell>
+                            <TableCell>
+                                Mots-clés
+                            </TableCell>
 
-                                <TableCell>
-                                    Actions
-                                </TableCell>
+                            <TableCell>
+                                Actions
+                            </TableCell>
 
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {
-                                items.length != 0 ?
-                                    items.map((pilier) => {
-                                        const isSelected = selected.includes(pilier.id);
-                                        //const createdAt = format(customer.createdAt, 'dd/MM/yyyy');
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {
+                            items.length != 0 ?
+                                items.map((pilier) => {
+                                    const isSelected = selected.includes(pilier.id);
+                                    //const createdAt = format(customer.createdAt, 'dd/MM/yyyy');
 
-                                        return (
-                                            <TableRow
-                                                hover
-                                                key={pilier.id}
-                                                selected={isSelected}
-                                            >
-                                                {/* <TableCell padding="checkbox">
-                                        <Checkbox
-                                            checked={isSelected}
-                                            onChange={(event) => {
-                                                if (event.target.checked) {
-                                                    onSelectOne?.(secteur.id);
-                                                } else {
-                                                    onDeselectOne?.(secteur.id);
-                                                }
-                                            }}
-                                        />
-                                    </TableCell> */}
+                                    return (
+                                        <TableRow
+                                            hover
+                                            key={pilier.id}
+                                            selected={isSelected}
+                                        >
+                                            <TableCell padding="checkbox">
+                                                <Checkbox
+                                                    checked={isSelected}
+                                                    onChange={(event) => {
+                                                        if (event.target.checked) {
+                                                            onSelectOne?.(pilier.id);
+                                                        } else {
+                                                            onDeselectOne?.(pilier.id);
+                                                        }
+                                                    }}
+                                                />
+                                            </TableCell>
 
-                                                <TableCell>
-                                                    <Stack
-                                                        alignItems="flex-start"
-                                                        direction="column"
-                                                        spacing={2}
-                                                    >
-                                                        {/* <Avatar src={customer.avatar}>
+
+
+                                            <TableCell>
+                                                <Stack
+                                                    alignItems="flex-start"
+                                                    direction="column"
+                                                    spacing={2}
+                                                >
+                                                    {/* <Avatar src={customer.avatar}>
                                                 {getInitials(customer.name)}
                                             </Avatar> */}
 
-                                                        <Typography variant="subtitle2">
-                                                            {pilier.libelleIt}
-                                                        </Typography>
-                                                        {/* <Typography variant="subtitle2">
+                                                    <Typography variant="subtitle2">
+                                                        {pilier.libelleIt}
+                                                    </Typography>
+                                                    {/* <Typography variant="subtitle2">
                                                 {pilier.libelleEn}
                                             </Typography>
                                             <Typography variant="subtitle2">
                                                 {pilier.libelleIt}
                                             </Typography> */}
-                                                    </Stack>
-                                                </TableCell>
-                                                <TableCell>
-                                                    <Stack
-                                                        alignItems="flex-start"
-                                                        direction="column"
-                                                        spacing={2}
-                                                    >
-                                                        {/* <Avatar src={customer.avatar}>
+                                                </Stack>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Stack
+                                                    alignItems="flex-start"
+                                                    direction="column"
+                                                    spacing={2}
+                                                >
+                                                    {/* <Avatar src={customer.avatar}>
                                                 {getInitials(customer.name)}
                                             </Avatar> */}
-                                                        <Typography variant="subtitle2">
-                                                            {pilier.definitionIt}
-                                                        </Typography>
-                                                        {/* <Typography variant="subtitle2">
+                                                    <Typography variant="subtitle2">
+                                                        {pilier.definitionIt}
+                                                    </Typography>
+                                                    {/* <Typography variant="subtitle2">
                                                 {pilier.definitionEn}
                                             </Typography>
                                             <Typography variant="subtitle2">
                                                 {pilier.definitionIt}
                                             </Typography> */}
-                                                    </Stack>
-                                                </TableCell>
-                                                <TableCell>
-                                                    <Stack
-                                                        alignItems="flex-start"
-                                                        direction="column"
-                                                        spacing={2}
-                                                    >
+                                                </Stack>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Stack
+                                                    alignItems="flex-start"
+                                                    direction="column"
+                                                    spacing={2}
+                                                >
 
 
 
-                                                        <ul>
-                                                            {
-                                                                pilier.motClesIt != null ? pilier.motClesIt.map((mot, index) => {
-                                                                    return (
-                                                                        <Chip label={mot} variant="outlined" key={index} />
-                                                                    )
-                                                                }) : <Typography variant="subtitle2">
-                                                                    Aucun mot clé en italien ajouté
-                                                                </Typography>
-                                                            }
+                                                    <ul>
+                                                        {
+                                                            pilier.motClesIt != null ? pilier.motClesIt.map((mot, index) => {
+                                                                return (
+                                                                    <Chip label={mot} variant="outlined" key={index} />
+                                                                )
+                                                            }) : <Typography variant="subtitle2">
+                                                                Aucun mot clé en italien ajouté
+                                                            </Typography>
+                                                        }
 
-                                                        </ul>
+                                                    </ul>
 
-                                                    </Stack>
-                                                </TableCell>
-                                                <TableCell>
-                                                    <Stack
-                                                        alignItems="flex-start"
-                                                        direction={'row'}
+                                                </Stack>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Stack
+                                                    alignItems="flex-start"
+                                                    direction={'row'}
+                                                    spacing={2}>
+                                                    <Stack direction={'column'}
                                                         spacing={2}>
-                                                        <Stack direction={'column'}
-                                                            spacing={2}>
-                                                            {/* <Button variant="outlined"
+                                                        {/* <Button variant="outlined"
                                                         size="small"
                                                         color='success'
                                                         onClick={(event) => handleAddMotcleClick(event, pilier)}>
                                                         Ajouter mot-clés
                                                     </Button> */}
-                                                            <Button variant="outlined"
-                                                                size="small"
-                                                                color='success'
-                                                                sx={{ paddingX: 5 }}
-                                                                onClick={(event) => handleAddMotcleClick(event, pilier)}>
-                                                                {/* <SvgIcon sx={{mr: 1}}>
+                                                        <Button variant="outlined"
+                                                            size="small"
+                                                            color='success'
+                                                            sx={{ paddingX: 5 }}
+                                                            onClick={(event) => handleAddMotcleClick(event, pilier)} disabled={!isSelected}>
+                                                            {/* <SvgIcon sx={{mr: 1}}>
                                                             <PlusIcon/>
                                                         </SvgIcon> */}
-                                                                Ajouter
-                                                                mot-clés
-                                                            </Button>
-                                                            {/* <Button variant="outlined" size="small" color='error'
+                                                            Ajouter
+                                                            mot-clés
+                                                        </Button>
+                                                        {/* <Button variant="outlined" size="small" color='error'
                                                         onClick={(event) => handleDeleteMotCleclick(event, pilier)}>
                                                         Supprimer mot-clés
                                                     </Button> */}
-                                                            <Button variant="outlined" size="small" color='error' sx={{ paddingX: 5 }}
-                                                                onClick={(event) => handleDeleteMotCleclick(event, pilier)}>
-                                                                {/* <SvgIcon sx={{mr: 1}}>
+                                                        <Button variant="outlined" size="small" color='error' sx={{ paddingX: 5 }}
+                                                            onClick={(event) => handleDeleteMotCleclick(event, pilier)} disabled={!isSelected}>
+                                                            {/* <SvgIcon sx={{mr: 1}}>
                                                             <XCircleIcon/>
                                                         </SvgIcon> */}
-                                                                Supprimer
-                                                                mot-clés
-                                                            </Button>
-                                                        </Stack>
-
-                                                        <Stack direction={'column'}
-                                                            spacing={2}>
-                                                            <Fab size="small"
-                                                                //color="secondary"
-                                                                aria-label="edit"
-                                                                onClick={(event) => handleEditClick(event, pilier)}>
-                                                                <SvgIcon fontSize="small">
-                                                                    <PencilIcon />
-                                                                </SvgIcon>
-                                                            </Fab>
-                                                            <Fab size="small" color="error" aria-label="delete"
-                                                                onClick={(event) => handleDeleteClick(event, pilier)}>
-                                                                <SvgIcon fontSize="small">
-                                                                    <TrashIcon />
-                                                                </SvgIcon>
-                                                            </Fab>
-                                                        </Stack>
-
+                                                            Supprimer
+                                                            mot-clés
+                                                        </Button>
                                                     </Stack>
-                                                </TableCell>
 
-                                                {isModalOpen && modalData && <EditPilierIt data={modalData}
-                                                    isOpen={isModalOpen}
-                                                    handleClose={() => setIsModalOpen(false)} />}
-                                                {isAddMotCleOpen && addMotCleData && <AddMotCleIt data={addMotCleData}
-                                                    isOpen={isAddMotCleOpen}
-                                                    handleClose={() => setIsAddMotCleOpen(false)} />}
-                                            </TableRow>
-                                        );
-                                    }) :
-                                    <TableRow
-                                        hover
-                                    >
-                                        <TableCell>
-                                            <Stack
-                                                alignItems="center"
-                                                direction="row"
-                                                spacing={2}
-                                            >
-                                                <Typography variant="subtitle2">
-                                                    Aucun élément à afficher
-                                                </Typography>
-                                            </Stack>
-                                        </TableCell>
+                                                    <Stack direction={'column'}
+                                                        spacing={2}>
+                                                        <Fab size="small"
+                                                            //color="secondary"
+                                                            aria-label="edit"
+                                                            onClick={(event) => handleEditClick(event, pilier)} disabled={!isSelected}>
+                                                            <SvgIcon fontSize="small">
+                                                                <PencilIcon />
+                                                            </SvgIcon>
+                                                        </Fab>
+                                                        <Fab size="small" color="error" aria-label="delete"
+                                                            onClick={(event) => handleDeleteClick(event, pilier)} disabled={!isSelected}>
+                                                            <SvgIcon fontSize="small">
+                                                                <TrashIcon />
+                                                            </SvgIcon>
+                                                        </Fab>
+                                                    </Stack>
 
-                                    </TableRow>
-                            }
+                                                </Stack>
+                                            </TableCell>
 
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                                            {isModalOpen && modalData && <EditPilierIt data={modalData}
+                                                isOpen={isModalOpen}
+                                                handleClose={() => setIsModalOpen(false)} />}
+                                            {isAddMotCleOpen && addMotCleData && <AddMotCleIt data={addMotCleData}
+                                                isOpen={isAddMotCleOpen}
+                                                handleClose={() => setIsAddMotCleOpen(false)} />}
+                                        </TableRow>
+                                    );
+                                }) :
+                                <TableRow
+                                    hover
+                                >
+                                    <TableCell>
+                                        <Stack
+                                            alignItems="center"
+                                            direction="row"
+                                            spacing={2}
+                                        >
+                                            <Typography variant="subtitle2">
+                                                Aucun élément à afficher
+                                            </Typography>
+                                        </Stack>
+                                    </TableCell>
 
-                <Divider />
-                <CardActions sx={{ justifyContent: 'flex-end' }}>
+                                </TableRow>
+                        }
+
+                    </TableBody>
+                </Table>
+            </TableContainer>
+
+            <Divider />
+            <CardActions sx={{ justifyContent: 'flex-end' }}>
+                <Stack direction={'row'} spacing={3}>
+                    <Button variant='text' color='error' size='small' disabled={!selectedAll}>
+                        <Stack direction={'row'} spacing={1}>
+                            <SvgIcon>
+                                <ArchiveBoxXMarkIcon />
+                            </SvgIcon>
+                            <Typography>Vider</Typography>
+                        </Stack>
+                    </Button>
                     <TablePagination
                         component="div"
                         count={count}
@@ -408,8 +420,9 @@ export const PilierTableIt = (props) => {
                         }
                         labelRowsPerPage="Eléments par page"
                     />
-                </CardActions>
-            </Card>
+                </Stack>
+            </CardActions>
+        </Card>
     );
 };
 

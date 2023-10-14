@@ -237,7 +237,7 @@ export const DisplayStatsPdf = ({ handleClose, isOpen }) => {
                                                         (
                                                             <div>
                                                                 <table style={{ minWidth: 650, borderCollapse: 'collapse' }} className="custom-table">
-                                                                    <thead>
+                                                                    <thead style={{alignItems: 'center'}}>
                                                                         <tr>
                                                                             <th style={{ border: '1px solid black' }}>Raison sociale</th>
                                                                             <th style={{ border: '1px solid black' }}>Email</th>
@@ -249,7 +249,7 @@ export const DisplayStatsPdf = ({ handleClose, isOpen }) => {
                                                                             <th style={{ border: '1px solid black' }}>Niveau</th>
                                                                         </tr>
                                                                     </thead>
-                                                                    <tbody>
+                                                                    <tbody style={{alignItems: 'center'}}>
                                                                         {retrievedData2[secteur].map((company, companyIndex) => (
                                                                             <tr key={companyIndex}>
                                                                                 <td style={{ border: '1px solid black' }}>{company.raisonSociale}</td>

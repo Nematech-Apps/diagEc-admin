@@ -29,6 +29,7 @@ import {
 
 import PencilIcon from '@heroicons/react/24/solid/PencilIcon';
 import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
+import ArchiveBoxXMarkIcon from '@heroicons/react/24/solid/ArchiveBoxXMarkIcon';
 
 import { SvgIcon } from '@mui/material';
 
@@ -40,7 +41,7 @@ import ToastComponent from '../../components/toast';
 
 import swal from 'sweetalert';
 
-import { confirmAlert } from 'react-confirm-alert'; 
+import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
 export const QuestionTableEn = (props) => {
@@ -122,7 +123,7 @@ export const QuestionTableEn = (props) => {
             <Table>
                 <TableHead>
                     <TableRow>
-                        {/* <TableCell padding="checkbox">
+                        <TableCell padding="checkbox">
                             <Checkbox
                                 checked={selectedAll}
                                 indeterminate={selectedSome}
@@ -134,8 +135,8 @@ export const QuestionTableEn = (props) => {
                                     }
                                 }}
                             />
-                        </TableCell> */}
-                        
+                        </TableCell>
+
                         <TableCell>
                             Libellé
                         </TableCell>
@@ -170,19 +171,19 @@ export const QuestionTableEn = (props) => {
                                     key={question.id}
                                     selected={isSelected}
                                 >
-                                    {/* <TableCell padding="checkbox">
+                                    <TableCell padding="checkbox">
                                         <Checkbox
                                             checked={isSelected}
                                             onChange={(event) => {
                                                 if (event.target.checked) {
-                                                    onSelectOne?.(secteur.id);
+                                                    onSelectOne?.(question.id);
                                                 } else {
-                                                    onDeselectOne?.(secteur.id);
+                                                    onDeselectOne?.(question.id);
                                                 }
                                             }}
                                         />
-                                    </TableCell> */}
-                                    
+                                    </TableCell>
+
                                     <TableCell>
                                         <Stack
                                             alignItems="flex-start"
@@ -193,7 +194,7 @@ export const QuestionTableEn = (props) => {
                                                 {getInitials(customer.name)}
                                             </Avatar> */}
                                             <Typography variant="subtitle2">
-                                            {question.libelleEn}
+                                                {question.libelleEn}
                                             </Typography>
                                             {/* <Typography variant="subtitle2">
                                                 {question.libelleEn}
@@ -229,14 +230,14 @@ export const QuestionTableEn = (props) => {
                                             direction="column"
                                             spacing={2}
                                         >
-                                            
+
                                             <Typography variant="subtitle2">
                                                 {question?.defi?.libelleEn}
                                             </Typography>
 
                                             <Button variant="outlined"
                                                 onClick={(event) => handleShowDefisClick(event, question)}>voir défis</Button>
-                                            
+
                                         </Stack>
                                     </TableCell>
                                     <TableCell>
@@ -259,18 +260,18 @@ export const QuestionTableEn = (props) => {
                                             </Typography> */}
                                         </Stack>
                                     </TableCell>
-                                    
+
                                     <TableCell>
                                         <Stack direction={'row'}
                                             spacing={2}>
                                             <Fab size="small" color="inherit" aria-label="edit"
-                                                onClick={(event) => handleEditClick(event, question)}>
+                                                onClick={(event) => handleEditClick(event, question)} disabled={!isSelected}>
                                                 <SvgIcon fontSize="small">
                                                     <PencilIcon />
                                                 </SvgIcon>
                                             </Fab>
                                             <Fab size="small" color="error" aria-label="delete"
-                                                onClick={(event) => handleDeleteClick(event, question)}>
+                                                onClick={(event) => handleDeleteClick(event, question)} disabled={!isSelected}>
                                                 <SvgIcon fontSize="small">
                                                     <TrashIcon />
                                                 </SvgIcon>
@@ -289,7 +290,7 @@ export const QuestionTableEn = (props) => {
                                     {isModalOpen && modalData && <EditQuestionEn data={modalData}
                                         isOpen={isModalOpen}
                                         handleClose={() => setIsModalOpen(false)} />}
-                                    
+
 
 
                                     {isModal2Open && modal2Data && <QuestionsDefisModal data={modal2Data}
@@ -320,21 +321,31 @@ export const QuestionTableEn = (props) => {
             </Table>
             <Divider />
             <CardActions sx={{ justifyContent: 'flex-end' }}>
-                <TablePagination
-                    component="div"
-                    count={count}
-                    onPageChange={onPageChange}
-                    onRowsPerPageChange={onRowsPerPageChange}
-                    page={page}
-                    rowsPerPage={rowsPerPage}
-                    rowsPerPageOptions={[5, 10, 25]}
-                    labelDisplayedRows={
-                        ({ from, to, count }) => {
-                            return '' + from + '-' + to + ' sur ' + count
+                <Stack direction={'row'} spacing={3}>
+                    <Button variant='text' color='error' size='small' disabled={!selectedAll}>
+                        <Stack direction={'row'} spacing={1}>
+                            <SvgIcon>
+                                <ArchiveBoxXMarkIcon />
+                            </SvgIcon>
+                            <Typography>Vider</Typography>
+                        </Stack>
+                    </Button>
+                    <TablePagination
+                        component="div"
+                        count={count}
+                        onPageChange={onPageChange}
+                        onRowsPerPageChange={onRowsPerPageChange}
+                        page={page}
+                        rowsPerPage={rowsPerPage}
+                        rowsPerPageOptions={[5, 10, 25]}
+                        labelDisplayedRows={
+                            ({ from, to, count }) => {
+                                return '' + from + '-' + to + ' sur ' + count
+                            }
                         }
-                    }
-                    labelRowsPerPage="Eléments par page"
-                />
+                        labelRowsPerPage="Eléments par page"
+                    />
+                </Stack>
             </CardActions>
         </Card>
     );

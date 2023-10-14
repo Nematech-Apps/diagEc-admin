@@ -29,6 +29,7 @@ import {
 
 import PencilIcon from '@heroicons/react/24/solid/PencilIcon';
 import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
+import ArchiveBoxXMarkIcon from '@heroicons/react/24/solid/ArchiveBoxXMarkIcon';
 
 import { SvgIcon } from '@mui/material';
 
@@ -122,7 +123,7 @@ export const QuestionTable = (props) => {
             <Table>
                 <TableHead>
                     <TableRow>
-                        {/* <TableCell padding="checkbox">
+                        <TableCell padding="checkbox">
                             <Checkbox
                                 checked={selectedAll}
                                 indeterminate={selectedSome}
@@ -134,7 +135,7 @@ export const QuestionTable = (props) => {
                                     }
                                 }}
                             />
-                        </TableCell> */}
+                        </TableCell>
 
                         <TableCell>
                             Libellé
@@ -170,18 +171,18 @@ export const QuestionTable = (props) => {
                                     key={question.id}
                                     selected={isSelected}
                                 >
-                                    {/* <TableCell padding="checkbox">
+                                    <TableCell padding="checkbox">
                                         <Checkbox
                                             checked={isSelected}
                                             onChange={(event) => {
                                                 if (event.target.checked) {
-                                                    onSelectOne?.(secteur.id);
+                                                    onSelectOne?.(question.id);
                                                 } else {
-                                                    onDeselectOne?.(secteur.id);
+                                                    onDeselectOne?.(question.id);
                                                 }
                                             }}
                                         />
-                                    </TableCell> */}
+                                    </TableCell>
 
                                     <TableCell>
                                         <Stack
@@ -262,13 +263,13 @@ export const QuestionTable = (props) => {
                                         <Stack direction={'row'}
                                             spacing={2}>
                                             <Fab size="small" color="inherit" aria-label="edit"
-                                                onClick={(event) => handleEditClick(event, question)}>
+                                                onClick={(event) => handleEditClick(event, question)} disabled={!isSelected}>
                                                 <SvgIcon fontSize="small">
                                                     <PencilIcon />
                                                 </SvgIcon>
                                             </Fab>
                                             <Fab size="small" color="error" aria-label="delete"
-                                                onClick={(event) => handleDeleteClick(event, question)}>
+                                                onClick={(event) => handleDeleteClick(event, question)} disabled={!isSelected}>
                                                 <SvgIcon fontSize="small">
                                                     <TrashIcon />
                                                 </SvgIcon>
@@ -316,21 +317,31 @@ export const QuestionTable = (props) => {
             </Table>
             <Divider />
             <CardActions sx={{ justifyContent: 'flex-end' }}>
-                <TablePagination
-                    component="div"
-                    count={count}
-                    onPageChange={onPageChange}
-                    onRowsPerPageChange={onRowsPerPageChange}
-                    page={page}
-                    rowsPerPage={rowsPerPage}
-                    rowsPerPageOptions={[5, 10, 25]}
-                    labelDisplayedRows={
-                        ({ from, to, count }) => {
-                            return '' + from + '-' + to + ' sur ' + count
+                <Stack direction={'row'} spacing={3}>
+                    <Button variant='text' color='error' size='small' disabled={!selectedAll}>
+                        <Stack direction={'row'} spacing={1}>
+                            <SvgIcon>
+                                <ArchiveBoxXMarkIcon />
+                            </SvgIcon>
+                            <Typography>Vider</Typography>
+                        </Stack>
+                    </Button>
+                    <TablePagination
+                        component="div"
+                        count={count}
+                        onPageChange={onPageChange}
+                        onRowsPerPageChange={onRowsPerPageChange}
+                        page={page}
+                        rowsPerPage={rowsPerPage}
+                        rowsPerPageOptions={[5, 10, 25]}
+                        labelDisplayedRows={
+                            ({ from, to, count }) => {
+                                return '' + from + '-' + to + ' sur ' + count
+                            }
                         }
-                    }
-                    labelRowsPerPage="Eléments par page"
-                />
+                        labelRowsPerPage="Eléments par page"
+                    />
+                </Stack>
             </CardActions>
         </Card>
     );

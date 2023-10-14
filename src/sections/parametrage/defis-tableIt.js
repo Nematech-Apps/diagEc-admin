@@ -30,6 +30,7 @@ import {
 import PencilIcon from '@heroicons/react/24/solid/PencilIcon';
 import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
 import EyeIcon from '@heroicons/react/24/solid/EyeIcon';
+import ArchiveBoxXMarkIcon from '@heroicons/react/24/solid/ArchiveBoxXMarkIcon';
 
 import { SvgIcon } from '@mui/material';
 
@@ -74,7 +75,7 @@ export const DefisTableIt = (props) => {
     const [replaceFicheModalData, setReplaceFicheModalData] = useState(null);
 
 
-    
+
 
 
     const handleEditClick = (event, defis) => {
@@ -162,7 +163,7 @@ export const DefisTableIt = (props) => {
             <Table>
                 <TableHead>
                     <TableRow>
-                        {/* <TableCell padding="checkbox">
+                        <TableCell padding="checkbox">
                             <Checkbox
                                 checked={selectedAll}
                                 indeterminate={selectedSome}
@@ -174,10 +175,10 @@ export const DefisTableIt = (props) => {
                                     }
                                 }}
                             />
-                        </TableCell> */}
+                        </TableCell>
 
 
-                        
+
 
                         <TableCell>
                             Libellé
@@ -209,20 +210,20 @@ export const DefisTableIt = (props) => {
                                     key={defis.id}
                                     selected={isSelected}
                                 >
-                                    {/* <TableCell padding="checkbox">
+                                    <TableCell padding="checkbox">
                                         <Checkbox
                                             checked={isSelected}
                                             onChange={(event) => {
                                                 if (event.target.checked) {
-                                                    onSelectOne?.(secteur.id);
+                                                    onSelectOne?.(defis.id);
                                                 } else {
-                                                    onDeselectOne?.(secteur.id);
+                                                    onDeselectOne?.(defis.id);
                                                 }
                                             }}
                                         />
-                                    </TableCell> */}
+                                    </TableCell>
 
-                                    
+
 
                                     <TableCell>
                                         <Stack
@@ -260,7 +261,7 @@ export const DefisTableIt = (props) => {
 
                                         </Stack>
                                     </TableCell>
-                                    
+
                                     <TableCell>
                                         <Stack
                                             alignItems="flex-start"
@@ -295,13 +296,13 @@ export const DefisTableIt = (props) => {
                                             <Fab size="small"
                                                 //color="secondary"
                                                 aria-label="edit"
-                                                onClick={(event) => handleEditClick(event, defis)}>
+                                                onClick={(event) => handleEditClick(event, defis)} disabled={!isSelected}>
                                                 <SvgIcon fontSize="small">
                                                     <PencilIcon />
                                                 </SvgIcon>
                                             </Fab>
                                             <Fab size="small" color="error" aria-label="delete"
-                                                onClick={(event) => handleDeleteClick(event, defis)}>
+                                                onClick={(event) => handleDeleteClick(event, defis)} disabled={!isSelected}>
                                                 <SvgIcon fontSize="small">
                                                     <TrashIcon />
                                                 </SvgIcon>
@@ -354,21 +355,31 @@ export const DefisTableIt = (props) => {
             </Table>
             <Divider />
             <CardActions sx={{ justifyContent: 'flex-end' }}>
-                <TablePagination
-                    component="div"
-                    count={count}
-                    onPageChange={onPageChange}
-                    onRowsPerPageChange={onRowsPerPageChange}
-                    page={page}
-                    rowsPerPage={rowsPerPage}
-                    rowsPerPageOptions={[5, 10, 25]}
-                    labelDisplayedRows={
-                        ({ from, to, count }) => {
-                            return '' + from + '-' + to + ' sur ' + count
+                <Stack direction={'row'} spacing={3}>
+                    <Button variant='text' color='error' size='small' disabled={!selectedAll}>
+                        <Stack direction={'row'} spacing={1}>
+                            <SvgIcon>
+                                <ArchiveBoxXMarkIcon />
+                            </SvgIcon>
+                            <Typography>Vider</Typography>
+                        </Stack>
+                    </Button>
+                    <TablePagination
+                        component="div"
+                        count={count}
+                        onPageChange={onPageChange}
+                        onRowsPerPageChange={onRowsPerPageChange}
+                        page={page}
+                        rowsPerPage={rowsPerPage}
+                        rowsPerPageOptions={[5, 10, 25]}
+                        labelDisplayedRows={
+                            ({ from, to, count }) => {
+                                return '' + from + '-' + to + ' sur ' + count
+                            }
                         }
-                    }
-                    labelRowsPerPage="Eléments par page"
-                />
+                        labelRowsPerPage="Eléments par page"
+                    />
+                </Stack>
             </CardActions>
         </Card>
     );
