@@ -39,6 +39,19 @@ export const addUserToCollection = async (docId, data) => {
 }
 
 
+export const updateUserCollection = async (lastDate, docId) => {
+    const collectionRef = Doc(db, 'users', docId);
+    const snapshot = await GetDoc(collectionRef);
+
+    const docData = {
+        ...snapshot.data(),
+        lastDateAuthentication: lastDate
+    };
+
+    return UpdateDoc(collectionRef, docData)
+}
+
+
 export const getUserByUid = (uid) => {
     const collectionRef = Doc(db, 'users', uid)
 

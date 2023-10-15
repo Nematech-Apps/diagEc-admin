@@ -356,6 +356,19 @@ export const DefisTableIt = (props) => {
             <Divider />
             <CardActions sx={{ justifyContent: 'flex-end' }}>
                 <Stack direction={'row'} spacing={3}>
+                    {
+                        (selected.length > 0 && selected.length > 1 && selected.length < items.length) &&
+                        (
+                            <Button variant='text' color='error' size='small' disabled={!(selected.length > 0 && selected.length < items.length)}>
+                                <Stack direction={'row'} >
+                                    <SvgIcon>
+                                        <TrashIcon />
+                                    </SvgIcon>
+                                    <Typography>Supprimer {selected.length} éléments</Typography>
+                                </Stack>
+                            </Button>
+                        )
+                    }
                     <Button variant='text' color='error' size='small' disabled={!selectedAll}>
                         <Stack direction={'row'} spacing={1}>
                             <SvgIcon>

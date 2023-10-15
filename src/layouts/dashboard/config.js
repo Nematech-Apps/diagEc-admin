@@ -14,6 +14,13 @@ import BookmarkSquareIcon from '@heroicons/react/24/solid/BookmarkSquareIcon';
 import TicketIcon from '@heroicons/react/24/solid/TicketIcon';
 import SunIcon from '@heroicons/react/24/solid/SunIcon';
 import FolderOpenIcon from '@heroicons/react/24/solid/FolderOpenIcon';
+import QuestionMarkCircleIcon from '@heroicons/react/24/solid/QuestionMarkCircleIcon';
+import Square3Stack3DIcon from '@heroicons/react/24/solid/Square3Stack3DIcon';
+import QueueListIcon from '@heroicons/react/24/solid/QueueListIcon';
+import LightBulbIcon from '@heroicons/react/24/solid/LightBulbIcon';
+import BriefcaseIcon from '@heroicons/react/24/solid/BriefcaseIcon';
+import RectangleGroupIcon from '@heroicons/react/24/solid/RectangleGroupIcon';
+import SwatchIcon from '@heroicons/react/24/solid/SwatchIcon';
 
 
 import { SvgIcon } from '@mui/material';
@@ -42,7 +49,7 @@ export const items = [
     path: '/secteurs',
     icon: (
       <SvgIcon fontSize="small">
-        <LifebuoyIcon />
+        <CogIcon />
       </SvgIcon>
     )
   },
@@ -51,7 +58,7 @@ export const items = [
     path: '/niveaux',
     icon: (
       <SvgIcon fontSize="small">
-        <BanknotesIcon />
+        <SwatchIcon />
       </SvgIcon>
     )
   },
@@ -60,7 +67,7 @@ export const items = [
     path: '/categories',
     icon: (
       <SvgIcon fontSize="small">
-        <PaperClipIcon />
+        <RectangleGroupIcon />
       </SvgIcon>
     )
   },
@@ -69,7 +76,7 @@ export const items = [
     path: '/reponses',
     icon: (
       <SvgIcon fontSize="small">
-        <BookmarkSquareIcon />
+        <Square3Stack3DIcon />
       </SvgIcon>
     )
   },
@@ -78,7 +85,7 @@ export const items = [
     path: '/piliers',
     icon: (
       <SvgIcon fontSize="small">
-        <TicketIcon />
+        <QueueListIcon />
       </SvgIcon>
     )
   },
@@ -87,7 +94,7 @@ export const items = [
     path: '/defis',
     icon: (
       <SvgIcon fontSize="small">
-        <SunIcon />
+        <LightBulbIcon />
       </SvgIcon>
     )
   },
@@ -96,7 +103,7 @@ export const items = [
     path: '/questions',
     icon: (
       <SvgIcon fontSize="small">
-        <FolderOpenIcon />
+        <QuestionMarkCircleIcon />
       </SvgIcon>
     )
   },
@@ -114,7 +121,7 @@ export const items = [
     path: '/companies',
     icon: (
       <SvgIcon fontSize="small">
-        <BuildingOfficeIcon />
+        <BriefcaseIcon />
       </SvgIcon>
     )
   },

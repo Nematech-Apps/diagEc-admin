@@ -23,12 +23,38 @@ import { Layout as AuthLayout } from 'src/layouts/auth/layout';
 
 import { useAuthContext } from '../../contexts/auth-context';
 
+
+import { updateUserCollection } from 'src/firebase/firebaseServices';
+import { auth as firebaseAuth } from '../../firebase/firebaseConfig';
+
 const Page = () => {
   const router = useRouter();
   const auth = useAuth();
   const { isAuthenticated } = useAuthContext();
   const [method, setMethod] = useState('email');
   const [isLoading, setLoading] = useState(false);
+
+
+  function getCurrentDateTime() {
+    const now = new Date();
+
+    const day = now.getDate();
+    const monthNames = [
+      'janvier', 'février', 'mars',
+      'avril', 'mai', 'juin', 'juillet',
+      'août', 'septembre', 'octobre',
+      'novembre', 'décembre'
+    ];
+    const month = monthNames[now.getMonth()];
+    const year = now.getFullYear();
+
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+
+    const formattedDateTime = `${day} ${month} ${year} à ${hours}h${minutes}`;
+
+    return formattedDateTime;
+  }
 
   useEffect(() => {
     console.log(isAuthenticated);
@@ -58,7 +84,11 @@ const Page = () => {
       setLoading(true);
       try {
         await auth.signIn(values.email, values.password);
-        console.log(isAuthenticated)
+        console.log(getCurrentDateTime());
+        updateUserCollection(getCurrentDateTime(), firebaseAuth.currentUser?.uid)
+          .catch((err) => {
+            console.log(err);
+          });
         if (isAuthenticated) {
           setLoading(false);
           router.push('/');
@@ -219,7 +249,7 @@ const Page = () => {
                 sx={{ mt: 3 }}
                 type="submit"
                 variant="contained"
-                disabled={isLoading} 
+                disabled={isLoading}
               >
                 {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Connexion'}
               </Button>

@@ -10,7 +10,8 @@ import {
   Stack,
   Chip,
   TextField,
-  Unstable_Grid2 as Grid
+  Unstable_Grid2 as Grid,
+  Typography
 } from '@mui/material';
 
 import EnvelopeIcon from '@heroicons/react/24/solid/EnvelopeIcon';
@@ -70,6 +71,7 @@ export const AccountProfileDetails = () => {
   const auth = useAuth();
   const [userData, setUserData] = useState(null)
 
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -81,18 +83,37 @@ export const AccountProfileDetails = () => {
     };
 
     fetchUserData();
+
   }, []);
 
   const [pwd, setPwd] = useState('')
 
   const handleSendResetPwdLink = async () => {
-    try{
+    try {
       await auth.resetUserPassword(userData?.email);
       return ToastComponent({ message: 'Lien envoyé avec succès! Veuillez vérifier votre boîte mail.', type: 'success' });
     }
-    catch(error){
+    catch (error) {
       return ToastComponent({ message: error.message, type: 'error' });
     }
+  }
+
+
+  function convertTimestampToDateFormat(timestamp) {
+    // Create a new Date object using the timestamp
+    const date = new Date(timestamp);
+  
+    // Extract the date components
+    const day = date.getDate();
+    const month = date.getMonth() + 1; // Months are zero-based, so add 1
+    const year = date.getFullYear();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+  
+    // Format the components into the desired string
+    const formattedDate = `${day}/${month}/${year} à ${hours}h${minutes}`;
+  
+    return formattedDate;
   }
 
   return (
@@ -104,7 +125,7 @@ export const AccountProfileDetails = () => {
       <Card>
         <CardHeader
           subheader="Seul le mot de passe peut être modifié"
-          title="Détails"
+          title="Infos"
         />
         <CardContent sx={{ pt: 0 }}>
           <Box sx={{ m: -1.5 }}>
@@ -141,6 +162,24 @@ export const AccountProfileDetails = () => {
                   sx={{ paddingTop: 2 }}
                 />
               </Grid>
+
+
+              <Grid
+                xs={12}
+                md={12}
+              >
+                <Stack direction={'row'} spacing={2}>
+                  <Typography variant='body1' style={{ fontWeight: 'bold' }}>
+                    Date de dernière connexion :
+                  </Typography>
+                  <Typography>
+                    {userData?.lastDateAuthentication}
+                  </Typography>
+                </Stack>
+
+              </Grid>
+
+
               <Grid
                 xs={12}
                 md={12}
