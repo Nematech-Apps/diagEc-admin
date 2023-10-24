@@ -21,6 +21,7 @@ import LightBulbIcon from '@heroicons/react/24/solid/LightBulbIcon';
 import BriefcaseIcon from '@heroicons/react/24/solid/BriefcaseIcon';
 import RectangleGroupIcon from '@heroicons/react/24/solid/RectangleGroupIcon';
 import SwatchIcon from '@heroicons/react/24/solid/SwatchIcon';
+import UserGroupIcon from '@heroicons/react/24/solid/UserGroupIcon';
 
 
 import { SvgIcon } from '@mui/material';
@@ -44,6 +45,15 @@ export const items = [
   //     </SvgIcon>
   //   )
   // },
+  {
+    title: "Utilisateurs",
+    path: '/users',
+    icon: (
+      <SvgIcon fontSize="small">
+        <UserGroupIcon />
+      </SvgIcon>
+    )
+  },
   {
     title: "Secteurs",
     path: '/secteurs',

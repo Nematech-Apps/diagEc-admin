@@ -78,7 +78,7 @@ export const AccountProfileDetails = () => {
         const userSnapshot = await auth.getUser(firebaseAuth.currentUser?.uid);
         setUserData(userSnapshot);
       } catch (error) {
-        alert(error.message);
+        console.log(error.message);
       }
     };
 
@@ -170,10 +170,26 @@ export const AccountProfileDetails = () => {
               >
                 <Stack direction={'row'} spacing={2}>
                   <Typography variant='body1' style={{ fontWeight: 'bold' }}>
-                    Date de dernière connexion :
+                    Date et heure de dernière connexion :
                   </Typography>
                   <Typography>
                     {userData?.lastDateAuthentication}
+                  </Typography>
+                </Stack>
+
+              </Grid>
+
+
+              <Grid
+                xs={12}
+                md={12}
+              >
+                <Stack direction={'row'} spacing={2}>
+                  <Typography variant='body1' style={{ fontWeight: 'bold' }}>
+                    Rôle :
+                  </Typography>
+                  <Typography>
+                    {userData?.role}
                   </Typography>
                 </Stack>
 

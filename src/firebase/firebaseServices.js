@@ -27,7 +27,8 @@ export const addUserToCollection = async (docId, data) => {
     const docData = {
         id: docId,
         email: data.email,
-        identifiant: data.identifiant
+        identifiant: data.identifiant,
+        role: data.role
     };
 
 
@@ -62,7 +63,13 @@ export const getUserByUid = (uid) => {
 export const getUserList = () => {
     const collectionRef = Collection(db, 'users');
 
-    return GetDocs(collectionRef);
+    return collectionRef;
+}
+
+export const deleteUser = async (docId) => {
+    const collectionRef = Doc(db, 'users', docId);
+
+    return DeleteDoc(collectionRef);
 }
 
 //SECTEURS

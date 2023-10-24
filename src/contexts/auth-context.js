@@ -158,7 +158,7 @@ export const AuthProvider = (props) => {
                 type: HANDLERS.SIGN_UP,
                 payload: userCredential.user
               });
-              return ToastComponent({ message: 'Compte crée avec succès', type: 'success' });
+              return ToastComponent({ message: 'Utilisateur crée avec succès', type: 'success' });
             })
             .catch((err) => {
               dispatch({

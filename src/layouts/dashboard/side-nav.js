@@ -1,4 +1,5 @@
 import NextLink from 'next/link';
+import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import PropTypes from 'prop-types';
 import ArrowTopRightOnSquareIcon from '@heroicons/react/24/solid/ArrowTopRightOnSquareIcon';
@@ -18,6 +19,10 @@ import { Scrollbar } from 'src/components/scrollbar';
 import { items } from './config';
 import { SideNavItem } from './side-nav-item';
 
+
+import { useAuth } from 'src/hooks/use-auth';
+import { auth as firebaseAuth } from '../../firebase/firebaseConfig';
+
 export const SideNav = (props) => {
   const { open, onClose } = props;
   const pathname = usePathname();
@@ -26,6 +31,25 @@ export const SideNav = (props) => {
     return elt.title != "Account" && elt.title != "Customers" && elt.title != "Login" && elt.title != "Register"
     && elt.title != "Error";
   })
+
+
+  const auth = useAuth();
+  const [userData, setUserData] = useState(null)
+
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userSnapshot = await auth.getUser(firebaseAuth.currentUser?.uid);
+        setUserData(userSnapshot);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+
+    fetchUserData();
+
+  }, []);
 
   const content = (
     <Scrollbar
@@ -100,7 +124,10 @@ export const SideNav = (props) => {
               m: 0
             }}
           >
-            {filteredItems.map((item) => {
+            {userData?.role == "SUPER-ADMIN" ?
+            filteredItems
+            .filter(elt => elt.title == "Utilisateurs" || elt.title == "Tableau de bord")
+            .map((item) => {
               const active = item.path ? (pathname === item.path) : false;
 
               return (
@@ -114,7 +141,25 @@ export const SideNav = (props) => {
                   title={item.title}
                 />
               );
-            })}
+            }) : 
+            filteredItems
+            .filter(elt => elt.title != "Utilisateurs")
+            .map((item) => {
+              const active = item.path ? (pathname === item.path) : false;
+
+              return (
+                <SideNavItem
+                  active={active}
+                  disabled={item.disabled}
+                  external={item.external}
+                  icon={item.icon}
+                  key={item.title}
+                  path={item.path}
+                  title={item.title}
+                />
+              );
+            })
+          }
           </Stack>
         </Box>
         <Divider sx={{ borderColor: 'neutral.700' }} />
