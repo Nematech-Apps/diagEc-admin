@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ArrowDownIcon from '@heroicons/react/24/solid/ArrowDownIcon';
 import ArrowUpIcon from '@heroicons/react/24/solid/ArrowUpIcon';
 import CurrencyDollarIcon from '@heroicons/react/24/solid/CurrencyDollarIcon';
-import ListBulletIcon from '@heroicons/react/24/solid/ListBulletIcon';
+import QuestionMarkCircleIcon from '@heroicons/react/24/solid/QuestionMarkCircleIcon';
 import FolderOpenIcon from '@heroicons/react/24/solid/FolderOpenIcon';
 import { Avatar, Card, CardContent, Stack, SvgIcon, Typography, Box, Skeleton } from '@mui/material';
 
@@ -75,7 +75,7 @@ export const OverviewBudget = (props) => {
             }}
           >
             <SvgIcon>
-              <FolderOpenIcon  />
+              <QuestionMarkCircleIcon  />
             </SvgIcon>
           </Avatar>
         </Stack>

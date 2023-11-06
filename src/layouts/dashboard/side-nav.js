@@ -29,7 +29,7 @@ export const SideNav = (props) => {
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   const filteredItems = items.filter((elt) => {
     return elt.title != "Account" && elt.title != "Customers" && elt.title != "Login" && elt.title != "Register"
-    && elt.title != "Error";
+    && elt.title != "Réponses" && elt.title != "Error";
   })
 
 

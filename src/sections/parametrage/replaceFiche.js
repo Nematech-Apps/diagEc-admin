@@ -91,7 +91,7 @@ export const ReplaceFiche = ({ handleClose, isOpen, data }) => {
                                             .then(() => {
                                                 setSelectedFiles(null);
                                                 handleClose();
-                                                return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                                                return ToastComponent({ message: 'Opération effectuée avec succès', type: 'success' });
                                             })
                                             .catch((err) => {
                                                 return ToastComponent({ message: err.message, type: 'error' });

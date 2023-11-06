@@ -103,33 +103,33 @@ export const OverviewSales = (props) => {
 
   // const chartOptions = useChartOptions(theme);
 
-  
+
   const [chartOptions, setChartOptions] = useState({});
   const [chartSeries, setChartSeries] = useState([]);
 
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const groupedData = await getCompanyListByMonth();
-        // console.clear();
+        console.clear();
         console.log(`groupedDataByMonth : ${JSON.stringify(groupedData)}`);
         const keysArray = Object.keys(groupedData);
-        const options = useChartOptions(keysArray,theme);
-        setChartOptions(options)
+        console.log(`keysArray : ${keysArray}`);
+        const options = useChartOptions(keysArray, theme);
+        setChartOptions(options);
+
+  
         const valuesArray = Object.values(groupedData);
         const arr = [];
         valuesArray.forEach((elt) => {
-          let obj = {
-            name : 'Cette année',
-            data : [elt.length]
-          };
-          arr.push(obj);
+          arr.push(elt.length);
         });
         console.log(`arr : ${JSON.stringify(arr)}`);
-        setChartSeries(arr);
+        setChartSeries([{ data: arr}]);
         setData(groupedData);
         setIsLoading(false);
       } catch (error) {
@@ -137,7 +137,7 @@ export const OverviewSales = (props) => {
         setIsLoading(false);
       }
     };
-
+  
     fetchData();
   }, []);
 
@@ -145,7 +145,7 @@ export const OverviewSales = (props) => {
   if (isLoading) {
     return (
       <Box sx={{ width: 200 }}>
-        <Skeleton variant="rectangular" width={210} height={118} />
+        <Skeleton variant="rectangular" width={210} height={318} />
       </Box>
     );
   }

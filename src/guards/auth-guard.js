@@ -68,7 +68,7 @@ export const AuthGuard = (props) => {
     const startTime = new Date().getTime();
 
     if (auth.currentUser != null) {
-      const timerId = startTimerAndPerformAction(startTime, Delay.oneHour, () => {
+      const timerId = startTimerAndPerformAction(startTime, Delay.twoHours, () => {
         showAlert();
         setTimeout(() => {
           authHook.signOut();

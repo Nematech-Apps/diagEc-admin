@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import CurrencyDollarIcon from '@heroicons/react/24/solid/CurrencyDollarIcon';
 import LifebuoyIcon from '@heroicons/react/24/solid/LifebuoyIcon';
 import PaperClipIcon from '@heroicons/react/24/solid/PaperClipIcon';
-import BanknotesIcon from '@heroicons/react/24/solid/BanknotesIcon';
+import LightBulbIcon from '@heroicons/react/24/solid/LightBulbIcon';
 import SunIcon from '@heroicons/react/24/solid/SunIcon';
 import { Avatar, Card, CardContent, Stack, SvgIcon, Typography, Box, Skeleton } from '@mui/material';
 
@@ -75,7 +75,7 @@ export const OverviewTotalProfit = (props) => {
             }}
           >
             <SvgIcon>
-              <SunIcon />
+              <LightBulbIcon />
             </SvgIcon>
           </Avatar>
         </Stack>

@@ -98,7 +98,7 @@ export const UserTable = (props) => {
                     onClick: async () => {
                         deleteUser(user.id)
                             .then(() => {
-                                return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                                return ToastComponent({ message: 'Opération effectuée avec succès', type: 'success' });
                             })
                             .catch((err) => {
                                 return ToastComponent({ message: err.message, type: 'error' });

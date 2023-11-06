@@ -769,6 +769,154 @@ export const getDeviceTokensList = () => {
     return collectionRef;
 }
 
+//audits - ouvertures
+
+export const getAuditsOuverturesForCompany = async (userUid) => {
+    try {
+        const ouverturesCollectionRef = Collection(db, 'ouvertures');
+
+        const q = Query(ouverturesCollectionRef, Where('uid', '==', userUid));
+        const querySnapshot = await GetDocs(q);
+
+        console.log(`querySnapshot.size : ${querySnapshot.size}`)
+        
+        const ouverturesList = [];
+        querySnapshot.forEach((doc) => {
+            ouverturesList.push(doc.data());
+        });
+
+        return ouverturesList;
+    } catch (error) {
+        console.error('Erreur lors de la récupération des ouvertures :', error);
+        throw error;
+    }
+};
+
+
+// fiches consultés
+
+
+export const getFichesByUid = (uid) => {
+    const collectionRef = Doc(db, 'defis', uid)
+
+    return GetDoc(collectionRef);
+
+}
+
+
+export const getQuestionsByUid = (uid) => {
+    const collectionRef = Doc(db, 'questions', uid)
+
+    return GetDoc(collectionRef);
+
+}
+
+export const getPiliersByUid = (uid) => {
+    const collectionRef = Doc(db, 'piliers', uid)
+
+    return GetDoc(collectionRef);
+
+}
+
+
+export const getAnswersByUid = (uid) => {
+    const collectionRef = Doc(db, 'answers', uid)
+
+    return GetDoc(collectionRef);
+
+}
+
+export const getFichesConsultesForCompany = async (userUid) => {
+    try {
+        const fichesCollectionRef = Collection(db, 'fiches');
+
+        const q = Query(fichesCollectionRef, Where('uid', '==', userUid));
+        const querySnapshot = await GetDocs(q);
+
+        console.log(`querySnapshot.size : ${querySnapshot.size}`)
+        
+        const fichesList = [];
+        querySnapshot.forEach((doc) => {
+            fichesList.push(doc.data());
+        });
+
+        return fichesList;
+    } catch (error) {
+        console.error('Erreur lors de la récupération des fiches :', error);
+        throw error;
+    }
+};
+
+
+
+
+
+export const getDefisRealisesForCompany = async (userUid) => {
+    try {
+        const defisRealisesCollectionRef = Collection(db, 'defisFaits');
+
+        const q = Query(defisRealisesCollectionRef, Where('uid', '==', userUid));
+        const querySnapshot = await GetDocs(q);
+
+        console.log(`querySnapshot.size : ${querySnapshot.size}`)
+        
+        const defisList = [];
+        querySnapshot.forEach((doc) => {
+            defisList.push(doc.data());
+        });
+
+        return defisList;
+    } catch (error) {
+        console.error('Erreur lors de la récupération des défis :', error);
+        throw error;
+    }
+};
+
+
+export const getAuditsConnexionsForCompany = async (userUid) => {
+    try {
+        const connexionsCollectionRef = Collection(db, 'connexions');
+
+        const q = Query(connexionsCollectionRef, Where('uid', '==', userUid));
+        const querySnapshot = await GetDocs(q);
+
+        console.log(`querySnapshot.size : ${querySnapshot.size}`)
+        
+        const connexionsList = [];
+        querySnapshot.forEach((doc) => {
+            connexionsList.push(doc.data());
+        });
+
+        return connexionsList;
+    } catch (error) {
+        console.error('Erreur lors de la récupération des ouvertures :', error);
+        throw error;
+    }
+};
+
+
+
+export const getAuditsQuestionsForCompany = async (userUid) => {
+    try {
+        const reponsesQuestionnairesCollectionRef = Collection(db, 'reponsesQuestionnaires');
+
+        const q = Query(reponsesQuestionnairesCollectionRef, Where('uid', '==', userUid));
+        const querySnapshot = await GetDocs(q);
+
+        console.log(`querySnapshot.size : ${querySnapshot.size}`)
+        
+        const reponsesQuestionnairesList = [];
+        querySnapshot.forEach((doc) => {
+            reponsesQuestionnairesList.push(doc.data());
+        });
+
+        return reponsesQuestionnairesList;
+    } catch (error) {
+        console.error('Erreur lors de la récupération des ouvertures :', error);
+        throw error;
+    }
+};
+
 function timeStampToDateString(timestamp) {
     // Convert the timestamp (in seconds) to milliseconds since JavaScript Date works with milliseconds.
     const timestampInMilliseconds = timestamp * 1000;

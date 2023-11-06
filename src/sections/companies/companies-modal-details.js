@@ -102,7 +102,7 @@ export const CompanyModalDetails = ({ handleClose, isOpen, data }) => {
                     </Fab>
                 </Box>
                 <Card>
-                    <CardHeader title="Détails de l'entreprise" />
+                    <CardHeader title="Informations détaillées de l'entreprise" />
                     <Divider />
                     <CardContent>
                         <Stack direction={'column'} spacing={3} sx={{ maxWidth: 400 }}>

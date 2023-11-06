@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ArrowDownIcon from '@heroicons/react/24/solid/ArrowDownIcon';
 import ArrowUpIcon from '@heroicons/react/24/solid/ArrowUpIcon';
-import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
+import BriefcaseIcon from '@heroicons/react/24/solid/BriefcaseIcon';
 import BuildingOfficeIcon from '@heroicons/react/24/solid/BuildingOfficeIcon';
 import { Avatar, Card, CardContent, Stack, SvgIcon, Typography, Skeleton, Box } from '@mui/material';
 
@@ -76,7 +76,7 @@ export const OverviewTotalCustomers = (props) => {
             }}
           >
             <SvgIcon>
-              <BuildingOfficeIcon />
+              <BriefcaseIcon />
             </SvgIcon>
           </Avatar>
         </Stack>

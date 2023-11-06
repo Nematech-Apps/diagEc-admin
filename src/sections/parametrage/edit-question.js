@@ -287,7 +287,7 @@ export const EditQuestion = ({ handleClose, isOpen, data }) => {
                     .then(() => {
                         helpers.resetForm();
                         handleClose();
-                        return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                        return ToastComponent({ message: 'Opération effectuée avec succès', type: 'success' });
                     })
                     .catch((err) => {
                         helpers.setStatus({ success: false });
@@ -627,7 +627,7 @@ export const EditQuestion = ({ handleClose, isOpen, data }) => {
                                                 defaultValue={20}
                                                 getAriaValueText={valuetext}
                                                 valueLabelDisplay="auto"
-                                                step={5}
+                                                step={0.5}
                                                 marks
                                                 min={0}
                                                 max={100}

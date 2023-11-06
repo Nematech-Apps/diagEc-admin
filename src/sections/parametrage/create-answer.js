@@ -91,7 +91,7 @@ export const CreateAnswer = () => {
     }),
     onSubmit: async (values, helpers) => {
       // try{
-      //   return ToastComponent({message: 'Opération effectué avec succès', type: 'success'});
+      //   return ToastComponent({message: 'Opération effectuée avec succès', type: 'success'});
       // } catch(err){
       //   helpers.setStatus({ success: false });
       //   helpers.setErrors({ submit: err.message });
@@ -139,7 +139,7 @@ export const CreateAnswer = () => {
 
               }
               setIsOnCreate(false);
-              return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+              return ToastComponent({ message: 'Opération effectuée avec succès', type: 'success' });
             })
             .catch((err) => {
               setIsOnCreate(false);

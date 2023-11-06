@@ -316,7 +316,7 @@ export const CreateQuestion = () => {
             //             UpdateDoc(collectionRef, docData)
             //                 .then(() => {
             //                     helpers.resetForm();
-            //                     return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+            //                     return ToastComponent({ message: 'Opération effectuée avec succès', type: 'success' });
             //                 })
             //                 .catch((err) => {
             //                     helpers.setStatus({ success: false });
@@ -387,7 +387,7 @@ export const CreateQuestion = () => {
 
                                 }
                                 setIsOnCreate(false);
-                                return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                                return ToastComponent({ message: 'Opération effectuée avec succès', type: 'success' });
                             })
                             .catch((err) => {
                                 setIsOnCreate(false);
@@ -696,7 +696,7 @@ export const CreateQuestion = () => {
                                         defaultValue={20}
                                         getAriaValueText={valuetext}
                                         valueLabelDisplay="auto"
-                                        step={5}
+                                        step={0.5}
                                         marks
                                         min={0}
                                         max={100}

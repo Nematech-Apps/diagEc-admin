@@ -111,7 +111,7 @@ export const PilierTable = (props) => {
                     onClick: async () => {
                         deleteMotCle(pilier.id)
                             .then(() => {
-                                return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                                return ToastComponent({ message: 'Opération effectuée avec succès', type: 'success' });
                             })
                             .catch((err) => {
                                 return ToastComponent({ message: err.message, type: 'error' });
@@ -152,7 +152,7 @@ export const PilierTable = (props) => {
                         else {
                             deletePilier(pilier.id)
                                 .then(() => {
-                                    return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                                    return ToastComponent({ message: 'Opération effectuée avec succès', type: 'success' });
                                 })
                                 .catch((err) => {
                                     return ToastComponent({ message: err.message, type: 'error' });

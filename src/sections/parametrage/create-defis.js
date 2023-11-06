@@ -166,7 +166,7 @@ export const CreateDefis = () => {
                                                             })
 
                                                         }
-                                                        return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                                                        return ToastComponent({ message: 'Opération effectuée avec succès', type: 'success' });
                                                     })
                                                     .catch((err) => {
                                                         helpers.setStatus({ success: false });
@@ -221,7 +221,7 @@ export const CreateDefis = () => {
                                                     .then(() => {
                                                         helpers.resetForm();
                                                         setSelectedFileEn(null);
-                                                        return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                                                        return ToastComponent({ message: 'Opération effectuée avec succès', type: 'success' });
                                                     })
                                                     .catch((err) => {
                                                         helpers.setStatus({ success: false });
@@ -277,7 +277,7 @@ export const CreateDefis = () => {
                                                         setIsOnCreate(false);
                                                         helpers.resetForm();
                                                         setSelectedFileIt(null);
-                                                        return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                                                        return ToastComponent({ message: 'Opération effectuée avec succès', type: 'success' });
                                                     })
                                                     .catch((err) => {
                                                         helpers.setStatus({ success: false });

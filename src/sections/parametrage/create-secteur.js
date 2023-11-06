@@ -83,7 +83,7 @@ export const CreateSecteur = () => {
     }),
     onSubmit: async (values, helpers) => {
       // try{
-      //   return ToastComponent({message: 'Opération effectué avec succès', type: 'success'});
+      //   return ToastComponent({message: 'Opération effectuée avec succès', type: 'success'});
       // } catch(err){
       //   helpers.setStatus({ success: false });
       //   helpers.setErrors({ submit: err.message });
@@ -137,7 +137,7 @@ export const CreateSecteur = () => {
 
               }
               setIsOnCreate(false);
-              return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+              return ToastComponent({ message: 'Opération effectuée avec succès', type: 'success' });
             })
             .catch((err) => {
               setIsOnCreate(false);

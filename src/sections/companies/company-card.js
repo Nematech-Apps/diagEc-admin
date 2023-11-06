@@ -3,11 +3,15 @@ import PropTypes from 'prop-types';
 import ArrowDownOnSquareIcon from '@heroicons/react/24/solid/ArrowDownOnSquareIcon';
 import ClockIcon from '@heroicons/react/24/solid/ClockIcon';
 import InformationCircleIcon from '@heroicons/react/24/solid/InformationCircleIcon';
+import EyeIcon from '@heroicons/react/24/solid/EyeIcon';
+import ChartBarIcon from '@heroicons/react/24/solid/ChartBarIcon';
 import { Avatar, Box, Card, CardContent, Divider, Stack, SvgIcon, Typography, Button, Fab, FormControlLabel } from '@mui/material';
 import { IOSSwitch } from 'src/components/ios-switch';
 
 
 import { CompanyModalDetails } from './companies-modal-details';
+
+import { CompanyStatsModal } from './company-stats-modal';
 
 export const CompanyCard = (props) => {
   const { company } = props;
@@ -37,6 +41,15 @@ export const CompanyCard = (props) => {
   const handleDetailsClick = (event, company) => {
     setModalData(company);
     setIsModalOpen(true);
+  };
+
+
+  const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
+  const [modalStatsData, setModalStatsData] = useState(null);
+
+  const handleStatsClick = (event, company) => {
+    setModalStatsData(company);
+    setIsStatsModalOpen(true);
   };
 
   return (
@@ -78,9 +91,31 @@ export const CompanyCard = (props) => {
         <Typography
           align="center"
           variant="body1"
+          sx={{ marginBottom: 2 }}
         >
-          {company.adresse}
+          {company.adresse ? company.adresse : 'Adresse non disponible'}
         </Typography>
+
+
+        <Typography
+          align="center"
+          gutterBottom
+          variant="h5"
+        >
+          <Button variant="contained" color='warning' size='small'
+            startIcon={
+              <SvgIcon>
+                <ChartBarIcon />
+              </SvgIcon>
+            }
+            component="span"
+            sx={{ padding: 1 }}
+            onClick={(event) => handleStatsClick(event, company)}
+          >
+            Statistiques
+          </Button>
+        </Typography>
+
       </CardContent>
       <Box sx={{ flexGrow: 1 }} />
       <Divider />
@@ -117,7 +152,7 @@ export const CompanyCard = (props) => {
           <Fab
             variant="extended"
             size="small"
-            color="warning"
+            color="info"
             aria-label="info"
             onClick={(event) => handleDetailsClick(event, company)}
           >
@@ -129,6 +164,11 @@ export const CompanyCard = (props) => {
           {isModalOpen && modalData && <CompanyModalDetails data={modalData}
             isOpen={isModalOpen}
             handleClose={() => setIsModalOpen(false)} />}
+
+
+          {isStatsModalOpen && modalStatsData && <CompanyStatsModal data={modalStatsData}
+            isOpen={isStatsModalOpen}
+            handleClose={() => setIsStatsModalOpen(false)} />}
           {/* <Button variant="outlined" startIcon={<SvgIcon
             color="info"
             fontSize="small"

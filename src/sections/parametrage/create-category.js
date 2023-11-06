@@ -107,7 +107,7 @@ export const CreateCategory = () => {
             .then(() => {
               helpers.resetForm();
               setIsOnCreate(false);
-              return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+              return ToastComponent({ message: 'Opération effectuée avec succès', type: 'success' });
             })
             .catch((err) => {
               setIsOnCreate(false);

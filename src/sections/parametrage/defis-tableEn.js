@@ -119,7 +119,7 @@ export const DefisTableEn = (props) => {
                             .then(() => {
                                 deleteFicheReflexeInStorage(defis.id, 'Fr')
                                     .then(() => {
-                                        return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                                        return ToastComponent({ message: 'Opération effectuée avec succès', type: 'success' });
                                     })
                                     .catch((err) => {
                                         return ToastComponent({ message: err.message, type: 'error' });
@@ -127,7 +127,7 @@ export const DefisTableEn = (props) => {
 
                                 deleteFicheReflexeInStorage(defis.id, 'En')
                                     .then(() => {
-                                        return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                                        return ToastComponent({ message: 'Opération effectuée avec succès', type: 'success' });
                                     })
                                     .catch((err) => {
                                         return ToastComponent({ message: err.message, type: 'error' });
@@ -135,7 +135,7 @@ export const DefisTableEn = (props) => {
 
                                 deleteFicheReflexeInStorage(defis.id, 'It')
                                     .then(() => {
-                                        return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                                        return ToastComponent({ message: 'Opération effectuée avec succès', type: 'success' });
                                     })
                                     .catch((err) => {
                                         return ToastComponent({ message: err.message, type: 'error' });

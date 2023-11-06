@@ -61,8 +61,19 @@ export const ExportEXCEL = (props) => {
             new Set(excelData.flatMap((item) => item.pilierScores?.map((pilierScore) => pilierScore.pilier.libelleFr)))
         );
 
+        // Extraire tous les libellés de Question uniques
+        const uniqueQuestionLabels = Array.from(
+            new Set(excelData.flatMap((item) => item.questions?.map((question) => question.libelleFr)))
+        );
+
+
+        // Extraire tous les libellés de défis uniques
+        const uniqueDefiLabels = Array.from(
+            new Set(excelData.flatMap((item) => item.questions?.flatMap((question) => question?.defis.map((defi) => defi.libelleFr) ) || []))
+        );        
+
         // Ajouter l'en-tête à la feuille de calcul
-        const headers = ["Raison sociale", "Email", "Secteur", "Nombre de salariés", "Poste", "Adresse", "Score EC", "Progression", "Niveau", ...uniquePilierLabels];
+        const headers = ["Raison sociale", "Email", "Secteur", "Nombre de salariés", "Poste", "Adresse", "Score EC", "Progression", "Niveau", ...uniqueQuestionLabels, ...uniquePilierLabels, ...uniqueDefiLabels];
         XLSX.utils.sheet_add_aoa(ws, [headers], { origin: "A1" });
 
         // Boucle pour insérer les données dans la feuille de calcul
@@ -70,7 +81,7 @@ export const ExportEXCEL = (props) => {
             // Initialiser la ligne avec des valeurs vides
             const rowData = Array(headers.length).fill("");
 
-            const headers2 = ["raisonSociale", "email", "secteur", "nbreSalaries", "poste", "adresse", "score", "progression", "niveau", ...uniquePilierLabels];
+            const headers2 = ["raisonSociale", "email", "secteur", "nbreSalaries", "poste", "adresse", "score", "progression", "niveau", ...uniqueQuestionLabels, ...uniquePilierLabels, ...uniqueDefiLabels];
 
             // Remplir les valeurs de base (Raison sociale, Email, etc.)
             headers2.forEach((header, colIndex) => {
@@ -98,6 +109,24 @@ export const ExportEXCEL = (props) => {
                     // rowData[pilierIndex] = pilierScore.score;
                     rowData[pilierIndex] = pilierScore.score != null ? (isNaN(arrondirA2Decimales(pilierScore.score)) ? `0%` : `${arrondirA2Decimales(pilierScore.score)}%`) : `0%`;
                 }
+            });
+
+            // Remplir les libellés des questions
+            data.questions?.forEach((question) => {
+                const questionIndex = headers.indexOf(question.libelleFr);
+                if(questionIndex !== -1){
+                    rowData[questionIndex] = question.answers.find(elt => elt.isAnswered == true).libelleFr
+                }
+            });
+
+            // Remplir les libellés des défis
+            data.questions?.forEach((question) => {
+                question.defis.forEach((defi) => {
+                    const defiIndex = headers.indexOf(defi.libelleFr);
+                    if(defiIndex !== -1){
+                        rowData[defiIndex] = defi.isDone == false ? "En cours" : "Terminé"
+                    }
+                })
             });
 
             // Insérer la ligne de données dans la feuille de calcul
@@ -160,7 +189,8 @@ export const ExportEXCEL = (props) => {
                             adresse: elt.adresse,
                             score: elt.score != null ? (isNaN(arrondirA2Decimales(elt.score)) ? `0%` : `${arrondirA2Decimales(elt.score)}%`) : `0%`,
                             progression: getLevel(elt.score != null ? (isNaN(arrondirA2Decimales(elt.score)) ? 0 : arrondirA2Decimales(elt.score)) : 0),
-                            pilierScores: elt.pilierScores
+                            pilierScores: elt.pilierScores,
+                            questions: elt.questions
                         }
                         arr.push(obj)
                     })
@@ -191,7 +221,8 @@ export const ExportEXCEL = (props) => {
                             score: elt.score != null ? (isNaN(arrondirA2Decimales(elt.score)) ? `0%` : `${arrondirA2Decimales(elt.score)}%`) : `0%`,
                             progression: getLevel(elt.score != null ? (isNaN(arrondirA2Decimales(elt.score)) ? 0 : arrondirA2Decimales(elt.score)) : 0),
                             niveau: elt.niveauAppartenance.libelleFr,
-                            pilierScores: elt.pilierScores
+                            pilierScores: elt.pilierScores,
+                            questions: elt.questions
                         }
                         arr.push(obj)
                     })

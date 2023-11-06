@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import ListBulletIcon from '@heroicons/react/24/solid/ListBulletIcon';
+import QueueListIcon from '@heroicons/react/24/solid/QueueListIcon';
 import TicketIcon from '@heroicons/react/24/solid/TicketIcon';
 import {
   Avatar,
@@ -84,7 +84,7 @@ export const OverviewTasksProgress = (props) => {
             }}
           >
             <SvgIcon>
-              <TicketIcon />
+              <QueueListIcon />
             </SvgIcon>
           </Avatar>
         </Stack>

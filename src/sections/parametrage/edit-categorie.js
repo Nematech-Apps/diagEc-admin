@@ -111,7 +111,7 @@ export const EditCategorie = ({ handleClose, isOpen, data }) => {
                 .then(() => {
                     helpers.resetForm();
                     handleClose();
-                    return ToastComponent({ message: 'Opération effectué avec succès', type: 'success' });
+                    return ToastComponent({ message: 'Opération effectuée avec succès', type: 'success' });
                 })
                 .catch((err) => {
                     helpers.setStatus({ success: false });
