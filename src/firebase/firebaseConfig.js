@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, getDocs, addDoc, doc, setDoc, getDoc, updateDoc, deleteDoc, deleteField, onSnapshot, query, where } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, uploadBytesResumable, getDownloadURL, deleteObject} from 'firebase/storage';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendPasswordResetEmail } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, fetchSignInMethodsForEmail } from "firebase/auth";
 
 // Initialize Firebase
 const firebaseConfig = {
@@ -40,3 +40,4 @@ export const signin = signInWithEmailAndPassword;
 export const signupUser = createUserWithEmailAndPassword;
 export const signout = signOut;
 export const SendPasswordResetEmail = sendPasswordResetEmail;
+export const FetchSignInMethodsForEmail = fetchSignInMethodsForEmail

@@ -21,11 +21,17 @@ import { Layout as AuthLayout } from 'src/layouts/auth/layout';
 
 import { useAuthContext } from '../../contexts/auth-context';
 
+import { checkIfUserWithEmailProvidedExist } from '../../firebase/firebaseServices';
+
+import ToastComponent from 'src/components/toast';
+
 const Page = () => {
   const router = useRouter();
   const auth = useAuth();
   const { isAuthenticated } = useAuthContext();
   const [method, setMethod] = useState('email');
+
+  const [isEmailSent, setIsEmailSent] = useState(null);
 
   useEffect(() => {
     console.log(isAuthenticated);
@@ -48,8 +54,22 @@ const Page = () => {
     }),
     onSubmit: async (values, helpers) => {
       try {
-        await auth.resetUserPassword(values.email);
-        router.push('/auth/login');
+        const methods = await checkIfUserWithEmailProvidedExist(values.email);
+        if (methods && methods.length > 0) {
+          // User with the provided email exists, proceed to send password reset email
+          await auth.resetUserPassword(values.email);
+          setIsEmailSent("sent");
+          helpers.resetForm();
+          setTimeout(() => {
+            router.push('/auth/login');
+          }, 5000);
+        } else {
+          setIsEmailSent("not sent");
+          helpers.resetForm();
+          console.log('User with the provided email does not exist.');
+          // You can handle this case as needed, maybe show an error message to the user
+        }
+        
         // await auth.signIn(values.email, values.password);
         // console.log(isAuthenticated)
         // if (isAuthenticated) {
@@ -118,6 +138,12 @@ const Page = () => {
                 &nbsp;
                 
               </Typography>
+              {
+                isEmailSent == "not sent" && <Alert severity="error">Compte introuvable!</Alert>
+              }
+              {
+                isEmailSent == "sent" && <Alert severity="success">Email envoyé avec succès!</Alert>
+              }
             </Stack>
             <form
               noValidate

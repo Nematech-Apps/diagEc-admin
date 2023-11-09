@@ -1,6 +1,6 @@
 import {
     db, storage, Ref, UploadBytes, UploadBytesResumable, GetDownloadURL, DeleteObject, Collection, AddDoc, Doc, SetDoc, GetDoc, GetDocs, OnSnapshot, UpdateDoc, DeleteDoc, DeleteField, Query, Where, auth, signin, signupUser, signout
-    , SendPasswordResetEmail
+    , SendPasswordResetEmail, FetchSignInMethodsForEmail
 }
     from './firebaseConfig';
 
@@ -19,6 +19,10 @@ export const logout = () => {
 
 export const resetPassword = (email) => {
     return SendPasswordResetEmail(auth, email);
+}
+
+export const checkIfUserWithEmailProvidedExist = (email) => {
+    return FetchSignInMethodsForEmail(auth, email);
 }
 
 export const addUserToCollection = async (docId, data) => {

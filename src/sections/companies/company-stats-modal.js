@@ -61,18 +61,6 @@ const style = {
 
 //useTheme().palette.primary.main
 
-const colors = {
-    chartreuse: 'chartreuse',
-    crimson: 'crimson',
-    sienna: 'sienna',
-    turquoise: 'turquoise',
-    white: 'white',
-    paleturquoise: 'paleturquoise',
-    indigo: 'indigo'
-}
-
-
-
 
 
 const RadiusBox = ({ color, text, number }) => {
@@ -85,14 +73,31 @@ const RadiusBox = ({ color, text, number }) => {
             backgroundColor: color
         }} display={'flex'} alignItems={'center'} justifyContent={'center'}>
             <Stack direction={'column'} spacing={2}>
-                <Typography variant='h6' color={colors.white}>{text}</Typography>
-                <Typography color={colors.white} variant='h3'>{number}</Typography>
+                <Typography variant='h6' color={'white'}>{text}</Typography>
+                <Typography color={'white'} variant='h3'>{number}</Typography>
             </Stack>
         </Box>
     )
 }
 
 export const CompanyStatsModal = ({ handleClose, isOpen, data }) => {
+    const theme = useTheme();
+
+    const colors = {
+        chartreuse: 'chartreuse',
+        crimson: 'crimson',
+        sienna: 'sienna',
+        turquoise: 'turquoise',
+        white: 'white',
+        paleturquoise: 'paleturquoise',
+        indigo: 'indigo',
+        primary: theme.palette.primary.dark,
+        secondary: theme.palette.secondary.dark,
+        warning: theme.palette.warning.dark,
+        info: theme.palette.info.dark,
+        error: theme.palette.error.dark,
+        success: theme.palette.success.dark
+    }
 
     const [connexionsData, setConnexionsData] = useState([]);
     const [ouverturesData, setOuverturesData] = useState([]);
@@ -552,11 +557,11 @@ export const CompanyStatsModal = ({ handleClose, isOpen, data }) => {
                     <Box sx={style}>
                         <Stack direction={'column'} spacing={3}>
                             <Stack direction={'row'} spacing={2}>
-                                <RadiusBox color={colors.indigo} text="Connexion à l'application" number={connexionsData.length} />
-                                <RadiusBox color={colors.chartreuse} text="Ouverture de l'application" number={ouverturesData.length} />
-                                <RadiusBox color={colors.crimson} text="Fiches consultées" number={fichesData.length} />
-                                <RadiusBox color={colors.sienna} text="Défis réalisés" number={defisData.length} />
-                                <RadiusBox color={colors.turquoise} text="Réponses aux questionnaires" number={questionsData.length} />
+                                <RadiusBox color={colors.primary} text="Connexion à l'application" number={connexionsData.length} />
+                                <RadiusBox color={colors.success} text="Ouverture de l'application" number={ouverturesData.length} />
+                                <RadiusBox color={colors.error} text="Fiches consultées" number={fichesData.length} />
+                                <RadiusBox color={colors.info} text="Défis réalisés" number={defisData.length} />
+                                <RadiusBox color={colors.warning} text="Réponses aux questionnaires" number={questionsData.length} />
                             </Stack>
 
                             <hr />
