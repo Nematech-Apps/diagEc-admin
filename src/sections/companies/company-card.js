@@ -80,13 +80,13 @@ export const CompanyCard = (props) => {
         >
           {company.raisonSociale}
         </Typography>
-        <Typography
+        {/* <Typography
           align="center"
           gutterBottom
           variant="h5"
         >
           <IOSSwitch sx={{ m: 1 }} defaultChecked />
-        </Typography>
+        </Typography> */}
 
         <Typography
           align="center"
@@ -102,7 +102,7 @@ export const CompanyCard = (props) => {
           gutterBottom
           variant="h5"
         >
-          <Button variant="contained" color='warning' size='small'
+          <Button variant="contained" color='info' size='small'
             startIcon={
               <SvgIcon>
                 <ChartBarIcon />
@@ -152,7 +152,7 @@ export const CompanyCard = (props) => {
           <Fab
             variant="extended"
             size="small"
-            color="info"
+            color="warning"
             aria-label="info"
             onClick={(event) => handleDetailsClick(event, company)}
           >

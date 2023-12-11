@@ -56,6 +56,34 @@ export const updateUserCollection = async (lastDate, docId) => {
     return UpdateDoc(collectionRef, docData)
 }
 
+export const updateUserTimePassedCollection = async (tempsPasse, docId) => {
+    const collectionRef = Doc(db, 'users', docId);
+    const snapshot = await GetDoc(collectionRef);
+
+    const docData = {
+        ...snapshot.data(),
+        tempsPasse: tempsPasse
+    };
+
+    return UpdateDoc(collectionRef, docData)
+}
+
+
+export const addUserHistoriqueToCollection = async (data, docId) => {
+    const collectionRef = Doc(db, 'users', docId);
+    const snapshot = await GetDoc(collectionRef);
+
+    const docData = {
+        ...snapshot.data(),
+        historique: {
+
+        }
+    };
+
+    return UpdateDoc(collectionRef, docData)
+}
+
+
 
 export const getUserByUid = (uid) => {
     const collectionRef = Doc(db, 'users', uid)
@@ -400,7 +428,8 @@ export const addPilier = async (data) => {
         libelleIt: data.libelleIt,
         definitionFr: data.definitionFr,
         definitionEn: data.definitionEn,
-        definitionIt: data.definitionIt
+        definitionIt: data.definitionIt,
+        ordre: data.ordre
     }
 
     return AddDoc(collectionRef, docData);
@@ -460,7 +489,7 @@ export const addMotCleToPilier = async (data, docId) => {
 
 export const deleteMotCle = (docId) => {
     const collectionRef = Doc(db, 'piliers', docId);
-    
+
 
     const docData = {
         motClesFr: DeleteField()
@@ -483,7 +512,7 @@ export const addMotCleToPilierEn = async (data, docId) => {
 
 export const deleteMotCleEn = (docId) => {
     const collectionRef = Doc(db, 'piliers', docId);
-    
+
 
     const docData = {
         motClesEn: DeleteField()
@@ -505,7 +534,7 @@ export const addMotCleToPilierIt = async (data, docId) => {
 
 export const deleteMotCleIt = (docId) => {
     const collectionRef = Doc(db, 'piliers', docId);
-    
+
 
     const docData = {
         motClesIt: DeleteField()
@@ -685,6 +714,32 @@ export const getCompanyList = () => {
 }
 
 
+// export const getCompanyListByNiveau = async () => {
+//     const collectionRef = Collection(db, 'companies');
+
+//     try {
+//         const querySnapshot = await GetDocs(collectionRef);
+
+//         const groupedData = {};
+//         querySnapshot.forEach((doc) => {
+//             const data = doc.data();
+//             const groupField = data.niveauAppartenance.libelle;
+//             if (!groupedData[groupField]) {
+//                 groupedData[groupField] = [data];
+//             } else {
+//                 groupedData[groupField].push(data);
+//             }
+//         });
+
+
+//         return groupedData;
+//     } catch (error) {
+//         console.error('Error getting company list:', error);
+//         return null;
+//     }
+// }
+
+
 export const getCompanyListByNiveau = async () => {
     const collectionRef = Collection(db, 'companies');
 
@@ -694,14 +749,17 @@ export const getCompanyListByNiveau = async () => {
         const groupedData = {};
         querySnapshot.forEach((doc) => {
             const data = doc.data();
-            const groupField = data.niveauAppartenance.libelle;
-            if (!groupedData[groupField]) {
-                groupedData[groupField] = [data];
-            } else {
-                groupedData[groupField].push(data);
+            const groupField = data.niveauAppartenance?.libelle; // Utilisation de l'opérateur de nullish coalescing (??)
+            
+            // Vérification pour éviter les groupField indéfinis
+            if (groupField !== undefined) {
+                if (!groupedData[groupField]) {
+                    groupedData[groupField] = [data];
+                } else {
+                    groupedData[groupField].push(data);
+                }
             }
         });
-
 
         return groupedData;
     } catch (error) {
@@ -709,6 +767,7 @@ export const getCompanyListByNiveau = async () => {
         return null;
     }
 }
+
 
 
 export const getCompanyListBySecteur = async () => {
@@ -720,14 +779,17 @@ export const getCompanyListBySecteur = async () => {
         const groupedData = {};
         querySnapshot.forEach((doc) => {
             const data = doc.data();
-            const groupField = data.secteurAppartenance.libelle;
-            if (!groupedData[groupField]) {
-                groupedData[groupField] = [data];
-            } else {
-                groupedData[groupField].push(data);
+            const groupField = data.secteurAppartenance?.libelle; // Utilisation de l'opérateur de nullish coalescing (??)
+
+            // Vérification pour éviter les groupField indéfinis
+            if (groupField !== undefined) {
+                if (!groupedData[groupField]) {
+                    groupedData[groupField] = [data];
+                } else {
+                    groupedData[groupField].push(data);
+                }
             }
         });
-
 
         return groupedData;
     } catch (error) {
@@ -735,6 +797,7 @@ export const getCompanyListBySecteur = async () => {
         return null;
     }
 }
+
 
 //settings
 
@@ -783,7 +846,7 @@ export const getAuditsOuverturesForCompany = async (userUid) => {
         const querySnapshot = await GetDocs(q);
 
         console.log(`querySnapshot.size : ${querySnapshot.size}`)
-        
+
         const ouverturesList = [];
         querySnapshot.forEach((doc) => {
             ouverturesList.push(doc.data());
@@ -838,7 +901,7 @@ export const getFichesConsultesForCompany = async (userUid) => {
         const querySnapshot = await GetDocs(q);
 
         console.log(`querySnapshot.size : ${querySnapshot.size}`)
-        
+
         const fichesList = [];
         querySnapshot.forEach((doc) => {
             fichesList.push(doc.data());
@@ -863,7 +926,7 @@ export const getDefisRealisesForCompany = async (userUid) => {
         const querySnapshot = await GetDocs(q);
 
         console.log(`querySnapshot.size : ${querySnapshot.size}`)
-        
+
         const defisList = [];
         querySnapshot.forEach((doc) => {
             defisList.push(doc.data());
@@ -885,7 +948,7 @@ export const getAuditsConnexionsForCompany = async (userUid) => {
         const querySnapshot = await GetDocs(q);
 
         console.log(`querySnapshot.size : ${querySnapshot.size}`)
-        
+
         const connexionsList = [];
         querySnapshot.forEach((doc) => {
             connexionsList.push(doc.data());
@@ -908,7 +971,7 @@ export const getAuditsQuestionsForCompany = async (userUid) => {
         const querySnapshot = await GetDocs(q);
 
         console.log(`querySnapshot.size : ${querySnapshot.size}`)
-        
+
         const reponsesQuestionnairesList = [];
         querySnapshot.forEach((doc) => {
             reponsesQuestionnairesList.push(doc.data());
@@ -969,7 +1032,7 @@ export const getCompanyListByMonth = async () => {
             console.log(`monthName : ${monthName}`);
 
             // Use the month name as the key for grouping the data.
-            const groupField = monthName.substring(0,3);
+            const groupField = monthName.substring(0, 3);
 
             if (!groupedData[groupField]) {
                 groupedData[groupField] = [data];

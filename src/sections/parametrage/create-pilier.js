@@ -68,6 +68,7 @@ export const CreatePilier = () => {
             definitionFr: '',
             definitionEn: '',
             definitionIt: '',
+            ordre: 0,
             submit: null
         },
         validationSchema: Yup.object({
@@ -92,6 +93,9 @@ export const CreatePilier = () => {
             definitionIt: Yup
                 .string()
                 .required("La definition en italien est requise"),
+            ordre: Yup
+                .number()
+                .required("L'ordre est requis"),
         }),
         onSubmit: async (values, helpers) => {
             setIsOnCreate(true);
@@ -235,6 +239,19 @@ export const CreatePilier = () => {
                             onChange={formik.handleChange}
                             type="text"
                             value={formik.values.definitionIt}
+                        />
+
+
+                        <TextField
+                            error={!!(formik.touched.ordre && formik.errors.ordre)}
+                            fullWidth
+                            helperText={formik.touched.ordre && formik.errors.ordre}
+                            label="Ordre"
+                            name="ordre"
+                            onBlur={formik.handleBlur}
+                            onChange={formik.handleChange}
+                            type="number"
+                            value={formik.values.ordre}
                         />
 
                     </Stack>

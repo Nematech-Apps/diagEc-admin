@@ -38,7 +38,7 @@ const now = new Date();
 
 const Page = () => {
 
-    
+
     return (
         <>
             <Head>
@@ -58,24 +58,24 @@ const Page = () => {
                         container
                         spacing={3}
                     >
-                        
-                        
+
+
 
                         <Grid
-                        xs={12}
-                        md={12}
-                        lg={12}
-                    >
-                        <CreateSecteur />
-                    </Grid>
+                            xs={12}
+                            md={12}
+                            lg={12}
+                        >
+                            <CreateSecteur />
+                        </Grid>
 
-                    <Grid
-                        xs={12}
-                        md={12}
-                        lg={12}
-                    >
-                        <DisplaySecteurTable />
-                    </Grid>
+                        <Grid
+                            xs={12}
+                            md={12}
+                            lg={12}
+                        >
+                            <DisplaySecteurTable />
+                        </Grid>
 
                     </Grid>
                 </Container>

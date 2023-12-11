@@ -41,7 +41,8 @@ export const DisplayCompanyListCard = () => {
                     ...doc.data(),
                     id: doc.id,
                 }));
-                setData(fetchedData);
+                const filteredData = fetchedData.filter(elt => elt?.email != "testgoogle@gmail.com");
+                setData(filteredData);
                 setIsLoading(false);
             },
             (error) => {

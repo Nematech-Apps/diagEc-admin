@@ -44,6 +44,7 @@ const initialModalStyle = {
     backgroundColor: 'white',
     zIndex: 9999,
     transition: 'right 0.3s ease-in-out',
+    overflow: 'auto'
 };
 
 const overlayStyle = {
@@ -52,7 +53,7 @@ const overlayStyle = {
     left: 0,
     width: '100%',
     height: '100%',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
     zIndex: 9998,
 };
 
@@ -101,7 +102,7 @@ export const CompanyModalDetails = ({ handleClose, isOpen, data }) => {
                         </SvgIcon>
                     </Fab>
                 </Box>
-                <Card>
+                <Card >
                     <CardHeader title="Informations détaillées de l'entreprise" />
                     <Divider />
                     <CardContent>
@@ -109,58 +110,89 @@ export const CompanyModalDetails = ({ handleClose, isOpen, data }) => {
                             <Typography
                                 color="text.secondary"
                                 display="inline"
-                                variant="body2"
+                                variant="subtitle2"
                             >
                                 Email : {data.email}
                             </Typography>
 
+                            <Divider/>
+
                             <Typography
                                 color="text.secondary"
                                 display="inline"
-                                variant="body2"
+                                variant="subtitle2"
                             >
                                 Raison sociale : {data.raisonSociale}
                             </Typography>
 
+                            <Divider/>
+
                             <Typography
                                 color="text.secondary"
                                 display="inline"
-                                variant="body2"
+                                variant="subtitle2"
                             >
                                 Secteur : {data.secteurAppartenance.libelle}
                             </Typography>
 
+                            <Divider/>
+
                             <Typography
                                 color="text.secondary"
                                 display="inline"
-                                variant="body2"
+                                variant="subtitle2"
                             >
                                 Niveau : {data.niveauAppartenance.libelle}
                             </Typography>
 
+                            <Divider/>
+
                             <Typography
                                 color="text.secondary"
                                 display="inline"
-                                variant="body2"
+                                variant="subtitle2"
                             >
                                 Poste : {data.poste}
                             </Typography>
 
-                            <Typography
-                                color="text.secondary"
-                                display="inline"
-                                variant="body2"
-                            >
-                                Nombre de salariés : {data.nbreSalaries}
-                            </Typography>
+                            <Divider/>
 
                             <Typography
                                 color="text.secondary"
                                 display="inline"
-                                variant="body2"
+                                variant="subtitle2"
+                            >
+                                Nombre de salariés : {data.nbreSalaries}
+                            </Typography>
+
+                            <Divider/>
+
+                            <Typography
+                                color="text.secondary"
+                                display="inline"
+                                variant="subtitle2"
                             >
                                 Adresse : {data.adresse}
                             </Typography>
+
+                            <Divider/>
+
+                            <Typography
+                                color="text.secondary"
+                                display="inline"
+                                variant="subtitle2"
+                            >
+                                Marché de référence :
+                                <ol type='a'>
+                                    {data?.marchesref?.map((elt, index) => {
+                                        return(
+                                            <li key={index}>{elt.libelleFr}</li>
+                                        )
+                                    })
+                                    }
+                                </ol>
+                            </Typography>
+
                         </Stack>
                     </CardContent>
                     <Divider />

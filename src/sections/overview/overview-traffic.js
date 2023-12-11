@@ -101,15 +101,21 @@ export const OverviewTraffic = (props) => {
     const fetchData = async () => {
       try {
         const groupedData = await getCompanyListByNiveau();
-        const keysArray = Object.keys(groupedData);
+        const keysArray = Object.keys(groupedData).filter(key => key !== undefined);
+
+        if (keysArray.length === 0) {
+          // Gérer le cas où keysArray est vide (pas de clés définies)
+          console.log('Aucune clé définie dans groupedData');
+          return;
+        }
+
         const options = useChartOptions(keysArray, theme);
-        setChartOptions(options)
+        setChartOptions(options);
+
         const valuesArray = Object.values(groupedData);
-        const arr = [];
-        valuesArray.forEach((elt) => {
-          arr.push(elt.length)
-        });
+        const arr = valuesArray.map(elt => elt.length);
         setChartSeries(arr);
+
         setData(groupedData);
         setIsLoading(false);
       } catch (error) {
@@ -120,6 +126,7 @@ export const OverviewTraffic = (props) => {
 
     fetchData();
   }, []);
+
 
 
   if (isLoading) {

@@ -69,11 +69,11 @@ export const ExportEXCEL = (props) => {
 
         // Extraire tous les libellés de défis uniques
         const uniqueDefiLabels = Array.from(
-            new Set(excelData.flatMap((item) => item.questions?.flatMap((question) => question?.defis.map((defi) => defi.libelleFr) ) || []))
-        );        
+            new Set(excelData.flatMap((item) => item.questions?.flatMap((question) => question?.defis.map((defi) => defi.libelleFr)) || []))
+        );
 
         // Ajouter l'en-tête à la feuille de calcul
-        const headers = ["Raison sociale", "Email", "Secteur", "Nombre de salariés", "Poste", "Adresse", "Score EC", "Progression", "Niveau", ...uniqueQuestionLabels, ...uniquePilierLabels, ...uniqueDefiLabels];
+        const headers = ["Raison sociale", "Email", "Secteur", "Nombre de salariés", "Poste", "Adresse", "Marché de référence", "Score EC", "Progression", "Niveau", ...uniqueQuestionLabels, ...uniquePilierLabels, ...uniqueDefiLabels];
         XLSX.utils.sheet_add_aoa(ws, [headers], { origin: "A1" });
 
         // Boucle pour insérer les données dans la feuille de calcul
@@ -81,7 +81,7 @@ export const ExportEXCEL = (props) => {
             // Initialiser la ligne avec des valeurs vides
             const rowData = Array(headers.length).fill("");
 
-            const headers2 = ["raisonSociale", "email", "secteur", "nbreSalaries", "poste", "adresse", "score", "progression", "niveau", ...uniqueQuestionLabels, ...uniquePilierLabels, ...uniqueDefiLabels];
+            const headers2 = ["raisonSociale", "email", "secteur", "nbreSalaries", "poste", "adresse", "marchesref", "score", "progression", "niveau", ...uniqueQuestionLabels, ...uniquePilierLabels, ...uniqueDefiLabels];
 
             // Remplir les valeurs de base (Raison sociale, Email, etc.)
             headers2.forEach((header, colIndex) => {
@@ -91,6 +91,7 @@ export const ExportEXCEL = (props) => {
                     case "nbreSalaries":
                     case "poste":
                     case "adresse":
+                    case "marchesref":
                     case "score":
                     case "progression":
                     case "niveau":
@@ -114,7 +115,7 @@ export const ExportEXCEL = (props) => {
             // Remplir les libellés des questions
             data.questions?.forEach((question) => {
                 const questionIndex = headers.indexOf(question.libelleFr);
-                if(questionIndex !== -1){
+                if (questionIndex !== -1) {
                     rowData[questionIndex] = question.answers.find(elt => elt.isAnswered == true).libelleFr
                 }
             });
@@ -123,7 +124,7 @@ export const ExportEXCEL = (props) => {
             data.questions?.forEach((question) => {
                 question.defis.forEach((defi) => {
                     const defiIndex = headers.indexOf(defi.libelleFr);
-                    if(defiIndex !== -1){
+                    if (defiIndex !== -1) {
                         rowData[defiIndex] = defi.isDone == false ? "En cours" : "Terminé"
                     }
                 })
@@ -187,6 +188,7 @@ export const ExportEXCEL = (props) => {
                             nbreSalaries: elt.nbreSalaries,
                             poste: elt.poste,
                             adresse: elt.adresse,
+                            marchesref: elt?.marchesref,
                             score: elt.score != null ? (isNaN(arrondirA2Decimales(elt.score)) ? `0%` : `${arrondirA2Decimales(elt.score)}%`) : `0%`,
                             progression: getLevel(elt.score != null ? (isNaN(arrondirA2Decimales(elt.score)) ? 0 : arrondirA2Decimales(elt.score)) : 0),
                             pilierScores: elt.pilierScores,
@@ -218,6 +220,7 @@ export const ExportEXCEL = (props) => {
                             nbreSalaries: elt.nbreSalaries,
                             poste: elt.poste,
                             adresse: elt.adresse,
+                            marchesref: elt?.marchesref,
                             score: elt.score != null ? (isNaN(arrondirA2Decimales(elt.score)) ? `0%` : `${arrondirA2Decimales(elt.score)}%`) : `0%`,
                             progression: getLevel(elt.score != null ? (isNaN(arrondirA2Decimales(elt.score)) ? 0 : arrondirA2Decimales(elt.score)) : 0),
                             niveau: elt.niveauAppartenance.libelleFr,
@@ -264,7 +267,7 @@ export const ExportEXCEL = (props) => {
         >
 
             {isExportStart ?
-                (<><CircularProgress size={24} color="warning" sx={{mr: 2}}/> <Typography>Exportation en cours...</Typography></>) :
+                (<><CircularProgress size={24} color="warning" sx={{ mr: 2 }} /> <Typography>Exportation en cours...</Typography></>) :
                 'Exporter les données statistiques en EXCEL'
             }
         </Button>

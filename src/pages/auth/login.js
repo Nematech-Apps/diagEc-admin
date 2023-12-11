@@ -84,7 +84,6 @@ const Page = () => {
       setLoading(true);
       try {
         await auth.signIn(values.email, values.password);
-        console.log(getCurrentDateTime());
         updateUserCollection(getCurrentDateTime(), firebaseAuth.currentUser?.uid)
           .catch((err) => {
             console.log(err);

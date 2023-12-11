@@ -244,6 +244,7 @@ export const DisplayStatsPdf = ({ handleClose, isOpen }) => {
                                                                             <th style={{ border: '1px solid black' }}>Nombre de salariés</th>
                                                                             <th style={{ border: '1px solid black' }}>Poste</th>
                                                                             <th style={{ border: '1px solid black' }}>Adresse</th>
+                                                                            <th style={{ border: '1px solid black' }}>Marché de référence</th>
                                                                             <th style={{ border: '1px solid black' }}>Score EC</th>
                                                                             <th style={{ border: '1px solid black' }}>Progression</th>
                                                                             <th style={{ border: '1px solid black' }}>Niveau</th>
@@ -257,6 +258,15 @@ export const DisplayStatsPdf = ({ handleClose, isOpen }) => {
                                                                                 <td style={{ border: '1px solid black' }} align="right">{company.nbreSalaries}</td>
                                                                                 <td style={{ border: '1px solid black' }} align="right">{company.poste}</td>
                                                                                 <td style={{ border: '1px solid black' }} align="right">{company.adresse}</td>
+                                                                                <td style={{ border: '1px solid black' }} align="right">
+                                                                                    <ul>
+                                                                                    {company?.marchesref?.map((elt, index) => {
+                                                                                        return(
+                                                                                            <li key={index}>{elt?.libelleFr}</li>
+                                                                                        )
+                                                                                    })}
+                                                                                    </ul>
+                                                                                </td>
                                                                                 <td style={{ border: '1px solid black' }} align="right">{company.score != null ? (isNaN(arrondirA2Decimales(company.score)) ? `0%` : `${arrondirA2Decimales(company.score)}%`) : `0%`}</td>
                                                                                 <td style={{ border: '1px solid black' }} align="right">{getLevel(company.score != null ? (isNaN(arrondirA2Decimales(company.score)) ? 0 : arrondirA2Decimales(company.score)) : 0)}</td>
                                                                                 <td style={{ border: '1px solid black' }} align="right">{company.niveauAppartenance.libelleFr}</td>
