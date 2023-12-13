@@ -7,6 +7,9 @@ import {
     CardHeader,
     Divider,
     Stack,
+    SvgIcon,
+    IconButton,
+    Alert,
     TextField,
     Typography
 } from '@mui/material';
@@ -20,13 +23,22 @@ import { addSecteur } from 'src/firebase/firebaseServices';
 import { db, GetDoc, Doc, UpdateDoc } from 'src/firebase/firebaseConfig';
 import ToastComponent from '../../components/toast';
 
+import EyeIcon from '@heroicons/react/24/solid/EyeIcon';
+
+import EyeSlashIcon from '@heroicons/react/24/solid/EyeSlashIcon';
+
+import ArrowPathRoundedSquareIcon from '@heroicons/react/24/solid/ArrowPathRoundedSquareIcon';
+
+import ClipboardDocumentListIcon from '@heroicons/react/24/solid/ClipboardDocumentListIcon';
+
+import UserPlusIcon from '@heroicons/react/24/solid/UserPlusIcon';
 
 
 export const CreateUser = () => {
-
     const auth = useAuth();
-
     const [isOnCreate, setIsOnCreate] = useState(false);
+    const [passwordFieldType, setPasswordFieldType] = useState('password');
+    const [clipboardData, setClipboardData] = useState('');
 
     const formik = useFormik({
         initialValues: {
@@ -36,32 +48,17 @@ export const CreateUser = () => {
             submit: null
         },
         validationSchema: Yup.object({
-            email: Yup
-                .string()
-                .max(255)
-                .required("L'email est requis"),
-            identifiant: Yup
-                .string()
-                .max(255)
-                .required("L'identifiant est requis"),
-            password: Yup
-                .string()
+            email: Yup.string().max(255).required("L'email est requis"),
+            identifiant: Yup.string().max(255).required("L'identifiant est requis"),
+            password: Yup.string()
                 .matches(
-                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-                    "Le mot de passe doit contenir au moins un caractère en minuscule, un caractère en majuscule, un chiffre, un caractère spécial, et doit avoir une longueur d'au moins 8 caractères."
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).*$/,
+                    "Le mot de passe doit contenir au moins une minuscule, une majuscule, un chiffre, et un caractère spécial."
                 )
-                .max(255)
                 .required("Le mot de passe est requis")
+                .min(8, "Le mot de passe doit avoir une longueur d'au moins 8 caractères"),
         }),
         onSubmit: async (values, helpers) => {
-            // try{
-            //   return ToastComponent({message: 'Opération effectuée avec succès', type: 'success'});
-            // } catch(err){
-            //   helpers.setStatus({ success: false });
-            //   helpers.setErrors({ submit: err.message });
-            //   helpers.setSubmitting(false);
-            //   return ToastComponent({message: err.message, type: 'error'});
-            // }
             setIsOnCreate(true);
             const credentials = {
                 email: values.email,
@@ -80,24 +77,64 @@ export const CreateUser = () => {
                 helpers.setSubmitting(false);
                 return ToastComponent({ message: err.message, type: 'error' });
             }
-
         }
     });
 
+    function getRandomChar(characters) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        return characters.charAt(randomIndex);
+    }
+
+    function generatePassword(length = 8) {
+        const lowercaseChars = 'abcdefghijklmnopqrstuvwxyz';
+        const uppercaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const numericChars = '0123456789';
+        const specialChars = '!@#$%^&*()_+[]{}|;:,.<>?';
+
+        const allChars = lowercaseChars + uppercaseChars + numericChars + specialChars;
+
+        let password = '';
+
+        password += getRandomChar(lowercaseChars);
+        password += getRandomChar(uppercaseChars);
+        password += getRandomChar(numericChars);
+        password += getRandomChar(specialChars);
+
+        while (password.length < length) {
+            password += getRandomChar(allChars);
+        }
+
+        return password;
+    }
+
+
+
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text)
+            .then(() => {
+                setClipboardData(text);
+            })
+            .catch((err) => {
+                console.error('Unable to copy text to clipboard', err);
+            });
+    }
+
     return (
-        <form noValidate
-            onSubmit={formik.handleSubmit}>
+        <form noValidate onSubmit={formik.handleSubmit}>
             <Card>
                 <CardHeader
-                    //subheader="catégorie"
-                    title="Ajouter un utilisateur"
+                    title={
+                        <Stack direction={'row'} spacing={1}>
+                            <SvgIcon>
+                                <UserPlusIcon/>
+                            </SvgIcon>
+                            <Typography>Ajouter un utilisateur</Typography>
+                        </Stack>
+                    }
                 />
                 <Divider />
                 <CardContent>
-                    <Stack
-                        spacing={3}
-                        sx={{ maxWidth: 800 }}
-                    >
+                    <Stack spacing={3} sx={{ maxWidth: 800 }}>
                         <TextField
                             error={!!(formik.touched.email && formik.errors.email)}
                             fullWidth
@@ -122,19 +159,70 @@ export const CreateUser = () => {
                             value={formik.values.identifiant}
                         />
 
-                        <TextField
-                            error={!!(formik.touched.password && formik.errors.password)}
-                            fullWidth
-                            helperText={formik.touched.password && formik.errors.password}
-                            label="Mot de passe"
-                            name="password"
-                            onBlur={formik.handleBlur}
-                            onChange={formik.handleChange}
-                            type="password"
-                            value={formik.values.password}
-                        />
+                        {
+                            clipboardData != "" &&
+                            <Alert variant="outlined" severity="success">
+                                Le mot de passe a été copié avec succès dans le presse-papiers
+                            </Alert>
+                        }
+
+                        <Stack direction={'row'} spacing={4}>
+                            <TextField
+                                error={!!(formik.touched.password && formik.errors.password)}
+                                fullWidth
+                                helperText={formik.touched.password && formik.errors.password}
+                                label="Mot de passe"
+                                name="password"
+                                onBlur={formik.handleBlur}
+                                onChange={formik.handleChange}
+                                type={passwordFieldType}
+                                value={formik.values.password}
+                            />
+
+                            <IconButton
+                                color='success'
+                                size='small'
+                                onClick={() => formik.setFieldValue("password", generatePassword(20))}
+                            >
+                                <SvgIcon>
+                                    <ArrowPathRoundedSquareIcon />
+                                </SvgIcon>
+                            </IconButton>
+
+                            <IconButton
+                                color='warning'
+                                size='small'
+                                onClick={() => setPasswordFieldType((prev) => prev == "password" ? "text" : "password")}
+                            >
+                                <SvgIcon>
+                                    {
+                                        passwordFieldType == "password" &&
+                                        <EyeIcon />
+                                    }
+                                    {
+                                        passwordFieldType == "text" &&
+                                        <EyeSlashIcon />
+                                    }
+                                </SvgIcon>
+                            </IconButton>
+
+                            <IconButton
+                                variant="contained"
+                                color='inherit'
+                                size='small'
+                                onClick={() => copyToClipboard(formik.values.password)}
+                            >
+                                <SvgIcon>
+                                    <ClipboardDocumentListIcon />
+                                </SvgIcon>
+                            </IconButton>
+
+
+                        </Stack>
+
 
                     </Stack>
+
                     {formik.errors.submit && (
                         <Typography
                             color="error"
@@ -147,8 +235,7 @@ export const CreateUser = () => {
                 </CardContent>
                 <Divider />
                 <CardActions sx={{ justifyContent: 'flex-end' }}>
-                    <Button variant="contained"
-                        type='submit' disabled={isOnCreate}>
+                    <Button variant="contained" type='submit' disabled={isOnCreate}>
                         Ajouter
                     </Button>
                 </CardActions>
