@@ -9,3 +9,5 @@ handlers:
 - url: /.*
   static_files: out/index.html
   upload: out/index.html
+
+service: diagec-web-app
