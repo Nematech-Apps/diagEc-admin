@@ -104,15 +104,21 @@ export const AccountPopover = (props) => {
               Mon compte
             </Typography>
           </Stack>
-          <Divider />
-          <Stack direction={'row'} spacing={1}>
-            <SvgIcon>
-              <Cog6ToothIcon />
-            </SvgIcon>
-            <Typography variant="overline" onClick={handleSettings} style={{ cursor: 'pointer' }}>
-              Paramètres
-            </Typography>
-          </Stack>
+          {
+            userData?.role == "SUPER-ADMIN" &&
+            <>
+              <Divider />
+              <Stack direction={'row'} spacing={1}>
+                <SvgIcon>
+                  <Cog6ToothIcon />
+                </SvgIcon>
+                <Typography variant="overline" onClick={handleSettings} style={{ cursor: 'pointer' }}>
+                  Paramètres
+                </Typography>
+              </Stack>
+            </>
+          }
+
 
         </Stack>
 
