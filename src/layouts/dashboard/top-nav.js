@@ -79,16 +79,16 @@ export const TopNav = (props) => {
           >
 
             <Tooltip title="DiagEc-Web">
-              {/* <IconButton href='https://diagec.ohana-entreprise.com/' target='_blank'>
-                <SvgIcon fontSize="small">
-                  <GlobeAltIcon />
-                </SvgIcon>
-              </IconButton> */}
-              <IconButton href='' >
+              <IconButton href='https://diagec.esaip.org/' target='_blank'>
                 <SvgIcon fontSize="small">
                   <GlobeAltIcon />
                 </SvgIcon>
               </IconButton>
+              {/* <IconButton href='' >
+                <SvgIcon fontSize="small">
+                  <GlobeAltIcon />
+                </SvgIcon>
+              </IconButton> */}
             </Tooltip>
             <Avatar
               onClick={accountPopover.handleOpen}
