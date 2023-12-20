@@ -126,7 +126,7 @@ export const SideNav = (props) => {
           >
             {userData?.role == "SUPER-ADMIN" ?
             filteredItems
-            .filter(elt => elt.title == "Utilisateurs" || elt.title == "Tableau de bord")
+            .filter(elt => elt.title == "Utilisateurs" || elt.title == "Tableau de bord" || elt.title == "Paramètres")
             .map((item) => {
               const active = item.path ? (pathname === item.path) : false;
 
@@ -143,7 +143,7 @@ export const SideNav = (props) => {
               );
             }) : 
             filteredItems
-            .filter(elt => elt.title != "Utilisateurs")
+            .filter(elt => (elt.title != "Utilisateurs" && elt.title != "Paramètres"))
             .map((item) => {
               const active = item.path ? (pathname === item.path) : false;
 

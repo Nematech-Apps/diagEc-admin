@@ -104,7 +104,7 @@ export const AccountPopover = (props) => {
               Mon compte
             </Typography>
           </Stack>
-          {
+          {/* {
             userData?.role == "SUPER-ADMIN" &&
             <>
               <Divider />
@@ -117,7 +117,7 @@ export const AccountPopover = (props) => {
                 </Typography>
               </Stack>
             </>
-          }
+          } */}
 
 
         </Stack>

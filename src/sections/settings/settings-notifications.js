@@ -13,6 +13,8 @@ import {
   Unstable_Grid2 as Grid,
   InputLabel,
   Select,
+  SvgIcon,
+  Box,
   FormControl,
   MenuItem
 } from '@mui/material';
@@ -23,6 +25,8 @@ import * as Yup from 'yup';
 import ToastComponent from 'src/components/toast';
 
 import { updateSettings } from 'src/firebase/firebaseServices';
+
+import ArrowUturnRightIcon from '@heroicons/react/24/solid/ArrowUturnRightIcon';
 
 export const SettingsNotifications = () => {
   const handleSubmit = useCallback(
@@ -52,7 +56,7 @@ export const SettingsNotifications = () => {
     onSubmit: async (values, helpers) => {
       const app = values.app
 
-      if(app === "Web"){
+      if (app === "Web") {
         const data = {
           maintenanceMode2: values.mode == "Maintenance" ? "1" : "0"
         }
@@ -67,7 +71,7 @@ export const SettingsNotifications = () => {
             helpers.setSubmitting(false);
             return ToastComponent({ message: err.message, type: 'error' });
           })
-      } else if(app === "Mobile"){
+      } else if (app === "Mobile") {
         const data = {
           maintenanceMode: values.mode == "Maintenance" ? "1" : "0"
         }
@@ -138,6 +142,11 @@ export const SettingsNotifications = () => {
                   )}
                 </FormControl>
 
+                <Box display={'flex'} alignItems={'center'} justifyContent={'center'}>
+                  <SvgIcon>
+                    <ArrowUturnRightIcon />
+                  </SvgIcon>
+                </Box>
 
                 <FormControl fullWidth variant='filled'>
                   <InputLabel shrink htmlFor="select-native">
