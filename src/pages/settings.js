@@ -3,6 +3,7 @@ import { Box, Container, Stack, Typography } from '@mui/material';
 import { SettingsNotifications } from 'src/sections/settings/settings-notifications';
 import { SettingsPassword } from 'src/sections/settings/settings-password';
 import { ListStatusApp } from 'src/sections/settings/list-appStatus';
+import { ListStatusApp2 } from 'src/sections/settings/list-appStatus2';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 
 const Page = () => (
@@ -25,6 +26,7 @@ const Page = () => (
             Paramètres
           </Typography>
           <SettingsNotifications />
+          <ListStatusApp2 />
           <ListStatusApp />
         </Stack>
       </Container>

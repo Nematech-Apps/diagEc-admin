@@ -23,7 +23,7 @@ import { OnSnapshot } from 'src/firebase/firebaseConfig';
 
 import WrenchScrewdriverIcon from '@heroicons/react/24/solid/WrenchScrewdriverIcon';
 
-export const ListStatusApp = () => {
+export const ListStatusApp2 = () => {
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -76,7 +76,7 @@ export const ListStatusApp = () => {
         <Card>
             <CardHeader
                 // subheader="Manage the notifications"
-                title="L'app mobile"
+                title="L'app web"
             />
             <Divider />
             <CardContent>
@@ -101,7 +101,7 @@ export const ListStatusApp = () => {
                                             </Typography>
                                             <Stack>
                                                 <Typography variant="subtitle1" color={'cornflowerblue'}>
-                                                    {elt.maintenanceMode == "1" ? "maintenance" : "Production"}
+                                                    {elt.maintenanceMode2 == "1" ? "maintenance" : "Production"}
                                                 </Typography>
                                             </Stack>
                                         </Stack>

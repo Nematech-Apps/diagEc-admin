@@ -812,8 +812,12 @@ export const updateSettings = async (data) => {
     });
 
     if (newData) {
-        newData.maintenanceMode = data.maintenanceMode;
-
+        if(data.maintenanceMode != undefined){
+            newData.maintenanceMode = data.maintenanceMode;
+        }
+        if(data.maintenanceMode2 != undefined){
+            newData.maintenanceMode2 = data.maintenanceMode2;
+        }
         // Mettez à jour le document dans la collection 'settings'
         return UpdateDoc(Doc(collectionRef, newData.id), newData);
     } else {

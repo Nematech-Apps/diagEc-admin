@@ -72,6 +72,8 @@ export const ExportEXCEL = (props) => {
             new Set(excelData.flatMap((item) => item.questions?.flatMap((question) => question?.defis.map((defi) => defi.libelleFr)) || []))
         );
 
+
+
         // Ajouter l'en-tête à la feuille de calcul
         const headers = ["Raison sociale", "Email", "Secteur", "Nombre de salariés", "Poste", "Adresse", "Marché de référence", "Score EC", "Progression", "Niveau", ...uniqueQuestionLabels, ...uniquePilierLabels, ...uniqueDefiLabels];
         XLSX.utils.sheet_add_aoa(ws, [headers], { origin: "A1" });
@@ -116,7 +118,7 @@ export const ExportEXCEL = (props) => {
             data.questions?.forEach((question) => {
                 const questionIndex = headers.indexOf(question.libelleFr);
                 if (questionIndex !== -1) {
-                    rowData[questionIndex] = question.answers.find(elt => elt.isAnswered == true).libelleFr
+                    rowData[questionIndex] = question.answers.find(elt => elt.isAnswered == true)?.libelle
                 }
             });
 
@@ -181,6 +183,7 @@ export const ExportEXCEL = (props) => {
                 console.log(`groupedDataNiveau : ${JSON.stringify(groupedData)}`)
                 Object.keys(groupedData).map((objK) => {
                     groupedData[objK].map((elt) => {
+                        const marchesrefLib = elt?.marchesref.map(({ libelle }) => ({ libelle }));
                         const obj = {
                             raisonSociale: elt.raisonSociale,
                             email: elt.email,
@@ -188,7 +191,7 @@ export const ExportEXCEL = (props) => {
                             nbreSalaries: elt.nbreSalaries,
                             poste: elt.poste,
                             adresse: elt.adresse,
-                            marchesref: elt?.marchesref,
+                            marchesref: JSON.stringify(elt?.marchesref),
                             score: elt.score != null ? (isNaN(arrondirA2Decimales(elt.score)) ? `0%` : `${arrondirA2Decimales(elt.score)}%`) : `0%`,
                             progression: getLevel(elt.score != null ? (isNaN(arrondirA2Decimales(elt.score)) ? 0 : arrondirA2Decimales(elt.score)) : 0),
                             pilierScores: elt.pilierScores,
@@ -220,7 +223,7 @@ export const ExportEXCEL = (props) => {
                             nbreSalaries: elt.nbreSalaries,
                             poste: elt.poste,
                             adresse: elt.adresse,
-                            marchesref: elt?.marchesref,
+                            marchesref: JSON.stringify(elt?.marchesref),
                             score: elt.score != null ? (isNaN(arrondirA2Decimales(elt.score)) ? `0%` : `${arrondirA2Decimales(elt.score)}%`) : `0%`,
                             progression: getLevel(elt.score != null ? (isNaN(arrondirA2Decimales(elt.score)) ? 0 : arrondirA2Decimales(elt.score)) : 0),
                             niveau: elt.niveauAppartenance.libelleFr,

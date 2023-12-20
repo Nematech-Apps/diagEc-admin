@@ -1,16 +1,17 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, getDocs, addDoc, doc, setDoc, getDoc, updateDoc, deleteDoc, deleteField, onSnapshot, query, where } from 'firebase/firestore';
-import { getStorage, ref, uploadBytes, uploadBytesResumable, getDownloadURL, deleteObject} from 'firebase/storage';
+import { getStorage, ref, uploadBytes, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, fetchSignInMethodsForEmail } from "firebase/auth";
 
 // Initialize Firebase
 const firebaseConfig = {
-    apiKey: "AIzaSyCHohSskp1F5Xyqq56qCrqYkWxkrjBYc5g",
-    authDomain: "diagec-d4109.firebaseapp.com",
-    projectId: "diagec-d4109",
-    storageBucket: "diagec-d4109.appspot.com",
-    messagingSenderId: "687144530689",
-    appId: "1:687144530689:web:0088e9a3c2e5f4ba2c2100"
+    apiKey: "AIzaSyCsBDQBqK7ytJqCqPDkSFZFCPrYBdVHW0I",
+    authDomain: "diag-ec.firebaseapp.com",
+    projectId: "diag-ec",
+    storageBucket: "diag-ec.appspot.com",
+    messagingSenderId: "970822633957",
+    appId: "1:970822633957:web:de1026c21c10900cac070c",
+    measurementId: "G-C7Y2LYSP65"
 };
 
 // Initialize Firebase app

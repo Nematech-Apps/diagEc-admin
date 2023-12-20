@@ -32,36 +32,57 @@ export const SettingsNotifications = () => {
     []
   );
 
+  const apps = ["Web", "Mobile"]
   const modes = ["Maintenance", "Production"];
 
   const formik = useFormik({
     initialValues: {
+      app: '',
       mode: '',
       submit: null
     },
     validationSchema: Yup.object({
+      app: Yup
+        .string()
+        .required("Une app doit être sélectionnée"),
       mode: Yup
         .string()
         .required("Un mode doit être sélectionné")
     }),
     onSubmit: async (values, helpers) => {
-      console.log(values.maintenanceMode);
-      const data = {
-        maintenanceMode: values.mode == "Maintenance" ? "1" : "0"
+      const app = values.app
+
+      if(app === "Web"){
+        const data = {
+          maintenanceMode2: values.mode == "Maintenance" ? "1" : "0"
+        }
+        updateSettings(data)
+          .then(() => {
+            helpers.resetForm();
+            return ToastComponent({ message: 'Opération effectuée avec succès', type: 'success' });
+          })
+          .catch((err) => {
+            helpers.setStatus({ success: false });
+            helpers.setErrors({ submit: err.message });
+            helpers.setSubmitting(false);
+            return ToastComponent({ message: err.message, type: 'error' });
+          })
+      } else if(app === "Mobile"){
+        const data = {
+          maintenanceMode: values.mode == "Maintenance" ? "1" : "0"
+        }
+        updateSettings(data)
+          .then(() => {
+            helpers.resetForm();
+            return ToastComponent({ message: 'Opération effectuée avec succès', type: 'success' });
+          })
+          .catch((err) => {
+            helpers.setStatus({ success: false });
+            helpers.setErrors({ submit: err.message });
+            helpers.setSubmitting(false);
+            return ToastComponent({ message: err.message, type: 'error' });
+          })
       }
-      updateSettings(data)
-        .then(() => {
-          helpers.resetForm();
-          return ToastComponent({ message: 'Opération effectuée avec succès', type: 'success' });
-        })
-        .catch((err) => {
-          helpers.setStatus({ success: false });
-          helpers.setErrors({ submit: err.message });
-          helpers.setSubmitting(false);
-          return ToastComponent({ message: err.message, type: 'error' });
-        })
-
-
     }
   });
 
@@ -71,7 +92,7 @@ export const SettingsNotifications = () => {
       <Card>
         <CardHeader
           // subheader="Manage the notifications"
-          title="Configuration de l'app mobile"
+          title="Configuration des apps"
         />
         <Divider />
         <CardContent>
@@ -84,63 +105,69 @@ export const SettingsNotifications = () => {
               xs={12}
               sm={6}
               md={4}
+              lg={12}
             >
-              <Stack spacing={1}>
-                {/* <Typography variant="h6">
-                  Notifications
-                </Typography> */}
-                <Stack>
+              <Stack direction={'row'} spacing={2}>
 
-                  {/* <FormControlLabel
-                    control={<Checkbox defaultChecked={formik.values.maintenanceMode} />}
-                    label={formik.values.maintenanceMode == false ? "Mettre en mode production" : "Mettre en mode maintenance"}
-                    name="maintenanceMode"
-                    error={!!(formik.touched.maintenanceMode && formik.errors.maintenanceMode)}
-                    helperText={formik.touched.maintenanceMode && formik.errors.maintenanceMode}
-                    onBlur={formik.handleBlur}
+                <FormControl fullWidth variant='filled'>
+                  <InputLabel shrink htmlFor="select-native">
+                    Sélectionner l'app
+                  </InputLabel>
+                  <Select
+                    name="app"
+                    error={!!(formik.touched.app && formik.errors.app)}
+                    value={formik.values.app}
                     onChange={formik.handleChange}
-                    value={formik.values.maintenanceMode}
-                  /> */}
-
-
-                  <FormControl sx={{ m: 1, minWidth: 120, maxWidth: 300 }} variant='filled'>
-                    <InputLabel shrink htmlFor="select-native">
-                      Changer le mode
-                    </InputLabel>
-                    <Select
-                      name="mode"
-                      error={!!(formik.touched.mode && formik.errors.mode)}
-                      value={formik.values.mode}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      label="Native"
-                    >
-                      <MenuItem value="">
-                        <em>Aucune sélection</em>
+                    onBlur={formik.handleBlur}
+                    label="Native"
+                  >
+                    <MenuItem value="">
+                      <em>Aucune sélection</em>
+                    </MenuItem>
+                    {apps.map((app, index) => (
+                      <MenuItem key={index} value={app}>
+                        {app}
                       </MenuItem>
-                      {modes.map((mode, index) => (
-                        <MenuItem key={index} value={mode}>
-                          {mode}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                    {formik.touched.mode && formik.errors.mode && (
-                      <Typography color="error"
-                        variant="caption">
-                        {formik.errors.mode}
-                      </Typography>
-                    )}
-                  </FormControl>
+                    ))}
+                  </Select>
+                  {formik.touched.app && formik.errors.app && (
+                    <Typography color="error"
+                      variant="caption">
+                      {formik.errors.app}
+                    </Typography>
+                  )}
+                </FormControl>
 
-                  {/* <FormControlLabel
-                    control={<Checkbox />}
-                    label="Text Messages"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox defaultChecked />}
-                    label="Phone calls"
-                  /> */}
-                </Stack>
+
+                <FormControl fullWidth variant='filled'>
+                  <InputLabel shrink htmlFor="select-native">
+                    Passer en
+                  </InputLabel>
+                  <Select
+                    name="mode"
+                    error={!!(formik.touched.mode && formik.errors.mode)}
+                    value={formik.values.mode}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    label="Native"
+                  >
+                    <MenuItem value="">
+                      <em>Aucune sélection</em>
+                    </MenuItem>
+                    {modes.map((mode, index) => (
+                      <MenuItem key={index} value={mode}>
+                        {mode}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  {formik.touched.mode && formik.errors.mode && (
+                    <Typography color="error"
+                      variant="caption">
+                      {formik.errors.mode}
+                    </Typography>
+                  )}
+                </FormControl>
+
               </Stack>
             </Grid>
             {/* <Grid
